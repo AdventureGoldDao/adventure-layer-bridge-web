@@ -1,7 +1,8 @@
 import { useQuery } from "@apollo/client";
 import { utils } from 'ethers'
+import web3, { Web3 } from 'web3'
 import { Contract } from "@ethersproject/contracts";
-import { shortenAddress, useCall, useContractFunction, useEthers, useLookupAddress } from "@usedapp/core";
+import { shortenAddress, useCall, useContractFunction, useEthers, useLookupAddress, Sepolia } from "@usedapp/core";
 import React, { useEffect, useState } from "react";
 
 import { Helmet } from 'react-helmet';
@@ -14,6 +15,10 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 // import Router from "./route/router";
 
@@ -27,6 +32,10 @@ const AddressText = styled.div`
   color: #444;
 `;
 
+const AdventureLayer = {
+  chainId: "412346",
+  rpcUrl: "ws://3.84.203.161:8548",
+}
 
 function WalletButton() {
   const [rendered, setRendered] = useState("");
@@ -77,11 +86,20 @@ function App() {
   //     args: ["0x3f8CB69d9c0ED01923F11c829BaE4D9a4CB6c82C"],
   //   }) ?? {};
   const wethInterface = new utils.Interface(abis.adventureSepolia)
-  const wethContractAddress = addresses.adventureSepolia
+  const wethContractAddress = addresses.depositL1
+  const wethContractAddressL2 = addresses.depositL2
   const contract = new Contract(wethContractAddress, wethInterface)
+  const contractL2 = new Contract(wethContractAddressL2, wethInterface)
   const { state: stateDeposit, send: sendDeposit } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' })
+  const { state: stateDepositL2, send: sendDepositL2 } = useContractFunction(contractL2, 'deposit', { transactionName: 'Transfer L2' })
 
   const { loading, error: subgraphQueryError, data } = useQuery(GET_TRANSFERS);
+
+  const [chainState, setChainState] = React.useState(addresses.depositL1);
+
+  const handleChainChange = (event) => {
+    setChainState(event.target.value);
+  };
 
   useEffect(() => {
     if (subgraphQueryError) {
@@ -93,21 +111,39 @@ function App() {
     }
   }, [loading, subgraphQueryError, data]);
 
-  const onClickTransfer = () => {
+  const gasPriceGwei = '15'
+  const l1Web3 = new Web3(Sepolia.rpcUrl) 
+  const onClickTransfer = async () => {
     console.log({ transfers: sendAmount });
     if (!account || isNaN(sendAmount)) {
       console.log(account, sendAmount)
       return
     }
 
-    console.log('start', { transfers: sendAmount });
+    console.log('start', account, sendAmount);
     try {
-      sendDeposit(account, Number(sendAmount), {value: Number(sendAmount), gasLimit: 3e7})
-    } catch (e){
+      if (addresses.depositL1 === chainState) {
+        const nonce = await l1Web3.eth.getTransactionCount(account, 'pending')
+        console.log('nonce', nonce)
+        sendDeposit(account, sendAmount, {
+          value: sendAmount,
+          gasLimit: 3e7,
+          nonce: Number(nonce) + 1,
+          gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+        })
+      } else {
+        sendDepositL2(account, sendAmount, {
+          value: sendAmount,
+          gasLimit: 3e7,
+          nonce: 2,
+          gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+        })
+      }
+    } catch (e) {
       console.log("error", e)
     }
-    
-    console.log({ sendAmount: sendAmount});
+
+    // console.log({ sendAmount: sendAmount });
   }
 
   // console.log(tokenBalance, Number(tokenBalance))
@@ -128,9 +164,25 @@ function App() {
         >
           <Stack>
             <AddressText>Address: {account}</AddressText>
-            <AddressText>Balance: {0}</AddressText>
+            {/* <AddressText>Balance: {0}</AddressText> */}
           </Stack>
 
+        </Box>
+
+        <Box width={'80%'}>
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-select-small-label">Transfer Chain</InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={chainState}
+              label="Transfer Chain"
+              onChange={handleChainChange}
+            >
+              <MenuItem value={addresses.depositL1}>L1 To L2</MenuItem>
+              <MenuItem value={addresses.depositL2}>L2 To L1</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
         <Box
           width={'80%'}
