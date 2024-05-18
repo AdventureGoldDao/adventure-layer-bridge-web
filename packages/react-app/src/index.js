@@ -10,6 +10,7 @@ import App from "./App";
 const AdventureLayer = {
   chainId: "412346",
   rpcUrl: "http://3.84.203.161:8547",
+  wssUrl: "ws://3.84.203.161:8548",
 }
 
 // IMPORTANT, PLEASE READ
