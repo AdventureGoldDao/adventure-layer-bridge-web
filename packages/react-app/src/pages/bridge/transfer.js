@@ -22,11 +22,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 // import Router from "./route/router";
 
-import { Body, Button as SimpleButton, Container, Header, Image, Link } from "./components";
-import logo from "./ethereumLogo.png";
+import { Body, Button as SimpleButton, Container, Header, Image, Link } from "../../components";
+// import logo from "./ethereumLogo.png";
 
 import { addresses, abis } from "@my-app/contracts";
-import GET_TRANSFERS from "./graphql/subgraph";
+import GET_TRANSFERS from "../../graphql/subgraph";
 
 const AddressText = styled.div`
   color: #444;
@@ -76,7 +76,7 @@ function WalletButton() {
   );
 }
 
-function App() {
+function Transfer() {
   const [sendAmount, setSendAmount] = useState('');
   const { account, activateBrowserWallet, deactivate, error } = useEthers();
   // Read more about useDapp on https://usedapp.io/
@@ -226,4 +226,4 @@ function App() {
   );
 }
 
-export default App;
+export default Transfer;
