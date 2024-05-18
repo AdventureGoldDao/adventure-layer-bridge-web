@@ -34,7 +34,8 @@ const AddressText = styled.div`
 
 const AdventureLayer = {
   chainId: "412346",
-  rpcUrl: "ws://3.84.203.161:8548",
+  rpcUrl: "http://3.84.203.161:8547",
+  wssUrl: "ws://3.84.203.161:8548",
 }
 
 function WalletButton() {
@@ -112,7 +113,8 @@ function App() {
   }, [loading, subgraphQueryError, data]);
 
   const gasPriceGwei = '15'
-  const l1Web3 = new Web3(Sepolia.rpcUrl) 
+  const l1Web3 = new Web3(Sepolia.rpcUrl)
+  const l2Web3 = new Web3(AdventureLayer.rpcUrl)
   const onClickTransfer = async () => {
     console.log({ transfers: sendAmount });
     if (!account || isNaN(sendAmount)) {
@@ -132,10 +134,17 @@ function App() {
           gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
         })
       } else {
+        const nonce = await l2Web3.eth.getTransactionCount(account, 'pending')
+        console.log('nonce', wethContractAddressL2, nonce, account, sendAmount, {
+          value: sendAmount,
+          gasLimit: 3e7,
+          nonce: Number(nonce) + 1,
+          gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+        })
         sendDepositL2(account, sendAmount, {
           value: sendAmount,
           gasLimit: 3e7,
-          nonce: 2,
+          // nonce: Number(nonce) + 1,
           gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
         })
       }
