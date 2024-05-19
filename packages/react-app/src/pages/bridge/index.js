@@ -27,10 +27,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import AdbIcon from '@mui/icons-material/Adb';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import FormHelperText from '@mui/material/FormHelperText';
+
+import InputAdornment from '@mui/material/InputAdornment';
 import MuiSelect, { SelectChangeEvent } from '@mui/material/Select';
 
 import SvgIcon from '@mui/material/SvgIcon';
-
 
 import MuiLink from '@mui/material/Link';
 import { purple } from '@mui/material/colors';
@@ -184,7 +187,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Bridge
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -372,27 +375,29 @@ const BridgeIndex = () => {
       return
     }
 
-    console.log('start', account, sendAmount);
+    const sendBigAmount = web3.utils.toBigInt(Number(sendAmount) * 1000000000000000000)
+    console.log('start', sendBigAmount, sendAmount);
     try {
       if (addresses.depositL1 === chainState) {
         const nonce = await l1Web3.eth.getTransactionCount(account, 'pending')
-        console.log('nonce', nonce)
-        sendDeposit(account, sendAmount, {
-          value: sendAmount,
-          gasLimit: 3e7,
-          nonce: Number(nonce) + 1,
-          gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+        console.log('nonce', nonce, account, sendBigAmount)
+        sendDeposit({
+          value: sendBigAmount,
+          // sender: account,
+          // gasLimit: 3e7,
+          nonce: Number(nonce) + 6,
+          // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
         })
       } else {
         const nonce = await l2Web3.eth.getTransactionCount(account, 'pending')
-        console.log('nonce', wethContractAddressL2, nonce, account, sendAmount, {
-          value: sendAmount,
+        console.log('nonce', wethContractAddressL2, nonce, account, sendBigAmount, {
+          value: sendBigAmount,
           gasLimit: 3e7,
-          nonce: Number(nonce) + 1,
+          // nonce: Number(nonce) + 1,
           gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
         })
-        sendDepositL2(account, sendAmount, {
-          value: sendAmount,
+        sendDepositL2(account, sendBigAmount, {
+          value: sendBigAmount,
           gasLimit: 3e7,
           // nonce: Number(nonce) + 1,
           gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
@@ -414,11 +419,11 @@ const BridgeIndex = () => {
           <Col span={12} offset={6}> */}
         <Box
           //  my={4}
-           display="flex"
-           maxWidth={600}
-           alignItems="center"
-          //  gap={4}
-          //  p={2}
+          display="flex"
+          maxWidth={600}
+          alignItems="center"
+        //  gap={4}
+        //  p={2}
         >
           {/* <Card>
             <p>See transaction history</p>
@@ -434,8 +439,8 @@ const BridgeIndex = () => {
               </div>
 
               <div className='input_box'>
-                <Input.Group compact size="large">
-                  {/* <Select
+                {/* <Input.Group compact size="large"> */}
+                {/* <Select
                       defaultValue={addresses.depositL1}
                       onChange={handleChainChange}
                       value={chainState}
@@ -443,20 +448,23 @@ const BridgeIndex = () => {
                       <Select.Option value={addresses.depositL1}>Sepolia</Select.Option>
                       <Select.Option value={addresses.depositL2}>Adventure</Select.Option>
                     </Select> */}
-                  <FormControl sx={{ marginBottom: 1, minWidth: 120 }} size="small">
-                    <InputLabel id="demo-select-small-label">Network</InputLabel>
-                    <MuiSelect
-                      labelId="demo-select-small-label"
-                      id="demo-select-small"
-                      value={selectSource}
-                      label="Transfer Chain"
-                      onChange={handleChainChange}
-                    >
-                      <MenuItem value={"sepolia"}>Sepolia (L1)</MenuItem>
-                      <MenuItem value={"adventure"}>Adventure Layer (L2)</MenuItem>
-                    </MuiSelect>
-                  </FormControl>
-                  <Input
+                <div style={{display: "flex", flexDirection: 'column', width: '100%'}}>
+                  <div>
+                    <FormControl sx={{ marginBottom: 1, minWidth: 120 }} size="small">
+                      <InputLabel id="demo-select-small-label">Network</InputLabel>
+                      <MuiSelect
+                        labelId="demo-select-small-label"
+                        id="demo-select-small"
+                        value={selectSource}
+                        label="Transfer Chain"
+                        onChange={handleChainChange}
+                      >
+                        <MenuItem value={"sepolia"}>Sepolia (L1)</MenuItem>
+                        <MenuItem value={"adventure"}>Adventure Layer (L2)</MenuItem>
+                      </MuiSelect>
+                    </FormControl>
+                  </div>
+                  {/* <Input
                     value={sendAmount}
                     style={{
                       width: '80%',
@@ -464,8 +472,26 @@ const BridgeIndex = () => {
                     onChange={(e) => {
                       setSendAmount(e.target.value);
                     }}
-                  />
-                </Input.Group>
+                  /> */}
+                  <div>
+                    <FormControl sx={{ width: '100%' }} variant="outlined">
+                      <OutlinedInput
+                        id="outlined-adornment-weight"
+                        endAdornment={<InputAdornment position="end">ETH</InputAdornment>}
+                        aria-describedby="outlined-weight-helper-text"
+                        inputProps={{
+                          'aria-label': 'weight',
+                        }}
+                        value={sendAmount}
+                        onChange={(e) => {
+                          setSendAmount(e.target.value);
+                        }}
+                      />
+                      {/* <FormHelperText id="outlined-weight-helper-text">Weight</FormHelperText> */}
+                    </FormControl>
+                  </div>
+                </div>
+                {/* </Input.Group> */}
               </div>
 
             </div>
@@ -482,8 +508,8 @@ const BridgeIndex = () => {
 
             <div className='summary_box'>
               <Descriptions title="Summary" column={1}>
-                <Descriptions.Item label="You will pay in gas fees">{gasPriceGwei} Gwei</Descriptions.Item>
-                <Descriptions.Item label={`You will receive on ${targetChainName}`}>0 ETH</Descriptions.Item>
+                <Descriptions.Item style={{display: 'none'}} label="You will pay in gas fees">{gasPriceGwei} Gwei</Descriptions.Item>
+                <Descriptions.Item label={`You will receive on ${targetChainName}`}>{sendAmount || 0} ETH</Descriptions.Item>
               </Descriptions>
             </div>
 
