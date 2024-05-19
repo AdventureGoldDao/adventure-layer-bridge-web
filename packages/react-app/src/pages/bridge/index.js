@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { utils } from 'ethers'
+import * as ethers from 'ethers'
 import web3, { Web3 } from 'web3'
 import { Contract } from "@ethersproject/contracts";
 import { shortenAddress, useCall, useContractFunction, useEthers, useLookupAddress, Sepolia } from "@usedapp/core";
@@ -374,8 +375,14 @@ const BridgeIndex = () => {
       console.log(account, sendAmount)
       return
     }
-
     const sendBigAmount = web3.utils.toBigInt(Number(sendAmount) * 1000000000000000000)
+
+    // const gasEstimate = contract.estimateGas['deposit'](account, sendBigAmount, {
+    //   value: sendBigAmount,
+    // })
+    // console.log(gasEstimate, "gasEstimate")
+    // return
+
     console.log('start', sendBigAmount, sendAmount);
     try {
       if (addresses.depositL1 === chainState) {
@@ -385,22 +392,22 @@ const BridgeIndex = () => {
           value: sendBigAmount,
           // sender: account,
           // gasLimit: 3e7,
-          nonce: Number(nonce) + 6,
+          // nonce: Number(nonce) + 7,
           // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
         })
       } else {
         const nonce = await l2Web3.eth.getTransactionCount(account, 'pending')
         console.log('nonce', wethContractAddressL2, nonce, account, sendBigAmount, {
           value: sendBigAmount,
-          gasLimit: 3e7,
+          // gasLimit: 3e7,
           // nonce: Number(nonce) + 1,
-          gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+          // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
         })
         sendDepositL2(account, sendBigAmount, {
           value: sendBigAmount,
-          gasLimit: 3e7,
+          // gasLimit: 3e7,
           // nonce: Number(nonce) + 1,
-          gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+          // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
         })
       }
     } catch (e) {
@@ -448,7 +455,7 @@ const BridgeIndex = () => {
                       <Select.Option value={addresses.depositL1}>Sepolia</Select.Option>
                       <Select.Option value={addresses.depositL2}>Adventure</Select.Option>
                     </Select> */}
-                <div style={{display: "flex", flexDirection: 'column', width: '100%'}}>
+                <div style={{ display: "flex", flexDirection: 'column', width: '100%' }}>
                   <div>
                     <FormControl sx={{ marginBottom: 1, minWidth: 120 }} size="small">
                       <InputLabel id="demo-select-small-label">Network</InputLabel>
@@ -508,7 +515,7 @@ const BridgeIndex = () => {
 
             <div className='summary_box'>
               <Descriptions title="Summary" column={1}>
-                <Descriptions.Item style={{display: 'none'}} label="You will pay in gas fees">{gasPriceGwei} Gwei</Descriptions.Item>
+                <Descriptions.Item style={{ display: 'none' }} label="You will pay in gas fees">{gasPriceGwei} Gwei</Descriptions.Item>
                 <Descriptions.Item label={`You will receive on ${targetChainName}`}>{sendAmount || 0} ETH</Descriptions.Item>
               </Descriptions>
             </div>
