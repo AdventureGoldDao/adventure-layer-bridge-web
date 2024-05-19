@@ -10,8 +10,10 @@ import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/ico
 import { Row, Col, Button, Flex, Menu, Descriptions, Select, Input, Card } from 'antd';
 import './index.css';
 
+import Alert from '@mui/material/Alert';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import MuiCard from '@mui/material/Card';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -21,9 +23,10 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import MuiButton from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
+import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import FormControl from '@mui/material/FormControl';
+import AdbIcon from '@mui/icons-material/Adb';
 import MuiSelect, { SelectChangeEvent } from '@mui/material/Select';
 
 import SvgIcon from '@mui/material/SvgIcon';
@@ -31,7 +34,6 @@ import SvgIcon from '@mui/material/SvgIcon';
 
 import MuiLink from '@mui/material/Link';
 import { purple } from '@mui/material/colors';
-
 
 // import { Button as SimpleButton } from "../../components";
 
@@ -42,6 +44,7 @@ const pageLinks = {
   "Faucet": 'https://faucet.adventurelayer.dev/',
   "Document": 'https://docs.adventurelayer.dev/',
 }
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const AdventureLayer = {
@@ -300,6 +303,19 @@ const items = [
   },
 ];
 
+const bridgeConfig = {
+  sepolia: {
+    address: addresses.depositL1,
+    text: 'Sepolia',
+    target_text: 'Adventure Layer'
+  },
+  adventure: {
+    address: addresses.depositL2,
+    text: 'Adventure Layer',
+    target_text: 'Sepolia'
+  },
+}
+
 const BridgeIndex = () => {
   const onClick = (e) => {
     console.log('click ', e);
@@ -325,10 +341,15 @@ const BridgeIndex = () => {
   // const { loading, error: subgraphQueryError, data } = useQuery(GET_TRANSFERS);
 
   const [chainState, setChainState] = React.useState(addresses.depositL1);
+  const [selectSource, setSelectSource] = React.useState("sepolia");
+  const [targetChainName, setTargetChainName] = React.useState("Adventure Layer");
 
   const handleChainChange = (event) => {
-    console.log(event)
-    setChainState(event.target.value);
+    // console.log(event)
+    setSelectSource(event.target.value);
+    const chain = bridgeConfig[event.target.value]
+    setChainState(chain.address);
+    setTargetChainName(chain.target_text);
   };
 
   // useEffect(() => {
@@ -387,94 +408,92 @@ const BridgeIndex = () => {
   return (
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
-      {/* <div className='left-box'>
-        <div className='logo-box'>Adventure Layer</div>
-
-        <div >
-          <Menu
-            onClick={onClick}
-            style={{
-              width: 256,
-            }}
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            mode="inline"
-            items={items}
-          />
-        </div>
-      </div> */}
 
       <div className='right-box'>
-        <Row >
-          <Col span={12} offset={6}>
-            <Card  >
-              <p>See transaction history</p>
-            </Card>
-            <div className='content-box'>
-              <div className='from_box' >
-                <div className='f1'>
-                  <span>FROM</span>
-                  <span>Balance: 0 ETH</span>
-                </div>
+        {/* <Row >
+          <Col span={12} offset={6}> */}
+        <Box
+          //  my={4}
+           display="flex"
+           maxWidth={600}
+           alignItems="center"
+          //  gap={4}
+          //  p={2}
+        >
+          {/* <Card>
+            <p>See transaction history</p>
+          </Card> */}
 
-                <div className='input_box'>
-                  <Input.Group compact size="large">
-                    <Select
+          <div className='content-box'>
+            <Alert variant="outlined" severity="info">See transaction history</Alert>
+
+            <div className='from_box' >
+              <div className='f1'>
+                <span>FROM</span>
+                <span>Balance: 0 ETH</span>
+              </div>
+
+              <div className='input_box'>
+                <Input.Group compact size="large">
+                  {/* <Select
                       defaultValue={addresses.depositL1}
                       onChange={handleChainChange}
                       value={chainState}
                     >
                       <Select.Option value={addresses.depositL1}>Sepolia</Select.Option>
-                      <Select.Option value={addresses.depositL2}>Advnture Layer</Select.Option>
-                    </Select>
-                    {/* <MuiSelect
+                      <Select.Option value={addresses.depositL2}>Adventure</Select.Option>
+                    </Select> */}
+                  <FormControl sx={{ marginBottom: 1, minWidth: 120 }} size="small">
+                    <InputLabel id="demo-select-small-label">Network</InputLabel>
+                    <MuiSelect
                       labelId="demo-select-small-label"
                       id="demo-select-small"
-                      value={chainState}
+                      value={selectSource}
                       label="Transfer Chain"
                       onChange={handleChainChange}
                     >
-                      <MenuItem value={addresses.depositL1}>Sepolia</MenuItem>
-                      <MenuItem value={addresses.depositL2}>Adventure Layer</MenuItem>
-                    </MuiSelect> */}
-                    <Input
-                      value={sendAmount}
-                      style={{
-                        width: '80%',
-                      }}
-                      onChange={(e) => {
-                        setSendAmount(e.target.value);
-                      }}
-                    />
-                  </Input.Group>
-                </div>
-
+                      <MenuItem value={"sepolia"}>Sepolia (L1)</MenuItem>
+                      <MenuItem value={"adventure"}>Adventure Layer (L2)</MenuItem>
+                    </MuiSelect>
+                  </FormControl>
+                  <Input
+                    value={sendAmount}
+                    style={{
+                      width: '80%',
+                    }}
+                    onChange={(e) => {
+                      setSendAmount(e.target.value);
+                    }}
+                  />
+                </Input.Group>
               </div>
-
-              <div className='to_box'>
-                <div className='t1'>
-                  <span>TO</span>
-                  <span>Balance: 0 ETH</span>
-                </div>
-                <div className='t2'>
-                  <span>Arbitrum One gas fee 0 ETH$0</span>
-                </div>
-              </div>
-
-              <div className='summary_box'>
-                <Descriptions title="Summary" column={1}>
-                  <Descriptions.Item label="You will pay in gas fees">0.00033 ETH ($0.98)</Descriptions.Item>
-                  <Descriptions.Item label="You will receive on Arbitrum One">0 ETH ($0)</Descriptions.Item>
-                </Descriptions>
-              </div>
-
-              <Button type="primary" size="large" block>
-                Move funds to Adventure Layer
-              </Button>
 
             </div>
-          </Col>
-        </Row>
+
+            <div className='to_box'>
+              <div className='t1'>
+                <span>TO</span>
+                <span>Balance: 0 ETH</span>
+              </div>
+              <div className='t2'>
+                <span>{targetChainName} gas fee 0 ETH</span>
+              </div>
+            </div>
+
+            <div className='summary_box'>
+              <Descriptions title="Summary" column={1}>
+                <Descriptions.Item label="You will pay in gas fees">{gasPriceGwei} Gwei</Descriptions.Item>
+                <Descriptions.Item label={`You will receive on ${targetChainName}`}>0 ETH</Descriptions.Item>
+              </Descriptions>
+            </div>
+
+            <Button onClick={onClickTransfer} type="primary" size="large" block>
+              Move funds to {targetChainName}
+            </Button>
+          </div>
+        </Box>
+        {/* </Col>
+        </Row> */}
       </div>
 
 

@@ -12,16 +12,21 @@
 
 .right-box {
     display: flex;
-    margin-top: 16px;
+    /* margin-top: 16px; */
     background: #fff;
     padding: 16px;
-
+    justify-content: center;
 
     .content-box {
       margin-top: 16px;
     }
   
-  
+    .transaction_box {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+
     .from_box {
       background-color: #7BBAFC;
       border: 1px solid #d9d9d9;
@@ -29,6 +34,7 @@
       margin-top: 16px;
       height: 150px;
       padding: 16px;
+      color: #fff;
   
       .f1 {
         display: flex;
@@ -40,8 +46,6 @@
         display: flex;
         justify-content: space-between;
       }
-  
-  
     }
   
     .to_box {
@@ -51,6 +55,7 @@
       margin-top: 16px;
       height: 100px;
       padding: 16px;
+      color: #fff;
   
       .t1 {
         display: flex;
