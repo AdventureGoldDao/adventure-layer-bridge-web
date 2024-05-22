@@ -34,7 +34,7 @@ const AddressText = styled.div`
 
 const AdventureLayer = {
   chainId: "412346",
-  rpcUrl: "http://3.84.203.161:8547",
+  rpcUrl: "https://rpc.adventurelayer.dev",
   wssUrl: "ws://3.84.203.161:8548",
 }
 

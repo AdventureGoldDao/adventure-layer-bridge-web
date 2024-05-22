@@ -6,6 +6,7 @@ import { Contract } from "@ethersproject/contracts";
 import { shortenAddress, useCall, useContractFunction, useEthers, useLookupAddress, Sepolia } from "@usedapp/core";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Decimal from "decimal.js"
 
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Row, Col, Button, Flex, Menu, Descriptions, Select, Input, Card } from 'antd';
@@ -30,6 +31,11 @@ import FormControl from '@mui/material/FormControl';
 import AdbIcon from '@mui/icons-material/Adb';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import InputAdornment from '@mui/material/InputAdornment';
 import MuiSelect, { SelectChangeEvent } from '@mui/material/Select';
@@ -52,8 +58,8 @@ const pageLinks = {
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const AdventureLayer = {
-  chainId: "412346",
-  rpcUrl: "http://3.84.203.161:8547",
+  chainId: 412346,
+  rpcUrl: "https://rpc.adventurelayer.dev",
   wssUrl: "ws://3.84.203.161:8548",
 }
 
@@ -117,7 +123,7 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -310,23 +316,27 @@ const items = [
 const bridgeConfig = {
   sepolia: {
     address: addresses.depositL1,
+    chainId: Sepolia.chainId,
     text: 'Sepolia',
     target_text: 'Adventure Layer'
   },
   adventure: {
     address: addresses.depositL2,
+    chainId: AdventureLayer.chainId,
     text: 'Adventure Layer',
     target_text: 'Sepolia'
   },
 }
 
 const BridgeIndex = () => {
-  const onClick = (e) => {
-    console.log('click ', e);
+  const [openAlert, setOpenAlert] = React.useState(false);
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
   };
 
   const [sendAmount, setSendAmount] = useState('');
-  const { account, activateBrowserWallet, deactivate, error } = useEthers();
+  const { account, activateBrowserWallet, deactivate, switchNetwork, error, library, chainId } = useEthers();
   // Read more about useDapp on https://usedapp.io/
   // const { error: contractCallError, value: tokenBalance } =
   //   useCall({
@@ -335,10 +345,11 @@ const BridgeIndex = () => {
   //     args: ["0x3f8CB69d9c0ED01923F11c829BaE4D9a4CB6c82C"],
   //   }) ?? {};
   const wethInterface = new utils.Interface(abis.adventureSepolia)
+  const wethL2Interface = new utils.Interface(abis.adventureL2)
   const wethContractAddress = addresses.depositL1
   const wethContractAddressL2 = addresses.depositL2
   const contract = new Contract(wethContractAddress, wethInterface)
-  const contractL2 = new Contract(wethContractAddressL2, wethInterface)
+  const contractL2 = new Contract(wethContractAddressL2, wethL2Interface)
   const { state: stateDeposit, send: sendDeposit } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' })
   const { state: stateDepositL2, send: sendDepositL2 } = useContractFunction(contractL2, 'deposit', { transactionName: 'Transfer L2' })
 
@@ -369,21 +380,58 @@ const BridgeIndex = () => {
   const gasPriceGwei = '15'
   const l1Web3 = new Web3(Sepolia.rpcUrl)
   const l2Web3 = new Web3(AdventureLayer.rpcUrl)
+
+  let l1BalanceAmount = 0
+  let l2BalanceAmount = 0
+  const [accountBalance, setAccountBalance] = useState({
+    l1: l1BalanceAmount,
+    l2: l2BalanceAmount,
+  })
+
+  const reloadAccountBalance = () => {
+    if (account && library) {
+      library.getBalance(account).then((val) => {
+        // ethers.utils.formatEther();
+        const l1BalanceAmount = new Decimal(val.toString()).div(1000000000000000000).toFixed(5);
+        setAccountBalance({
+          ...accountBalance,
+          l1: l1BalanceAmount,
+        })
+      })
+      // const l2Balance = l2Web3.getBalance(account)
+      // l2BalanceAmount = ethers.utils.formatEther(l2Balance);
+    }
+  }
+  useEffect(() => {
+    reloadAccountBalance()
+  }, [account, library])
+
   const onClickTransfer = async () => {
-    console.log({ transfers: sendAmount });
+    console.log({ chainId, transfers: sendAmount });
     if (!account || isNaN(sendAmount)) {
       console.log(account, sendAmount)
       return
     }
-    const sendBigAmount = web3.utils.toBigInt(Number(sendAmount) * 1000000000000000000)
 
+    const currentChain = bridgeConfig[selectSource]
+    if ((chainId !== currentChain.chainId * 1 && chainId > 0) || (!chainId && selectSource === 'sepolia')) {
+      console.log('Switch Chain:', chainId, currentChain.chainId)
+      await switchNetwork(currentChain.chainId)
+      // .then(() => {
+      //   setOpenAlert(true)
+      // })
+      // setOpenAlert(true)
+      // return
+    }
+
+    const sendBigAmount = web3.utils.toBigInt(Number(sendAmount) * 1000000000000000000)
     // const gasEstimate = contract.estimateGas['deposit'](account, sendBigAmount, {
     //   value: sendBigAmount,
     // })
     // console.log(gasEstimate, "gasEstimate")
     // return
 
-    console.log('start', sendBigAmount, sendAmount);
+    console.log('start contract', sendBigAmount, sendAmount);
     try {
       if (addresses.depositL1 === chainState) {
         const nonce = await l1Web3.eth.getTransactionCount(account, 'pending')
@@ -394,6 +442,8 @@ const BridgeIndex = () => {
           // gasLimit: 3e7,
           // nonce: Number(nonce) + 7,
           // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+        }).then(() => {
+          reloadAccountBalance()
         })
       } else {
         const nonce = await l2Web3.eth.getTransactionCount(account, 'pending')
@@ -408,6 +458,8 @@ const BridgeIndex = () => {
           // gasLimit: 3e7,
           // nonce: Number(nonce) + 1,
           // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+        }).then(() => {
+          reloadAccountBalance()
         })
       }
     } catch (e) {
@@ -442,7 +494,7 @@ const BridgeIndex = () => {
             <div className='from_box' >
               <div className='f1'>
                 <span>FROM</span>
-                <span>Balance: 0 ETH</span>
+                <span>Balance: {accountBalance.l1} ETH</span>
               </div>
 
               <div className='input_box'>
@@ -506,7 +558,7 @@ const BridgeIndex = () => {
             <div className='to_box'>
               <div className='t1'>
                 <span>TO</span>
-                <span>Balance: 0 ETH</span>
+                <span>Balance: {accountBalance.l2} ETH</span>
               </div>
               <div className='t2'>
                 <span>{targetChainName} gas fee 0 ETH</span>
@@ -528,7 +580,24 @@ const BridgeIndex = () => {
         {/* </Col>
         </Row> */}
       </div>
-
+      <Dialog
+        open={openAlert}
+        onClose={handleCloseAlert}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`Switch Your Network to ${bridgeConfig[selectSource].text}?`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You have switch your Network, please click again to submit contract transaction.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAlert}>OK</Button>
+        </DialogActions>
+      </Dialog>
 
 
     </div>
