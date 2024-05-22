@@ -453,7 +453,7 @@ const BridgeIndex = () => {
           // nonce: Number(nonce) + 1,
           // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
         })
-        sendDepositL2(account, sendBigAmount, {
+        sendDepositL2({
           value: sendBigAmount,
           // gasLimit: 3e7,
           // nonce: Number(nonce) + 1,
