@@ -1,7 +1,24 @@
+@font-face {
+  font-family: 'ParaboleDisplay';
+  src: url('./fonts/Parabole-DisplayRegular.woff2') format('woff2'),
+       url('./fonts/Parabole-DisplayRegular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ParaboleText';
+  src: url('./fonts/Parabole-TextRegular.woff2') format('woff2'),
+       url('./fonts/Parabole-TextRegular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: 'ParaboleText', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
