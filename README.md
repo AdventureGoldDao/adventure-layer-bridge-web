@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create Eth App](https://github.com/paulrberg/create-eth-app).
+# adventure-layer-bridge-web
+
+This project is the bridge web page of Adventure Layer,which was bootstrapped with [Create Eth App](https://github.com/paulrberg/create-eth-app).
 
 ## Project Structure
 
