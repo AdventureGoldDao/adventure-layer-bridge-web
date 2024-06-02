@@ -44,9 +44,12 @@ import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
 import logo1 from "../../img/agld1.png";
 import logo2 from '../../img/agld2.png';
-import eth_log01 from '../../img/eth_logo1.png';
+import eth_log02 from '../../img/eth_logo2.png';
 import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
+
+import { ReactComponent as Logo1 } from '../../img/agld-logo1.svg'; // 导入 SVG 作为组件
+import { ReactComponent as Logo2 } from '../../img/agld-logo2.svg'; // 导入 SVG 作为组件
 
 
 
@@ -90,7 +93,8 @@ function ResponsiveAppBar() {
   return (
   <div className='menuBox'>
     <div className='logoBox'>
-      <img className='logo' src={logo1} alt='background' />
+      {/* <img className='logo' src={logo1} alt='background' /> */}
+      <Logo1 className='logo' alt="Adventure bridge Logo" />
     </div>
     <div className='menu'>
       <a className='menuItem' href="https://faucet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
@@ -299,8 +303,6 @@ const BridgeIndex = () => {
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
       <div className='right-box'>
-        {/* <Row >
-          <Col span={12} offset={6}> */}
         <Box
           display="flex"
           maxWidth={600}
@@ -308,7 +310,7 @@ const BridgeIndex = () => {
           flexDirection='column'>
 
           <div className='logoBox'>
-            <img className='logo' src={logo2} alt='background' />
+            <Logo2 className='logo' alt="Adventure Layer Logo2" />
           </div>
 
           <div className='alb_box'>
@@ -369,26 +371,19 @@ const BridgeIndex = () => {
 
               <div className='receive_box'>
                 <div className='receive_title'>Receive</div>
-
                 <div className='receive_num'>
-                  <div>0</div>
+                  <div className='eth_num'>0</div>
+
                   <div className='receive_eth'>
-                    {/* <div></div> */}
-                    <img src={eth_log01} alt='background' style={{ marginRight: '10px' }} />
-                    <div>ETH</div>
+                    <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
+                    <div className='eth_txt'>ETH</div>
                   </div>
+
                 </div>
                 {/* <span>{targetChainName} gas fee 0 ETH</span> */}
               </div>
 
               <div className='gas'>{targetChainName}gas fee 0 ETH</div>
-              {/* <div className='summary_box'>
-                <Descriptions column={1}>
-                  <Descriptions.Item style={{ display: 'none' }} label="You will pay in gas fees">{gasPriceGwei} Gwei</Descriptions.Item>
-                  <Descriptions.Item label={`You will receive on ${targetChainName}`}>{sendAmount || 0} ETH</Descriptions.Item>
-                </Descriptions>
-              </div> */}
-
               <div className="btn-box">
                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                   Transfer
