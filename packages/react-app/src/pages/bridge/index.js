@@ -321,8 +321,14 @@ const BridgeIndex = () => {
               {/* <span>Balance: {accountBalance.l1} ETH</span> */}
               <div className='from_box'>
                 <div className='from_select'>
-                  <div className='txt'>From</div>
-                  <div className='select'>
+                  <div className='item1'>From</div>
+                  <div className='item2'>
+                    <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
+                    <div className='item3'>Sepolia  Layer 1</div>
+                  </div>
+
+                  
+                  {/* <div className='select'>
                     <FormControl sx={{ marginBottom: 1, Width: 159 }} size="small">
                       <MuiSelect sx={{ color: '#fff' }}
                         labelId="demo-select-small-label"
@@ -334,7 +340,8 @@ const BridgeIndex = () => {
                         <MenuItem sx={{ color: '#211a12' }} value={"adventure"}>Adventure Layer (L2)</MenuItem>
                       </MuiSelect>
                     </FormControl>
-                  </div>
+                  </div> */}
+
                 </div>
 
                 <div className='send_box'>
@@ -364,8 +371,8 @@ const BridgeIndex = () => {
               <div className='to_box'>
                 <div className='to_1'>TO</div>
                 <div className='to_2'>
-                  {/* <div>logo</div> */}
-                  <div>Adventure Layer: {accountBalance.l2}</div>
+                  <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
+                  <div className='to_3' >Adventure Layer</div>
                 </div>
               </div>
 
@@ -378,7 +385,6 @@ const BridgeIndex = () => {
                     <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
                     <div className='eth_txt'>ETH</div>
                   </div>
-
                 </div>
                 {/* <span>{targetChainName} gas fee 0 ETH</span> */}
               </div>
@@ -414,8 +420,6 @@ const BridgeIndex = () => {
           <Button onClick={handleCloseAlert}>OK</Button>
         </DialogActions>
       </Dialog>
-
-
     </div>
   );
 
