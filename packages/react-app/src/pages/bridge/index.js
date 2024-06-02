@@ -322,7 +322,7 @@ const BridgeIndex = () => {
                   <div className='txt'>From</div>
                   <div className='select'>
                     <FormControl sx={{ marginBottom: 1, Width: 159 }} size="small">
-                      <MuiSelect sx={{ color: '#211a12' }}
+                      <MuiSelect sx={{ color: '#fff' }}
                         labelId="demo-select-small-label"
                         id="demo-select-small"
                         value={selectSource}
@@ -338,12 +338,12 @@ const BridgeIndex = () => {
                 <div className='send_box'>
                   <div className='send_title'>
                     <div className='send_txt_1'>Send</div>
-                    <div className='send_txt_2'>Max: 148579384 ETH</div>
+                    <div className='send_txt_2'>Max: {accountBalance.l1} ETH</div>
                   </div>
                   <FormControl sx={{ width: '100%', color: '#fff' }} variant="outlined">
                     <OutlinedInput
                       id="outlined-adornment-weight"
-                      endAdornment={<InputAdornment position="end" sx={{ color: '#fff' }}>ETH</InputAdornment>}
+                      endAdornment={<InputAdornment position="end" sx={{ color: '#fff' }}><span style={{color: '#fff'}}>ETH</span></InputAdornment>}
                       aria-describedby="outlined-weight-helper-text"
                       inputProps={{
                         'aria-label': 'weight', 'color': '#fff'
