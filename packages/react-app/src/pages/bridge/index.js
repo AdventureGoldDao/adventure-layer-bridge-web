@@ -42,20 +42,23 @@ import SvgIcon from '@mui/material/SvgIcon';
 import MuiLink from '@mui/material/Link';
 import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
-import logo  from "../../img/logo_white_120x50.png";
+import logo1 from "../../img/agld1.png";
+import logo2 from '../../img/agld2.png';
+import eth_log01 from '../../img/eth_logo1.png';
+import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
 
 
 
 
 
-const pages = ['Faucet', 'Document'];
+const pages = ['Faucet', 'Bridge', 'Doc'];
 const pageLinks = {
   "Faucet": 'https://faucet.adventurelayer.dev/',
-  "Document": 'https://docs.adventurelayer.dev/',
+  "Bridge": 'https://bridge.adventurelayer.dev/',
+  "Doc": 'https://docs.adventurelayer.dev/',
 }
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const AdventureLayer = {
   chainId: 412346,
@@ -83,82 +86,35 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  
   return (
-
-    <AppBar sx={{ background: '#2D221A' }} position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-          <img src={logo} alt='background' style={{ marginRight: '15px' }} />
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <MuiMenu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem  key={page} onClick={handleCloseNavMenu}>
-                  <Typography  textAlign="center">
-                    <MuiLink  href={pageLinks[page]} underline="none">
-                      {page}
-                    </MuiLink>
-                  </Typography>
-                </MenuItem>
-              ))}
-            </MuiMenu>
-          </Box>
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
-          {/* <img src={logo} alt='background' style={{ marginRight: '15px' }} /> */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <MuiButton
-                key={page}
-                href={pageLinks[page]}
-                // onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: '#E09657', display: 'block' }}
-              >
-                {page}
-              </MuiButton>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            
-            <WalletButton></WalletButton>
-            {/* <ConnectButton>Primary</ConnectButton> */}
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+  <div className='menuBox'>
+    <div className='logoBox'>
+      <img className='logo' src={logo1} alt='background' />
+    </div>
+    <div className='menu'>
+      <a className='menuItem' href="https://faucet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
+      <a className='menuItem' href="https://bridge.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Bridge</a>
+      <a className='menuItem' href="https://docs.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Doc</a>
+    </div>
+    {/* <div className='connect'>
+      <div className='Button'>Connect</div>
+    </div> */}
+    <Box >
+    <WalletButton></WalletButton>
+    </Box>
+  </div>
   );
 }
 
 const ConnectButton = styled(MuiButton)(({ theme }) => ({
   color: '#461400',
-  backgroundColor: '#DC9D50',
+  backgroundColor: '#f39b4b',
+  fontSize: '16px',
+  fontWeight: '600',
+  marginRight: '20px',
+  width: 160,
+  height: 32,
   '&:hover': {
     backgroundColor: '#DC9D50',
   },
@@ -195,7 +151,7 @@ function WalletButton() {
           deactivate();
         }
       }}>
-      {rendered === "" && "Connect Wallet"}
+      {rendered === "" && "Connect"}
       {rendered !== "" && rendered}
     </ConnectButton>
   );
@@ -225,13 +181,6 @@ const BridgeIndex = () => {
 
   const [sendAmount, setSendAmount] = useState('');
   const { account, activateBrowserWallet, deactivate, switchNetwork, error, library, chainId } = useEthers();
-  // Read more about useDapp on https://usedapp.io/
-  // const { error: contractCallError, value: tokenBalance } =
-  //   useCall({
-  //     contract: new Contract(addresses.ceaErc20, abis.erc20),
-  //     method: "balanceOf",
-  //     args: ["0x3f8CB69d9c0ED01923F11c829BaE4D9a4CB6c82C"],
-  //   }) ?? {};
   const wethInterface = new utils.Interface(abis.adventureSepolia)
   const wethL2Interface = new utils.Interface(abis.adventureL2)
   const wethContractAddress = addresses.depositL1
@@ -344,92 +293,108 @@ const BridgeIndex = () => {
       console.log("error", e)
     }
 
-    // console.log({ sendAmount: sendAmount });
   }
 
   return (
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
-
       <div className='right-box'>
         {/* <Row >
           <Col span={12} offset={6}> */}
         <Box
-          //  my={4}
           display="flex"
           maxWidth={600}
           alignItems="center"
-        //  gap={4}
-        //  p={2}
-        >
-          <div className='content-box'>
-            <div className='from_box' >
-              <div className='f1'>
-                <span>FROM</span>
-                <span>Balance: {accountBalance.l1} ETH</span>
-              </div>
+          flexDirection='column'>
 
-              <div className='input_box'>
-                <div style={{ display: "flex", flexDirection: 'column', width: '100%' }}>
-                  <div>
-                    <FormControl sx={{ marginBottom: 1, minWidth: 120 }} size="small">
-                      <InputLabel id="demo-select-small-label">Network</InputLabel>
-                      <MuiSelect sx={{ color: '#E09657' }}
+          <div className='logoBox'>
+            <img className='logo' src={logo2} alt='background' />
+          </div>
+
+          <div className='alb_box'>
+            <div className='alb_title'>Adventure Layer Bridge</div>
+          </div>
+          <div className='content_box'>
+            <div className='detail_box'>
+              {/* <span>Balance: {accountBalance.l1} ETH</span> */}
+              <div className='from_box'>
+                <div className='from_select'>
+                  <div className='txt'>From</div>
+                  <div className='select'>
+                    <FormControl sx={{ marginBottom: 1, Width: 159 }} size="small">
+                      <MuiSelect sx={{ color: '#211a12' }}
                         labelId="demo-select-small-label"
                         id="demo-select-small"
                         value={selectSource}
                         label="Transfer Chain"
-                        onChange={handleChainChange}
-                      >
-                        <MenuItem sx={{ color: '#E09657' }} value={"sepolia"}>Sepolia (L1)</MenuItem>
-                        <MenuItem sx={{ color: '#E09657' }} value={"adventure"}>Adventure Layer (L2)</MenuItem>
+                        onChange={handleChainChange}>
+                        <MenuItem sx={{ color: '#211a12' }} value={"sepolia"}>Sepolia (L1)</MenuItem>
+                        <MenuItem sx={{ color: '#211a12' }} value={"adventure"}>Adventure Layer (L2)</MenuItem>
                       </MuiSelect>
                     </FormControl>
                   </div>
-   
-                  <div>
-                    <FormControl sx={{ width: '100%' }} variant="outlined">
-                      <OutlinedInput sx={{ color: '#E09657' }}
-                        id="outlined-adornment-weight"
-                        endAdornment={<InputAdornment position="end">ETH</InputAdornment>}
-                        aria-describedby="outlined-weight-helper-text"
-                        inputProps={{
-                          'aria-label': 'weight',
-                        }}
-                        value={sendAmount}
-                        onChange={(e) => {
-                          setSendAmount(e.target.value);
-                        }}
-                      />
-                    </FormControl>
+                </div>
+
+                <div className='send_box'>
+                  <div className='send_title'>
+                    <div className='send_txt_1'>Send</div>
+                    <div className='send_txt_2'>Max: 148579384 ETH</div>
+                  </div>
+                  <FormControl sx={{ width: '100%', color: '#fff' }} variant="outlined">
+                    <OutlinedInput
+                      id="outlined-adornment-weight"
+                      endAdornment={<InputAdornment position="end" sx={{ color: '#fff' }}>ETH</InputAdornment>}
+                      aria-describedby="outlined-weight-helper-text"
+                      inputProps={{
+                        'aria-label': 'weight', 'color': '#fff'
+                      }}
+                      value={sendAmount}
+                      onChange={(e) => {
+                        setSendAmount(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                </div>
+              </div>
+              <div className='trans_box'>
+                <img src={trans_log} alt='trans' />
+              </div>
+              <div className='to_box'>
+                <div className='to_1'>TO</div>
+                <div className='to_2'>
+                  {/* <div>logo</div> */}
+                  <div>Adventure Layer: {accountBalance.l2}</div>
+                </div>
+              </div>
+
+              <div className='receive_box'>
+                <div className='receive_title'>Receive</div>
+
+                <div className='receive_num'>
+                  <div>0</div>
+                  <div className='receive_eth'>
+                    {/* <div></div> */}
+                    <img src={eth_log01} alt='background' style={{ marginRight: '10px' }} />
+                    <div>ETH</div>
                   </div>
                 </div>
-                {/* </Input.Group> */}
+                {/* <span>{targetChainName} gas fee 0 ETH</span> */}
               </div>
 
-            </div>
+              <div className='gas'>{targetChainName}gas fee 0 ETH</div>
+              {/* <div className='summary_box'>
+                <Descriptions column={1}>
+                  <Descriptions.Item style={{ display: 'none' }} label="You will pay in gas fees">{gasPriceGwei} Gwei</Descriptions.Item>
+                  <Descriptions.Item label={`You will receive on ${targetChainName}`}>{sendAmount || 0} ETH</Descriptions.Item>
+                </Descriptions>
+              </div> */}
 
-            <div className='to_box'>
-              <div className='t1'>
-                <span>TO</span>
-                <span>Balance: {accountBalance.l2} ETH</span>
+              <div className="btn-box">
+                <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
+                  Transfer
+                  {/* Transfer {targetChainName} */}
+                </Button>
               </div>
-              <div className='t2'>
-                <span>{targetChainName} gas fee 0 ETH</span>
-              </div>
-            </div>
-
-            <div className='summary_box'>
-              <Descriptions  column={1}>
-                <Descriptions.Item style={{ display: 'none' }} label="You will pay in gas fees">{gasPriceGwei} Gwei</Descriptions.Item>
-                <Descriptions.Item label={`You will receive on ${targetChainName}`}>{sendAmount || 0} ETH</Descriptions.Item>
-              </Descriptions>
-            </div>
-
-            <div className="btn-box">
-            <Button style={{background: "#DC9D50"}} onClick={onClickTransfer} type="primary" size="large" block>
-              Move funds to {targetChainName}
-            </Button>
             </div>
           </div>
         </Box>

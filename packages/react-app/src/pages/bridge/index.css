@@ -10,75 +10,233 @@
   }
 }
 
+.menuBox {
+  font-family: Neue Haas Grotesk Display Pro;
+  /* position: absolute; */
+  width: 100%;
+  height: 58px;
+  left: 0px;
+  top: 0px;
+  background: #1F1A15;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .logoBox {
+    /* left: 46px; */
+    /* top: 13px; */
+    margin-left: 46px;
+    width: 92px;
+    height: 32px;
+  }
+  .logo {
+    width: 100%;
+    height: 100%;
+  }
+
+  .menu {
+    width: 309px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+    .menuItem {
+      color: #fff;
+      font-size: 14px;
+      text-decoration: none;
+
+    }
+  }
+
+  .connect {
+    width: 160px;
+    height: 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    border: 1px solid #f39b4b;
+    background: #f39b4b;
+    border-radius: 6px;
+  
+    .Button {
+      color: #000;
+      font-size: 16px;
+      font-weight: 600px;
+    }
+  }
+
+}
+
 .right-box {
     display: flex;
     /* margin-top: 16px; */
     /* background: #fff; */
-    background-image: url('../../img/agld2.jpg');
+    background-image: url('../../img/agld-bg2.png');
     background-size: 100% 100%;
     min-height: 100vh;
-    width: 100%;
     padding: 16px;
     justify-content: center;
 
-    .content-box {
-      border-radius: 10px;
-      margin-top: 16px;
-      margin-bottom: 8px;
-      background: #fff;
-      opacity: 0.9;
+
+    .logoBox {
+      width: 166px;
+      height: 58px;
+      margin-top: 20px;
+    }
+    .logo {
+      width: 100%;
+      height: 100%;
+    }
+    .alb_box {
+      width: 602px;
+      height: 61px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
     }
 
+    .alb_title {
+      font-family: 'Parabole';
+      font-size: 54px;
+      color: #f39b4b;
+    }
+
+    .content_box {
+      border-radius: 8px;
+      margin-top: 30px;
+      width: 501px;
+      height: 550px;
+      background: #31281f;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+    }
+
+    .detail_box {
+      padding: 30px;
+
+
     .from_box {
-      background-color: #fff;
-      /* border: 1px solid #d9d9d9; */
-      border-radius: 5px;
-      /* margin-top: 16px; */
-      height: 150px;
-      padding: 16px;
-      color: #E09657;
-  
-      .f1 {
-        display: flex;
-        justify-content: space-between;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .from_select {
+      font-family: Neue Haas Grotesk Display Pro;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .txt {
+        font-size: 14px;
+        color: #fff;
+        font-weight: 600;
       }
-  
-      .input_box {
-        /* margin-top: 20px; */
+
+      .select {
+        margin-left: 5px;
+
+      }
+
+    }
+    .send_box {
+      margin-top: 10px;
+      height: 92px;
+      border: 1px solid #211a12;
+      border-radius: 6px;
+      background: #211a12;
+      padding: 10px;
+
+      .send_title {
+        font-family: Neue Haas Grotesk Display Pro;
         display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: #fff;
         justify-content: space-between;
+        margin-bottom: 20px;
+
       }
     }
-  
+
+    .trans_box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+
+    }
     .to_box {
-      background-color: #fff;
-      border: 1px solid #E09657;
-      border-radius: 5px;
-      margin: 16px;
-      height: 100px;
-      padding: 16px;
-      color: #E09657;
-  
-      .t1 {
+      font-family: Neue Haas Grotesk Display Pro;
+      color: #fff;
+      display: flex;
+      flex-direction: row;
+      font-size: 14px;
+      align-items: center;
+      margin-top: 20px;
+
+      .to_2 {
+        height: 36px;
+        width: 155px;
+        background: #211a12;
+        border-radius: 6px;
         display: flex;
-        justify-content: space-between;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-left: 20px;
+        
       }
-      .t2 {
+ 
+    }
+
+    .receive_box {
+      height: 92px;
+      background: #211a12;
+      margin-top: 10px;
+      border-radius: 6px;
+      font-family: Neue Haas Grotesk Display Pro;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+
+
+      .receive_title {
+        font-size: 12px;
+      }
+
+      .receive_num {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
-        margin-top: 16px;
+        font-size: 20px;
+        margin-top: 45px;
+
+      }
+      .receive_eth {
+        display: flex;
+        flex-direction: row;
       }
     }
     
+    .gas {
+      font-family: Neue Haas Grotesk Display Pro;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #fff;
+    }
     .btn-box {
-      padding: 16px;
+      margin-top: 20px;
+
     }
   
-    .summary_box {
-      margin-top: 16px;
-      padding: 16px;
-  
-    }
+
+  }
   
   
   }
