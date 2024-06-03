@@ -208,7 +208,7 @@
       .to_2 {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         margin-left: 23px;
         height: 36px;
@@ -220,7 +220,7 @@
 
         .to_2_img {
           flex-shrink: 0;
-          margin-right: 8px;
+          margin-left: 13px;
           width: 22px;
           height: 22px;
         }
