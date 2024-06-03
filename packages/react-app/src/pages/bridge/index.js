@@ -322,8 +322,8 @@ const BridgeIndex = () => {
               <div className='from_box'>
                 <div className='from_select'>
                   <div className='item1'>From</div>
-                  <div className='item2'>
-                    <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
+                  <div className='item2' style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
                     <div className='item3'>Sepolia  Layer 1</div>
                   </div>
 
@@ -370,8 +370,11 @@ const BridgeIndex = () => {
               </div>
               <div className='to_box'>
                 <div className='to_1'>TO</div>
-                <div className='to_2'>
-                  <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
+                <div className='to_2' style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                  {/* <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} /> */}
+                  <div className='to_2_img'>
+                    <img src={eth_log02} alt='background' />
+                  </div>
                   <div className='to_3' >Adventure Layer</div>
                 </div>
               </div>
