@@ -1,0 +1,323 @@
+/* index.css */
+
+/* 公共样式 */
+.left-box {
+    display: flex;
+    height: 800px;
+    border: 1px solid #E09657;
+  
+    .logo-box {
+      display: flex;
+      height: 200px;
+    }
+  }
+  
+  .menuBox {
+    font-family: Neue Haas Grotesk Display Pro;
+    width: 100%;
+    height: 45px;
+    background: #1F1A15;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    
+    .logoBox {
+      width: 20px;
+      height: x;
+      padding-left: 10px;
+    }
+  
+    .logo {
+      width: 100%;
+      height: 100%;
+    }
+
+    .mobileMenuIcon {
+      width: 14px;
+      height: 17px;
+      cursor: pointer;
+      color: #fff;
+      padding-right: 16px;
+      display: block;
+    }
+  
+    .mobileMenu {
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 44px;
+        /* height: 100%; */
+        background: #1F1A15;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        text-align: left;
+        z-index: 1000;
+        
+        .itemBox{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          margin-left: 21px;
+          height: 190px;
+          width: 100px;
+        }
+        .MobileMenuItem {
+          font-family: 'NeueHaasDisplayMediu';
+          color: #fff;
+          font-size: 25px;
+          text-decoration: none;
+        }
+    
+        
+      }
+
+  
+    .connect {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #f39b4b;
+      background: #f39b4b;
+      border-radius: 6px;
+      padding: 0 12px;
+  
+      .Button {
+        color: #000;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+  }
+  
+  .rightBox {
+    display: flex;
+    background-image: url('../../img/agld-bg2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+    /* padding: 16px; */
+    justify-content: center;
+  
+    .logoBox {
+      height: 36px;
+      width: 36px;
+      margin-top: 33px;
+    }
+  
+    .logo {
+      width: 100%;
+      height: 100%;
+    }
+  
+    .alb_box {
+      width: 335px;
+      height: 34px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 9px;
+      opacity: 1;
+    }
+  
+    .alb_title {
+      font-family: 'Parabole';
+      font-size: 30px;
+      color: #f39b4b;
+    }
+  
+    .content_box {
+      border-radius: 4.2px;
+      margin-top: 32px;
+      min-width: 332px;
+      height: 620px;
+      background: #31281f;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  
+    .detail_box {
+      padding: 17px 12px 33px 12px;
+      font-family: Neue Haas Grotesk Display Pro;
+      color: #fff;
+  
+      .from_box {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .item1 {
+        font-size: 12px;
+        font-weight: 600;
+      }
+  
+      .from_select {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 10px;
+        width: 156px;
+        height: 38px;
+        border-radius: 4.34px;
+        opacity: 1;
+  
+        .item2 {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          height: 36px;
+          width: 159px;
+          background: #211a12;
+          border-radius: 6px;
+          opacity: 1;
+  
+          .item3 {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+            margin-left: 8px;
+          }
+        }
+      }
+  
+      .send_box {
+        margin-top: 15px;
+        height: 87px;
+        border-radius: 4.34px;
+        opacity: 1;
+        border: 1px solid #211a12;
+        background: #211a12;
+        padding: 15px 10px 19px 14px;
+  
+        .send_title {
+          font-family: Neue Haas Grotesk Display Pro;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          color: #fff;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+
+        .send_eth {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
+      }
+  
+      .trans_box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16px;
+      }
+  
+      .to_box {
+        font-family: Neue Haas Grotesk Display Pro;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        justify-content: flex-start;
+        margin-top: 4.5px;
+  
+        .to_1 {
+          flex-shrink: 0;
+        }
+  
+        .to_2 {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          height: 38px;
+          width: 156px;
+          background: #211a12;
+          border-radius: 4.3px;
+          white-space: nowrap;
+          margin-top: 6.4px;
+  
+          .to_2_img {
+            flex-shrink: 0;
+            margin-left: 13px;
+            width: 22px;
+            height: 22px;
+          }
+  
+          .to_2 img {
+            width: 100%;
+            height: 100%;
+          }
+  
+          .to_3 {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+            margin-left: 8px;
+            flex-shrink: 0;
+          }
+        }
+      }
+  
+      .receive_box {
+        height: 87px;
+        background: #211a12;
+        margin-top: 15px;
+        border-radius: 4.3px;
+        font-family: Neue Haas Grotesk Display Pro;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 14px;
+  
+        .receive_title {
+          font-size: 12px;
+          font-weight: 600;
+        }
+  
+        .receive_num {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          font-size: 24px;
+          margin-top: 36px;
+          align-items: center;
+  
+          .eth_num {
+            font-size: 20px;
+            flex: 6;
+          }
+  
+          .receive_eth {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
+            align-items: center;
+  
+            .eth_txt {
+              font-size: 14px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+  
+      .gas {
+        margin-top: 16px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+  
+      .btnBox {
+        margin-top: 67px;
+      }
+    }
+  }
+  
+  

@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import BridgePage from "../pages/bridge"
+// import MobileIndex from "../pages/mobile"
 
 // const UserSettingPage = React.lazy(() => import('../pages/user/user_setting'))
 // const RegisterPage = React.lazy(() => import('../pages/explore/register'))

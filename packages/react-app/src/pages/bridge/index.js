@@ -48,12 +48,10 @@ import eth_log02 from '../../img/eth_logo2.png';
 import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
 
-import { ReactComponent as Logo1 } from '../../img/agld-logo1.svg'; // 导入 SVG 作为组件
-import { ReactComponent as Logo2 } from '../../img/agld-logo2.svg'; // 导入 SVG 作为组件
-
-
-
-
+// import { ReactComponent as Logo1 } from '../../img/agld-logo1.svg'; // 导入 SVG 作为组件
+// import { ReactComponent as Logo2 } from '../../img/agld-logo2.svg'; // 导入 SVG 作为组件
+import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
+import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 
 const pages = ['Faucet', 'Bridge', 'Doc'];
 const pageLinks = {
@@ -93,8 +91,8 @@ function ResponsiveAppBar() {
   return (
   <div className='menuBox'>
     <div className='logoBox'>
-      {/* <img className='logo' src={logo1} alt='background' /> */}
-      <Logo1 className='logo' alt="Adventure bridge Logo" />
+      <img className='logo' src={Logo1} alt='background' />
+      {/* <Logo1 className='logo' alt="Adventure bridge Logo" /> */}
     </div>
     <div className='menu'>
       <a className='menuItem' href="https://faucet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
@@ -310,9 +308,9 @@ const BridgeIndex = () => {
           flexDirection='column'>
 
           <div className='logoBox'>
-            <Logo2 className='logo' alt="Adventure Layer Logo2" />
+            {/* <Logo2 className='logo' alt="Adventure Layer Logo2" /> */}
+            <img className='logo' src={Logo2} alt='background' />
           </div>
-
           <div className='alb_box'>
             <div className='alb_title'>Adventure Layer Bridge</div>
           </div>
@@ -326,8 +324,6 @@ const BridgeIndex = () => {
                     <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
                     <div className='item3'>Sepolia  Layer 1</div>
                   </div>
-
-                  
                   {/* <div className='select'>
                     <FormControl sx={{ marginBottom: 1, Width: 159 }} size="small">
                       <MuiSelect sx={{ color: '#fff' }}
