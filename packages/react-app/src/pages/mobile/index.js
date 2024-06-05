@@ -356,7 +356,7 @@ const BridgeIndex = () => {
                                             endAdornment={
                                                 <div className={styles.send_eth}>
                                                     <img src={eth_log02} alt='background' style={{ width: '16px', height: '16px' }} />
-                                                    <InputAdornment position="end" sx={{ color: '#fff' }}><span style={{ color: '#fff' }}>ETH</span></InputAdornment></div>}
+                                                    <InputAdornment position="end" sx={{ color: '#fff' }}><span style={{ color: '#fff', fontSize: '14px', fontWeight: 600 }}>ETH</span></InputAdornment></div>}
                                             aria-describedby="outlined-weight-helper-text"
                                             inputProps={{
                                                 'aria-label': 'weight', 'color': '#fff'
@@ -383,14 +383,15 @@ const BridgeIndex = () => {
                                 </div>
                             </div>
 
-                            <div className={styles.receive_box}>
-                                <div className={styles.receive_title}>Receive</div>
-                                <div className={styles.receive_num}>
-                                    <div className={styles.eth_num}>0</div>
-
-                                    <div className={styles.receive_eth}>
+                            <div className={styles.mb_receive_box}>
+                                <div className={styles.mb_receive_title}>Receive</div>
+                                {/* <div className={styles.mb_receive_num} > */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '24px', marginTop: '36px' }} >
+                                    <div className={styles.mb_eth_num}>0</div>
+                                    {/* <div  className={styles.mb_logo_box}> */}
+                                    <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <img src={eth_log02} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
-                                        <div className={styles.eth_txt}>ETH</div>
+                                        <div style={{ fontSize: '14px', fontWeight: 600, height: '14px' }} >ETH</div>
                                     </div>
                                 </div>
                                 {/* <span>{targetChainName} gas fee 0 ETH</span> */}

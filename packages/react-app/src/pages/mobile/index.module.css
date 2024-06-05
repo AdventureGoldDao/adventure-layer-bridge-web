@@ -229,6 +229,8 @@
   
         .to_1 {
           flex-shrink: 0;
+          font-size: 12px;
+          font-weight: 600;
         }
   
         .to_2 {
@@ -265,7 +267,7 @@
         }
       }
   
-      .receive_box {
+      .mb_receive_box {
         height: 87px;
         background: #211a12;
         margin-top: 15px;
@@ -276,36 +278,40 @@
         flex-direction: column;
         padding: 14px;
   
-        .receive_title {
+        .mb_receive_title {
           font-size: 12px;
           font-weight: 600;
         }
   
-        .receive_num {
+        .mb_receive_num {
           display: flex;
           flex-direction: row;
-          justify-content: center;
+          justify-content: space-between;
+          align-items: center;
           font-size: 24px;
           margin-top: 36px;
-          align-items: center;
+          
   
-          .eth_num {
+          .mb_eth_num {
             font-size: 20px;
-            flex: 6;
+            font-weight: 600;
           }
   
-          .receive_eth {
+          .mb_logo_box {
             display: flex;
-            flex: 1;
             flex-direction: row;
             align-items: center;
+            justify-content: center;
   
             .eth_txt {
               font-size: 14px;
               font-weight: 600;
+              height: 14px;
             }
           }
+
         }
+
       }
   
       .gas {
