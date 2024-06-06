@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Decimal from "decimal.js"
 
 import { AppstoreOutlined } from '@ant-design/icons';
-import { Button, Descriptions } from 'antd';
+import { Button, Input } from 'antd';
 import './index.css';
 
 import Alert from '@mui/material/Alert';
@@ -44,7 +44,7 @@ import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
 import logo1 from "../../img/agld1.png";
 import logo2 from '../../img/agld2.png';
-import eth_log02 from '../../img/eth_logo2.png';
+import eth_log02 from '../../img/eth-logo.svg';
 import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
 
@@ -87,25 +87,25 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  
+
   return (
-  <div className='menuBox'>
-    <div className='logoBox'>
-      <img className='logo' src={Logo1} alt='background' />
-      {/* <Logo1 className='logo' alt="Adventure bridge Logo" /> */}
-    </div>
-    <div className='menu'>
-      <a className='menuItem' href="https://faucet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
-      <a className='menuItem' href="https://bridge.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Bridge</a>
-      <a className='menuItem' href="https://docs.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Doc</a>
-    </div>
-    {/* <div className='connect'>
+    <div className='menuBox'>
+      <div className='logoBox'>
+        <img className='logo' src={Logo1} alt='background' />
+        {/* <Logo1 className='logo' alt="Adventure bridge Logo" /> */}
+      </div>
+      <div className='menu'>
+        <a className='menuItem' href="https://faucet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
+        <a className='menuItem' href="https://bridge.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Bridge</a>
+        <a className='menuItem' href="https://docs.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Doc</a>
+      </div>
+      {/* <div className='connect'>
       <div className='Button'>Connect</div>
     </div> */}
-    <Box >
-    <WalletButton></WalletButton>
-    </Box>
-  </div>
+      <Box >
+        <WalletButton></WalletButton>
+      </Box>
+    </div>
   );
 }
 
@@ -320,7 +320,7 @@ const BridgeIndex = () => {
               <div className='from_box'>
                 <div className='from_select'>
                   <div className='item1'>From</div>
-                  <div className='item2' style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
+                  <div className='item2' style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
                     <div className='item3'>Sepolia  Layer 1</div>
                   </div>
@@ -337,18 +337,17 @@ const BridgeIndex = () => {
                       </MuiSelect>
                     </FormControl>
                   </div> */}
-
                 </div>
 
                 <div className='send_box'>
                   <div className='send_title'>
-                    <div className='send_txt_1'>Send</div>
-                    <div className='send_txt_2'>Max: {accountBalance.l1} ETH</div>
+                    <div className='send_txt'>Send</div>
+                    <div className='send_txt'>Max: {accountBalance.l1} ETH</div>
                   </div>
-                  <FormControl sx={{ width: '100%', color: '#fff' }} variant="outlined">
-                    <OutlinedInput
+                  {/* <FormControl sx={{ width: '100%', color: '#fff' }} variant="outlined"> */}
+                  {/* <OutlinedInput
                       id="outlined-adornment-weight"
-                      endAdornment={<InputAdornment position="end" sx={{ color: '#fff' }}><span style={{color: '#fff'}}>ETH</span></InputAdornment>}
+                      endAdornment={<InputAdornment position="end" sx={{ color: '#fff' }}><span style={{ color: '#fff' }}>ETH</span></InputAdornment>}
                       aria-describedby="outlined-weight-helper-text"
                       inputProps={{
                         'aria-label': 'weight', 'color': '#fff'
@@ -357,16 +356,29 @@ const BridgeIndex = () => {
                       onChange={(e) => {
                         setSendAmount(e.target.value);
                       }}
-                    />
-                  </FormControl>
+                    /> */}
+                  {/* </FormControl> */}
+                  <div className="send_input_box">
+                    <Input style={{ width: '80%', background: '#211a12', borderColor: "#211a12", opacity: '0.4', color: '#ffffff' }}
+                      value={sendAmount}
+                      placeholder="0xx"
+                      onChange={(e) => {
+                        setSendAmount(e.target.value);
+                      }} />
+                    <div className='send_input_logo'>
+                      <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
+                      <div className='eth_txt'>ETH</div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
               <div className='trans_box'>
                 <img src={trans_log} alt='trans' />
               </div>
               <div className='to_box'>
-                <div className='to_1'>TO</div>
-                <div className='to_2' style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
+                <div className='to_1'>To</div>
+                <div className='to_2' style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                   {/* <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} /> */}
                   <div className='to_2_img'>
                     <img src={eth_log02} alt='background' />

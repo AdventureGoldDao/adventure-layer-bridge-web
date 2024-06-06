@@ -75,7 +75,7 @@
     display: flex;
     /* margin-top: 16px; */
     /* background: #fff; */
-    background-image: url('../../img/agld-bg2.png');
+    background-image: url('../../img/agld-bg_168k.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -181,8 +181,35 @@
         color: #fff;
         justify-content: space-between;
         margin-bottom: 20px;
-
       }
+      .send_txt {
+        font-size: 12px;
+        color: #fff;
+      }
+
+      .send_input_box {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        font-family: Neue Haas Grotesk Display Pro;
+        color: #fff;
+        margin-top: 40px;
+        
+      }
+      .send_input_logo {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-left: 15px;
+
+        .eth_txt {
+          font-size: 12px;
+          color: #fff;
+        }
+      }
+
+
     }
 
     .trans_box {

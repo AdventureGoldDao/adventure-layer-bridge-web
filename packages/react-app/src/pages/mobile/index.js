@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Decimal from "decimal.js"
 
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, Input } from 'antd';
 import styles from './index.module.css';
 
 import Alert from '@mui/material/Alert';
@@ -44,7 +44,8 @@ import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
 import logo1 from "../../img/agld1.png";
 import logo2 from '../../img/agld2.png';
-import eth_log02 from '../../img/eth_logo2.png';
+import eth_log02 from '../../img/eth-logo.svg';
+import adv_logo from '../../img/adv-logo.svg';
 import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
 
@@ -331,26 +332,26 @@ const BridgeIndex = () => {
                                         <div className={styles.item3}>Sepolia  Layer 1</div>
                                     </div>
                                     {/* <div className={styles.select'>
-                    <FormControl sx={{ marginBottom: 1, Width: 159 }} size="small">
-                      <MuiSelect sx={{ color: '#fff' }}
-                        labelId="demo-select-small-label"
-                        id="demo-select-small"
-                        value={selectSource}
-                        label="Transfer Chain"
-                        onChange={handleChainChange}>
-                        <MenuItem sx={{ color: '#211a12' }} value={"sepolia"}>Sepolia (L1)</MenuItem>
-                        <MenuItem sx={{ color: '#211a12' }} value={"adventure"}>Adventure Layer (L2)</MenuItem>
-                      </MuiSelect>
-                    </FormControl>
-                  </div> */}
+                                        <FormControl sx={{ marginBottom: 1, Width: 159 }} size="small">
+                                        <MuiSelect sx={{ color: '#fff' }}
+                                            labelId="demo-select-small-label"
+                                            id="demo-select-small"
+                                            value={selectSource}
+                                            label="Transfer Chain"
+                                            onChange={handleChainChange}>
+                                            <MenuItem sx={{ color: '#211a12' }} value={"sepolia"}>Sepolia (L1)</MenuItem>
+                                            <MenuItem sx={{ color: '#211a12' }} value={"adventure"}>Adventure Layer (L2)</MenuItem>
+                                        </MuiSelect>
+                                        </FormControl>
+                                    </div> */}
                                 </div>
 
                                 <div className={styles.send_box}>
                                     <div className={styles.send_title}>
-                                        <div className={styles.send_txt_1}>Send</div>
-                                        <div className={styles.send_txt_2}>Max: {accountBalance.l1} ETH</div>
+                                        <div className={styles.send_txt}>Send</div>
+                                        <div className={styles.send_txt}>Max: {accountBalance.l1} ETH</div>
                                     </div>
-                                    <FormControl sx={{ width: '100%', color: '#fff', }} variant="outlined">
+                                    {/* <FormControl sx={{ width: '100%', color: '#fff', }} variant="outlined">
                                         <OutlinedInput
                                             id="outlined-adornment-weight"
                                             endAdornment={
@@ -366,14 +367,28 @@ const BridgeIndex = () => {
                                                 setSendAmount(e.target.value);
                                             }}
                                         />
-                                    </FormControl>
+                                    </FormControl> */}
+
+                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '35px' }}>
+                                        <Input style={{ width: '85%', background: '#211a12', borderColor: "#211a12", opacity: '0.4', color: '#ffffff' }}
+                                            value={sendAmount}
+                                            placeholder="0xx"
+                                            onChange={(e) => {
+                                                setSendAmount(e.target.value);
+                                            }} />
+                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                            <img src={eth_log02} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
+                                            <div className='mb_eth_txt'>ETH</div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div className={styles.trans_box}>
                                 <img src={trans_log} alt='trans' />
                             </div>
                             <div className={styles.to_box}>
-                                <div className={styles.to_1}>TO</div>
+                                <div className={styles.to_1}>To</div>
                                 <div className={styles.to_2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                                     {/* <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} /> */}
                                     <div className={styles.to_2_img}>
@@ -389,7 +404,7 @@ const BridgeIndex = () => {
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '24px', marginTop: '36px' }} >
                                     <div className={styles.mb_eth_num}>0</div>
                                     {/* <div  className={styles.mb_logo_box}> */}
-                                    <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <img src={eth_log02} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
                                         <div style={{ fontSize: '14px', fontWeight: 600, height: '14px' }} >ETH</div>
                                     </div>
