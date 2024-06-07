@@ -42,8 +42,9 @@ import SvgIcon from '@mui/material/SvgIcon';
 import MuiLink from '@mui/material/Link';
 import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
-import eth_log02 from '../../img/eth-logo.svg';
+import eth_logo from '../../img/eth_logo.png';
 import trans_log from '../../img/trans_logo.png';
+import adv_logo from '../../img/adv-logo.png';
 // import { styled } from '@mui/material/styles';
 
 // import { ReactComponent as Logo1 } from '../../img/agld-logo1.svg'; // 导入 SVG 作为组件
@@ -319,7 +320,7 @@ const BridgeIndex = () => {
                 <div className='from_select'>
                   <div className='item1'>From</div>
                   <div className='item2' style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-                    <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
+                    <img src={eth_logo} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
                     <div className='item3'>Sepolia  Layer 1</div>
                   </div>
                   {/* <div className='select'>
@@ -359,13 +360,14 @@ const BridgeIndex = () => {
                   
                   <div className="send_input_box">
                     <Input className='send_custom_input' style={{ 
-                      width: '80%', 
+                      // width: '90%', 
                       height: '40px', 
                       fontSize: '20px', 
                       fontWeight: '600',
                       background: '#211a12', 
                       fontFamily: 'NeueHaasDisplayMediu',
                       color: '#ffffff', 
+                      padding: '0px 0px',
                                     
                     }}
                       value={sendAmount}
@@ -374,10 +376,8 @@ const BridgeIndex = () => {
                         setSendAmount(e.target.value);
                       }}
                       />
-
-                      
                     <div className='send_input_logo'>
-                      <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
+                      <img src={eth_logo} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
                       <div className='eth_txt'>ETH</div>
                     </div>
                   </div>
@@ -390,10 +390,7 @@ const BridgeIndex = () => {
               <div className='to_box'>
                 <div className='to_1'>To</div>
                 <div className='to_2' style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-                  {/* <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} /> */}
-                  <div className='to_2_img'>
-                    <img src={eth_log02} alt='background' />
-                  </div>
+                  <img src={adv_logo} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
                   <div className='to_3' >Adventure Layer</div>
                 </div>
               </div>
@@ -404,14 +401,15 @@ const BridgeIndex = () => {
                   <div className='eth_num'>0</div>
 
                   <div className='receive_eth'>
-                    <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
+                    <img src={eth_logo} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
                     <div className='eth_txt'>ETH</div>
                   </div>
                 </div>
                 {/* <span>{targetChainName} gas fee 0 ETH</span> */}
               </div>
 
-              <div className='gas'>{targetChainName}gas fee 0 ETH</div>
+              {/* <div className='gas'>{targetChainName}gas fee 0 ETH</div> */}
+              <div className='gas'>gas fee 0 ETH</div>
               <div className="btn-box">
                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                   Transfer

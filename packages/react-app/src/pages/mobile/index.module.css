@@ -192,7 +192,7 @@
         opacity: 1;
         border: 1px solid #211a12;
         background: #211a12;
-        padding: 15px 10px 19px 14px;
+        padding: 14px;
   
         .send_title {
           font-family: Neue Haas Grotesk Display Pro;
@@ -209,26 +209,35 @@
           color: #fff;
         }
 
-        .mb_send_input_box {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          font-family: Neue Haas Grotesk Display Pro;
-          color: #fff;
-          margin-top: 40px;
+        .mb_send_custom_input {
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          background: '#211a12';
+          border-color: "#211a12";
+          font-size: 24px;
+          font-weight: 600;
+          background: '#211a12'; 
+          font-family: 'NeueHaasDisplayMediu';
+          color: '#ffffff';
+          padding: '0px 0px';
           
         }
-        .mb_send_input_logo {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          margin-left: 5px;
-  
-          .mb_eth_txt {
-            font-size: 12px;
-            color: #fff;
-          }
+        .mb_send_custom_input:focus {
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        .mb_send_custom_input::placeholder {
+          color: #ffffff; /* 你可以根据需要修改颜色 */
+          font-size: 24px;
+          font-weight: 600;
+          font-family: 'NeueHaasDisplayMediu';
+        }
+
+        .mb_eth_txt {
+          font-size: 14px;
+          font-weight: 600;
         }
 
       }
@@ -248,6 +257,7 @@
         font-size: 12px;
         justify-content: flex-start;
         margin-top: 4.5px;
+      }
   
         .to_1 {
           flex-shrink: 0;
@@ -260,34 +270,21 @@
           flex-direction: row;
           justify-content: flex-start;
           align-items: center;
-          height: 38px;
-          width: 156px;
+          height: 36px;
+          width: 159px;
           background: #211a12;
-          border-radius: 4.3px;
-          white-space: nowrap;
-          margin-top: 6.4px;
-  
-          .to_2_img {
-            flex-shrink: 0;
-            margin-left: 13px;
-            width: 22px;
-            height: 22px;
-          }
-  
-          .to_2 img {
-            width: 100%;
-            height: 100%;
-          }
-  
+          border-radius: 6px;
+          opacity: 1;
+          margin-top: 10px;
+        }
+
           .to_3 {
             font-size: 14px;
             color: #fff;
             font-weight: 600;
-            margin-left: 8px;
+            margin-left: 6px;
             flex-shrink: 0;
           }
-        }
-      }
   
       .mb_receive_box {
         height: 87px;
@@ -312,11 +309,13 @@
           align-items: center;
           font-size: 24px;
           margin-top: 36px;
-          
+        }
   
           .mb_eth_num {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 600;
+            background: '#211a12'; 
+            font-family: 'NeueHaasDisplayMediu';
           }
   
           .mb_logo_box {
@@ -332,7 +331,7 @@
             }
           }
 
-        }
+     
 
       }
   

@@ -42,7 +42,8 @@ import SvgIcon from '@mui/material/SvgIcon';
 import MuiLink from '@mui/material/Link';
 import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
-import eth_log02 from '../../img/eth-logo.svg';
+import eth_logo from '../../img/eth_logo.png';
+import adv_logo from '../../img/adv-logo.png';
 import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
 
@@ -323,7 +324,7 @@ const BridgeIndex = () => {
                                 <div className={styles.item1}>From</div>
                                 <div className={styles.from_select}>
                                     <div className={styles.item2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-                                        <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
+                                        <img src={eth_logo} alt='background' style={{ marginLeft: '13px', width: '16px', height: '16px' }} />
                                         <div className={styles.item3}>Sepolia  Layer 1</div>
                                     </div>
                                     {/* <div className={styles.select'>
@@ -351,7 +352,7 @@ const BridgeIndex = () => {
                                             id="outlined-adornment-weight"
                                             endAdornment={
                                                 <div className={styles.send_eth}>
-                                                    <img src={eth_log02} alt='background' style={{ width: '16px', height: '16px' }} />
+                                                    <img src={eth_logo} alt='background' style={{ width: '16px', height: '16px' }} />
                                                     <InputAdornment position="end" sx={{ color: '#fff' }}><span style={{ color: '#fff', fontSize: '14px', fontWeight: 600 }}>ETH</span></InputAdornment></div>}
                                             aria-describedby="outlined-weight-helper-text"
                                             inputProps={{
@@ -364,16 +365,35 @@ const BridgeIndex = () => {
                                         />
                                     </FormControl> */}
 
-                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '35px' }}>
-                                        <Input style={{ width: '85%', background: '#211a12', borderColor: "#211a12", opacity: '0.4', color: '#ffffff' }}
+                                    <div style={{ 
+                                        display: 'flex', 
+                                        flexDirection: 'row', 
+                                        alignItems: 'center', 
+                                        fontFamily: 'Neue Haas Grotesk Display Pro',
+                                        marginTop: '36px' 
+                                        }}>
+
+                                        <Input className={styles.mb_send_custom_input} style={{ 
+                                            background: '#211a12', 
+                                            borderColor: "#211a12", 
+                                            fontSize: '24px', 
+                                            fontWeight: '600',
+                                            background: '#211a12', 
+                                            fontFamily: 'NeueHaasDisplayMediu',
+                                            color: '#ffffff', 
+                                            padding: '0px 0px',
+                                            border: 'none',
+                                            outline: 'none',
+                                            boxShadow: 'none'
+                                        }}
                                             value={sendAmount}
-                                            placeholder="0xx"
+                                            placeholder="0"
                                             onChange={(e) => {
                                                 setSendAmount(e.target.value);
                                             }} />
                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                            <img src={eth_log02} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
-                                            <div className='mb_eth_txt'>ETH</div>
+                                            <img src={eth_logo} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
+                                            <div className={styles.mb_eth_txt}>ETH</div>
                                         </div>
                                     </div>
 
@@ -385,9 +405,8 @@ const BridgeIndex = () => {
                             <div className={styles.to_box}>
                                 <div className={styles.to_1}>To</div>
                                 <div className={styles.to_2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-                                    {/* <img src={eth_log02} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} /> */}
                                     <div className={styles.to_2_img}>
-                                        <img src={eth_log02} alt='background' />
+                                        <img src={adv_logo} style={{ marginLeft: '13px', width: '16px', height: '16px' }} alt='background' />
                                     </div>
                                     <div className={styles.to_3} >Adventure Layer</div>
                                 </div>
@@ -400,14 +419,15 @@ const BridgeIndex = () => {
                                     <div className={styles.mb_eth_num}>0</div>
                                     {/* <div  className={styles.mb_logo_box}> */}
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                        <img src={eth_log02} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
+                                        <img src={eth_logo} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
                                         <div style={{ fontSize: '14px', fontWeight: 600, height: '14px' }} >ETH</div>
                                     </div>
                                 </div>
                                 {/* <span>{targetChainName} gas fee 0 ETH</span> */}
                             </div>
 
-                            <div className={styles.gas}>{targetChainName}gas fee 0 ETH</div>
+                            {/* <div className={styles.gas}>{targetChainName}gas fee 0 ETH</div> */}
+                            <div className={styles.gas}>gas fee 0 ETH</div>
                             <div className={styles.btnBox}>
                                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                                     Transfer
