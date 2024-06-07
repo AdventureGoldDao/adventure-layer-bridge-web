@@ -42,8 +42,6 @@ import SvgIcon from '@mui/material/SvgIcon';
 import MuiLink from '@mui/material/Link';
 import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
-import logo1 from "../../img/agld1.png";
-import logo2 from '../../img/agld2.png';
 import eth_log02 from '../../img/eth-logo.svg';
 import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
@@ -110,15 +108,16 @@ function ResponsiveAppBar() {
 }
 
 const ConnectButton = styled(MuiButton)(({ theme }) => ({
-  color: '#461400',
+  color: '#000',
   backgroundColor: '#f39b4b',
   fontSize: '16px',
-  fontWeight: '600',
+  fontWeight: '200',
+  fontFamily: 'NeueHaasDisplayMediu',
   marginRight: '20px',
   width: 160,
   height: 32,
   '&:hover': {
-    backgroundColor: '#DC9D50',
+    backgroundColor: '#F39B4B',
   },
 }));
 
@@ -308,7 +307,6 @@ const BridgeIndex = () => {
           flexDirection='column'>
 
           <div className='logoBox'>
-            {/* <Logo2 className='logo' alt="Adventure Layer Logo2" /> */}
             <img className='logo' src={Logo2} alt='background' />
           </div>
           <div className='alb_box'>
@@ -358,13 +356,26 @@ const BridgeIndex = () => {
                       }}
                     /> */}
                   {/* </FormControl> */}
+                  
                   <div className="send_input_box">
-                    <Input style={{ width: '80%', background: '#211a12', borderColor: "#211a12", opacity: '0.4', color: '#ffffff' }}
+                    <Input className='send_custom_input' style={{ 
+                      width: '80%', 
+                      height: '40px', 
+                      fontSize: '20px', 
+                      fontWeight: '600',
+                      background: '#211a12', 
+                      fontFamily: 'NeueHaasDisplayMediu',
+                      color: '#ffffff', 
+                                    
+                    }}
                       value={sendAmount}
-                      placeholder="0xx"
+                      placeholder="0"
                       onChange={(e) => {
                         setSendAmount(e.target.value);
-                      }} />
+                      }}
+                      />
+
+                      
                     <div className='send_input_logo'>
                       <img src={eth_log02} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
                       <div className='eth_txt'>ETH</div>

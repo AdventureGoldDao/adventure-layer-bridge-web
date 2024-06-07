@@ -42,15 +42,10 @@ import SvgIcon from '@mui/material/SvgIcon';
 import MuiLink from '@mui/material/Link';
 import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
-import logo1 from "../../img/agld1.png";
-import logo2 from '../../img/agld2.png';
 import eth_log02 from '../../img/eth-logo.svg';
-import adv_logo from '../../img/adv-logo.svg';
 import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
 
-// import { ReactComponent as Logo1 } from '../../img/agld-logo1.svg'; // 导入 SVG 作为组件
-// import { ReactComponent as Logo2 } from '../../img/agld-logo2.svg'; // 导入 SVG 作为组件
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 

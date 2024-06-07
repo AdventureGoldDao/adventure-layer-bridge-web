@@ -75,7 +75,7 @@
     display: flex;
     /* margin-top: 16px; */
     /* background: #fff; */
-    background-image: url('../../img/agld-bg_168k.png');
+    background-image: url('../../img/bridge_web_bg.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -196,10 +196,29 @@
         margin-top: 40px;
         
       }
+
+      .send_custom_input {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+      }
+      .send_custom_input:focus {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      .send_custom_input::placeholder {
+        color: #ffffff; /* 你可以根据需要修改颜色 */
+        font-size: 20px;
+        font-weight: 600;
+        font-family: 'NeueHaasDisplayMediu';
+      }
+
       .send_input_logo {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
         margin-left: 15px;
 
