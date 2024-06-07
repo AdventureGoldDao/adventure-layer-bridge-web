@@ -153,6 +153,7 @@
       .item1 {
         font-size: 12px;
         font-weight: 600;
+        font-family: 'NeueHaasDisplayMediu';
       }
   
       .from_select {
@@ -263,6 +264,7 @@
           flex-shrink: 0;
           font-size: 12px;
           font-weight: 600;
+          font-family: 'NeueHaasDisplayMediu';
         }
   
         .to_2 {

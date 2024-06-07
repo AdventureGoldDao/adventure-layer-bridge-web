@@ -138,6 +138,7 @@
         font-size: 14px;
         color: #fff;
         font-weight: 600;
+        font-family: 'NeueHaasDisplayMediu';
       }
       .item2 {
         display: flex;
@@ -250,6 +251,11 @@
 
       .to_1 {
         flex-shrink: 0;
+        font-size: 14px;
+        color: #fff;
+        font-weight: 600;
+        font-family: 'NeueHaasDisplayMediu';
+
       }
 
       .to_2 {
