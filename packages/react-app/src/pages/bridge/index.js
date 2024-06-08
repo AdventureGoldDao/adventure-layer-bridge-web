@@ -108,6 +108,7 @@ function ResponsiveAppBar() {
   );
 }
 
+
 const ConnectButton = styled(MuiButton)(({ theme }) => ({
   color: '#000',
   backgroundColor: '#f39b4b',
@@ -145,7 +146,7 @@ function WalletButton() {
   }, [error]);
 
   return (
-    <ConnectButton variant="contained" size="medium"
+    <MuiButton className='connect' variant="contained" size="medium"
       onClick={() => {
         if (!account) {
           activateBrowserWallet();
@@ -153,9 +154,11 @@ function WalletButton() {
           deactivate();
         }
       }}>
+        <div className='connect-btn'>
       {rendered === "" && "Connect"}
       {rendered !== "" && rendered}
-    </ConnectButton>
+      </div>
+    </MuiButton>
   );
 }
 

@@ -50,6 +50,8 @@
     }
   }
 
+
+
   .connect {
     width: 160px;
     height: 32px;
@@ -61,13 +63,13 @@
     border: 1px solid #f39b4b;
     background: #f39b4b;
     border-radius: 6px;
+  }
   
-    .Button {
+    .connect-btn {
       color: #000;
       font-size: 16px;
       font-weight: 600px;
     }
-  }
 
 }
 
