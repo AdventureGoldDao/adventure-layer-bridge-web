@@ -63,13 +63,21 @@
     border: 1px solid #f39b4b;
     background: #f39b4b;
     border-radius: 6px;
+    color:  #000;
   }
-  
+  .connect:hover {
+    background: #f39b4b; /* 设置悬停时的背景颜色 */
+    color: #000; /* 设置悬停时的文本颜色 */
+  }
     .connect-btn {
       color: #000;
       font-size: 16px;
-      font-weight: 600px;
+      font-weight: 600;
+      background: #f39b4b;
+      
     }
+
+
 
 }
 
