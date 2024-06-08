@@ -168,13 +168,15 @@ const bridgeConfig = {
     address: addresses.depositL1,
     chainId: Sepolia.chainId,
     text: 'Sepolia Layer 1',
-    target_text: 'Adventure Layer'
+    target_text: 'Adventure Layer',
+    logo: eth_logo,
   },
   adventure: {
     address: addresses.depositL2,
     chainId: AdventureLayer.chainId,
     text: 'Adventure Layer',
-    target_text: 'Sepolia Layer 1'
+    target_text: 'Sepolia Layer 1',
+    logo: adv_logo,
   },
 }
 
@@ -200,25 +202,28 @@ const BridgeIndex = () => {
 
     const [chainState, setChainState] = React.useState(addresses.depositL1);
     const [selectSource, setSelectSource] = React.useState("sepolia");
+    const [selectTarget, setSelectTarget] = React.useState("adventure");
     const [targetChainName, setTargetChainName] = React.useState("Adventure Layer");
     const [sourceChainName, setSourceChainName] = React.useState("Sepolia Layer 1");
 
-    const handleChainChange = (event) => {
-        // console.log(event)
-        setSelectSource(event.target.value);
-        const chain = bridgeConfig[event.target.value]
-        setChainState(chain.address);
-        setTargetChainName(chain.target_text);
-    };
+    // const handleChainChange = (event) => {
+    //     // console.log(event)
+    //     setSelectSource(event.target.value);
+    //     const chain = bridgeConfig[event.target.value]
+    //     setChainState(chain.address);
+    //     setTargetChainName(chain.target_text);
+    // };
 
     const handleSwitchChain = (event) => {
-        console.log('========>')
         let source = 'sepolia'
+        let target = 'adventure'
         if (selectSource === 'sepolia') {
-            source = 'adventure'
+          source = 'adventure'
+          target = 'sepolia'
         }
     
         setSelectSource(source);
+        setSelectTarget(target);
         const chain = bridgeConfig[source]
         setChainState(chain.address);
         setTargetChainName(chain.target_text);
@@ -357,7 +362,7 @@ const BridgeIndex = () => {
                                 <div className={styles.item1}>From</div>
                                 <div className={styles.from_select}>
                                     <div className={styles.item2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-                                        <img src={eth_logo} alt='background' style={{ marginLeft: '13px', width: '16px', height: '16px' }} />
+                                        <img src={selectSource && bridgeConfig[selectSource].logo} alt='background' style={{ marginLeft: '13px', width: '16px', height: '16px' }} />
                                         <div className={styles.item3}>{sourceChainName}</div>
                                     </div>
                                     {/* <div className={styles.select'>
@@ -441,7 +446,7 @@ const BridgeIndex = () => {
                                 <div className={styles.to_1}>To</div>
                                 <div className={styles.to_2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                                     <div className={styles.to_2_img}>
-                                        <img src={adv_logo} style={{ marginLeft: '13px', width: '16px', height: '16px' }} alt='background' />
+                                        <img src={selectTarget && bridgeConfig[selectTarget].logo} style={{ marginLeft: '13px', width: '16px', height: '16px' }} alt='background' />
                                     </div>
                                     <div className={styles.to_3} >{targetChainName}</div>
                                 </div>
