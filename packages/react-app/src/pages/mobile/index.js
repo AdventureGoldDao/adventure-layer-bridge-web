@@ -164,18 +164,18 @@ function WalletButton() {
 }
 
 const bridgeConfig = {
-    sepolia: {
-        address: addresses.depositL1,
-        chainId: Sepolia.chainId,
-        text: 'Sepolia',
-        target_text: 'Adventure Layer'
-    },
-    adventure: {
-        address: addresses.depositL2,
-        chainId: AdventureLayer.chainId,
-        text: 'Adventure Layer',
-        target_text: 'Sepolia'
-    },
+  sepolia: {
+    address: addresses.depositL1,
+    chainId: Sepolia.chainId,
+    text: 'Sepolia Layer 1',
+    target_text: 'Adventure Layer'
+  },
+  adventure: {
+    address: addresses.depositL2,
+    chainId: AdventureLayer.chainId,
+    text: 'Adventure Layer',
+    target_text: 'Sepolia Layer 1'
+  },
 }
 
 const BridgeIndex = () => {
@@ -201,6 +201,7 @@ const BridgeIndex = () => {
     const [chainState, setChainState] = React.useState(addresses.depositL1);
     const [selectSource, setSelectSource] = React.useState("sepolia");
     const [targetChainName, setTargetChainName] = React.useState("Adventure Layer");
+    const [sourceChainName, setSourceChainName] = React.useState("Sepolia Layer 1");
 
     const handleChainChange = (event) => {
         // console.log(event)
@@ -209,6 +210,20 @@ const BridgeIndex = () => {
         setChainState(chain.address);
         setTargetChainName(chain.target_text);
     };
+
+    const handleSwitchChain = (event) => {
+        console.log('========>')
+        let source = 'sepolia'
+        if (selectSource === 'sepolia') {
+            source = 'adventure'
+        }
+    
+        setSelectSource(source);
+        const chain = bridgeConfig[source]
+        setChainState(chain.address);
+        setTargetChainName(chain.target_text);
+        setSourceChainName(chain.text);
+    }
 
     const gasPriceGwei = '15'
     const l1Web3 = new Web3(Sepolia.rpcUrl)
@@ -221,18 +236,36 @@ const BridgeIndex = () => {
         l2: l2BalanceAmount,
     })
 
-    const reloadAccountBalance = () => {
-        if (account && library) {
-            library.getBalance(account).then((val) => {
-                // ethers.utils.formatEther();
-                const l1BalanceAmount = new Decimal(val.toString()).div(1000000000000000000).toFixed(5);
-                setAccountBalance({
-                    ...accountBalance,
-                    l1: l1BalanceAmount,
-                })
+    const reloadAccountBalance = async () => {
+        // if (account && library) {
+        //     library.getBalance(account).then((val) => {
+        //         // ethers.utils.formatEther();
+        //         const l1BalanceAmount = new Decimal(val.toString()).div(1000000000000000000).toFixed(5);
+        //         setAccountBalance({
+        //             ...accountBalance,
+        //             l1: l1BalanceAmount,
+        //         })
+        //     })
+        // }
+        if (account) {
+            try {
+              const l1Balance = await l1Web3.eth.getBalance(account)
+            //   console.log('=============', l1Balance)
+              l1BalanceAmount = new Decimal(l1Balance.toString()).div(1000000000000000000).toFixed(5)
+              // ethers.utils.formatEther(l1Balance)
+            } catch (err) {}
+            
+            try {
+              const l2Balance = await l2Web3.eth.getBalance(account)
+            //   console.log('=============', l2Balance)
+              l2BalanceAmount = new Decimal(l2Balance.toString()).div(1000000000000000000).toFixed(5)
+              // ethers.utils.formatEther(l2Balance)
+            } catch (err) {}
+            setAccountBalance({
+              ...accountBalance,
+              l1: l1BalanceAmount,
+              l2: l2BalanceAmount,
             })
-            // const l2Balance = l2Web3.getBalance(account)
-            // l2BalanceAmount = ethers.utils.formatEther(l2Balance);
         }
     }
     useEffect(() => {
@@ -325,7 +358,7 @@ const BridgeIndex = () => {
                                 <div className={styles.from_select}>
                                     <div className={styles.item2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
                                         <img src={eth_logo} alt='background' style={{ marginLeft: '13px', width: '16px', height: '16px' }} />
-                                        <div className={styles.item3}>Sepolia  Layer 1</div>
+                                        <div className={styles.item3}>{sourceChainName}</div>
                                     </div>
                                     {/* <div className={styles.select'>
                                         <FormControl sx={{ marginBottom: 1, Width: 159 }} size="small">
@@ -345,7 +378,7 @@ const BridgeIndex = () => {
                                 <div className={styles.send_box}>
                                     <div className={styles.send_title}>
                                         <div className={styles.send_txt}>Send</div>
-                                        <div className={styles.send_txt}>Max: {accountBalance.l1} ETH</div>
+                                        <div className={styles.send_txt}>Max: { selectSource == 'sepolia' ? accountBalance.l1 : accountBalance.l2 } ETH</div>
                                     </div>
                                     {/* <FormControl sx={{ width: '100%', color: '#fff', }} variant="outlined">
                                         <OutlinedInput
@@ -400,7 +433,9 @@ const BridgeIndex = () => {
                                 </div>
                             </div>
                             <div className={styles.trans_box}>
-                                <img src={trans_log} alt='trans' />
+                                <img src={trans_log} alt='trans' style={{
+                                    cursor: 'pointer',
+                                }} onClick={handleSwitchChain} />
                             </div>
                             <div className={styles.to_box}>
                                 <div className={styles.to_1}>To</div>
@@ -408,7 +443,7 @@ const BridgeIndex = () => {
                                     <div className={styles.to_2_img}>
                                         <img src={adv_logo} style={{ marginLeft: '13px', width: '16px', height: '16px' }} alt='background' />
                                     </div>
-                                    <div className={styles.to_3} >Adventure Layer</div>
+                                    <div className={styles.to_3} >{targetChainName}</div>
                                 </div>
                             </div>
 

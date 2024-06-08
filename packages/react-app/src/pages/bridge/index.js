@@ -249,22 +249,17 @@ const BridgeIndex = () => {
     if (account) {
       try {
         const l1Balance = await l1Web3.eth.getBalance(account)
-        console.log('=============', l1Balance)
+        // console.log('=============', l1Balance)
         l1BalanceAmount = new Decimal(l1Balance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(l1Balance)
       } catch (err) {}
       
       try {
         const l2Balance = await l2Web3.eth.getBalance(account)
-        console.log('=============', l2Balance)
+        // console.log('=============', l2Balance)
         l2BalanceAmount = new Decimal(l2Balance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(l2Balance)
       } catch (err) {}
-      console.log('=============', {
-        ...accountBalance,
-        l1: l1BalanceAmount,
-        l2: l2BalanceAmount,
-      })
       setAccountBalance({
         ...accountBalance,
         l1: l1BalanceAmount,
@@ -382,7 +377,7 @@ const BridgeIndex = () => {
                 <div className='send_box'>
                   <div className='send_title'>
                     <div className='send_txt'>Send</div>
-                    <div className='send_txt'>Max: { selectSource == 'sepolia' ? accountBalance.l1 : accountBalance.l2} ETH</div>
+                    <div className='send_txt'>Max: { selectSource == 'sepolia' ? accountBalance.l1 : accountBalance.l2 } ETH</div>
                   </div>
                   {/* <FormControl sx={{ width: '100%', color: '#fff' }} variant="outlined"> */}
                   {/* <OutlinedInput
