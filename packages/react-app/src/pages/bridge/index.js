@@ -154,9 +154,9 @@ function WalletButton() {
           deactivate();
         }
       }}>
-        <div className='connect-btn'>
-      {rendered === "" && "Connect"}
-      {rendered !== "" && rendered}
+      <div className='connect-btn'>
+        {rendered === "" && "Connect"}
+        {rendered !== "" && rendered}
       </div>
     </MuiButton>
   );
@@ -169,6 +169,7 @@ const bridgeConfig = {
     text: 'Sepolia Layer 1',
     target_text: 'Adventure Layer',
     logo: eth_logo,
+    abi: abis['adventureSepolia'],
   },
   adventure: {
     address: addresses.depositL2,
@@ -176,6 +177,7 @@ const bridgeConfig = {
     text: 'Adventure Layer',
     target_text: 'Sepolia Layer 1',
     logo: adv_logo,
+    abi: abis['adventureL2'],
   },
 }
 
@@ -198,7 +200,8 @@ const BridgeIndex = () => {
   const { state: stateDepositL2, send: sendDepositL2 } = useContractFunction(contractL2, 'deposit', { transactionName: 'Transfer L2' })
 
   // const { loading, error: subgraphQueryError, data } = useQuery(GET_TRANSFERS);
-
+  const [gasFee, setGasFee] = React.useState("0");
+  const [receiveAmount, setReceiveAmount] = React.useState("0");
   const [chainState, setChainState] = React.useState(addresses.depositL1);
   const [selectSource, setSelectSource] = React.useState("sepolia");
   const [selectTarget, setSelectTarget] = React.useState("adventure");
@@ -258,14 +261,14 @@ const BridgeIndex = () => {
         // console.log('=============', l1Balance)
         l1BalanceAmount = new Decimal(l1Balance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(l1Balance)
-      } catch (err) {}
-      
+      } catch (err) { }
+
       try {
         const l2Balance = await l2Web3.eth.getBalance(account)
         // console.log('=============', l2Balance)
         l2BalanceAmount = new Decimal(l2Balance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(l2Balance)
-      } catch (err) {}
+      } catch (err) { }
       setAccountBalance({
         ...accountBalance,
         l1: l1BalanceAmount,
@@ -339,6 +342,60 @@ const BridgeIndex = () => {
 
   }
 
+  const handleInputChange = (e) => {
+    const inputAmount = e.target.value
+    setSendAmount(inputAmount);
+
+    if (Number(inputAmount) <= 0) {
+      setGasFee(0)
+      setReceiveAmount(0)
+      return
+    }
+
+    let curWeb3 = l1Web3
+    if (selectSource == 'sepolia') {
+      curWeb3 = l2Web3
+    }
+    try {
+      // 构建交易数据
+      const curContract = new curWeb3.eth.Contract(bridgeConfig[selectSource].abi, chainState)
+      const sendBigAmount = web3.utils.toBigInt(Number(inputAmount) * 1000000000000000000)
+      const transactionObject = {
+        from: account,
+        to: chainState,
+        data: curContract.methods.deposit({
+          value: sendBigAmount,
+        }).encodeABI() // yourMethod是你要调用的方法名，params是方法的参数
+      };
+
+      // 预估gas
+      curWeb3.eth.estimateGas(transactionObject)
+        .then((gasPrice) => {
+          const gasAmount = new Decimal(gasPrice.toString())
+          const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)
+          const receiveAmount = transferAmount.sub(gasAmount)
+          setGasFee(gasAmount.div(1000000000000000000).toFixed(10))
+          setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(10))
+          console.log(`预估的gas消耗量为: ${gasPrice}`, gasPrice, receiveAmount, gasAmount);
+        })
+        .catch((error) => {
+          setGasFee(0)
+          setReceiveAmount(0)
+          console.error(`估算失败: ${error}`);
+        });
+    } catch (err) {
+      console.error(`估算失败: ${err}`);
+      curWeb3.eth.getGasPrice().then(gasPrice => {
+        const gasAmount = new Decimal(gasPrice.toString())
+        const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)
+        const receiveAmount = transferAmount.sub(gasAmount)
+        setGasFee(gasAmount.div(1000000000000000000).toFixed(10))
+        setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(10))
+        // console.log('====>', gasPrice, receiveAmount)
+      })
+    }
+  }
+
   return (
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
@@ -383,7 +440,7 @@ const BridgeIndex = () => {
                 <div className='send_box'>
                   <div className='send_title'>
                     <div className='send_txt'>Send</div>
-                    <div className='send_txt'>Max: { selectSource == 'sepolia' ? accountBalance.l1 : accountBalance.l2 } ETH</div>
+                    <div className='send_txt'>Max: {selectSource == 'sepolia' ? accountBalance.l1 : accountBalance.l2} ETH</div>
                   </div>
                   {/* <FormControl sx={{ width: '100%', color: '#fff' }} variant="outlined"> */}
                   {/* <OutlinedInput
@@ -399,25 +456,23 @@ const BridgeIndex = () => {
                       }}
                     /> */}
                   {/* </FormControl> */}
-                  
+
                   <div className="send_input_box">
-                    <Input className='send_custom_input' style={{ 
+                    <Input className='send_custom_input' style={{
                       // width: '90%', 
-                      height: '40px', 
-                      fontSize: '20px', 
+                      height: '40px',
+                      fontSize: '20px',
                       fontWeight: '600',
-                      background: '#211a12', 
+                      background: '#211a12',
                       fontFamily: 'NeueHaasDisplayMediu',
-                      color: '#ffffff', 
+                      color: '#ffffff',
                       padding: '0px 0px',
-                                    
+
                     }}
                       value={sendAmount}
                       placeholder="0"
-                      onChange={(e) => {
-                        setSendAmount(e.target.value);
-                      }}
-                      />
+                      onChange={handleInputChange}
+                    />
                     <div className='send_input_logo'>
                       <img src={eth_logo} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
                       <div className='eth_txt'>ETH</div>
@@ -442,7 +497,7 @@ const BridgeIndex = () => {
               <div className='receive_box'>
                 <div className='receive_title'>Receive</div>
                 <div className='receive_num'>
-                  <div className='eth_num'>0</div>
+                  <div className='eth_num'>{receiveAmount}</div>
 
                   <div className='receive_eth'>
                     <img src={eth_logo} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
@@ -453,7 +508,7 @@ const BridgeIndex = () => {
               </div>
 
               {/* <div className='gas'>{targetChainName}gas fee 0 ETH</div> */}
-              <div className='gas'>gas fee 0 ETH</div>
+              <div className='gas'>gas fee {gasFee} ETH</div>
               <div className="btn-box">
                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                   Transfer

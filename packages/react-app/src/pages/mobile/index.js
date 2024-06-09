@@ -200,6 +200,8 @@ const BridgeIndex = () => {
 
     // const { loading, error: subgraphQueryError, data } = useQuery(GET_TRANSFERS);
 
+    const [gasFee, setGasFee] = React.useState("0");
+    const [receiveAmount, setReceiveAmount] = React.useState("0");
     const [chainState, setChainState] = React.useState(addresses.depositL1);
     const [selectSource, setSelectSource] = React.useState("sepolia");
     const [selectTarget, setSelectTarget] = React.useState("adventure");
@@ -339,6 +341,19 @@ const BridgeIndex = () => {
 
     }
 
+    const handleInputChange = (e) => {
+        const inputAmount = e.target.value
+        setSendAmount(inputAmount);
+
+        if (Number(inputAmount) <= 0) {
+            setGasFee(0)
+            setReceiveAmount(0)
+            return
+        }
+        setGasFee(0);
+        setReceiveAmount(inputAmount);
+    }
+
     return (
         <div>
             <ResponsiveAppBar></ResponsiveAppBar>
@@ -426,9 +441,7 @@ const BridgeIndex = () => {
                                         }}
                                             value={sendAmount}
                                             placeholder="0"
-                                            onChange={(e) => {
-                                                setSendAmount(e.target.value);
-                                            }} />
+                                            onChange={handleInputChange} />
                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                                             <img src={eth_logo} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
                                             <div className={styles.mb_eth_txt}>ETH</div>
@@ -456,7 +469,7 @@ const BridgeIndex = () => {
                                 <div className={styles.mb_receive_title}>Receive</div>
                                 {/* <div className={styles.mb_receive_num} > */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '24px', marginTop: '36px' }} >
-                                    <div className={styles.mb_eth_num}>0</div>
+                                    <div className={styles.mb_eth_num}>{receiveAmount}</div>
                                     {/* <div  className={styles.mb_logo_box}> */}
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <img src={eth_logo} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
@@ -467,7 +480,7 @@ const BridgeIndex = () => {
                             </div>
 
                             {/* <div className={styles.gas}>{targetChainName}gas fee 0 ETH</div> */}
-                            <div className={styles.gas}>gas fee 0 ETH</div>
+                            <div className={styles.gas}>gas fee {gasFee} ETH</div>
                             <div className={styles.btnBox}>
                                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                                     Transfer
