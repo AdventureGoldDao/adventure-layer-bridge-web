@@ -374,9 +374,16 @@ const BridgeIndex = () => {
           const gasAmount = new Decimal(gasPrice.toString())
           const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)
           const receiveAmount = transferAmount.sub(gasAmount)
-          setGasFee(gasAmount.div(1000000000000000000).toFixed(10))
-          setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(10))
-          console.log(`预估的gas消耗量为: ${gasPrice}`, gasPrice, receiveAmount, gasAmount);
+          const showGas = gasAmount.div(1000000000000000000)
+          const showReceive = receiveAmount.div(1000000000000000000)
+
+          let gasText = "0"
+          if (showGas.toNumber() > 0) {
+            gasText = showGas.toFixed(18)
+          }
+          setGasFee(gasText)
+          setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
+          console.log(`预估的gas消耗量为: ${gasPrice}`, gasPrice, receiveAmount);
         })
         .catch((error) => {
           setGasFee(0)
@@ -389,9 +396,17 @@ const BridgeIndex = () => {
         const gasAmount = new Decimal(gasPrice.toString())
         const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)
         const receiveAmount = transferAmount.sub(gasAmount)
-        setGasFee(gasAmount.div(1000000000000000000).toFixed(10))
-        setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(10))
-        // console.log('====>', gasPrice, receiveAmount)
+        
+        const showGas = gasAmount.div(1000000000000000000)
+        const showReceive = receiveAmount.div(1000000000000000000)
+
+        let gasText = "0"
+        if (showGas.greaterThan(new Decimal(0))) {
+          gasText = showGas.toFixed(18)
+        }
+        setGasFee(gasText)
+        setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
+        console.log('====>', gasPrice, receiveAmount)
       })
     }
   }

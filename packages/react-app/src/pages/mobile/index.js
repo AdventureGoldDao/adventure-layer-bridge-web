@@ -344,14 +344,70 @@ const BridgeIndex = () => {
     const handleInputChange = (e) => {
         const inputAmount = e.target.value
         setSendAmount(inputAmount);
-
+    
         if (Number(inputAmount) <= 0) {
-            setGasFee(0)
-            setReceiveAmount(0)
-            return
+          setGasFee(0)
+          setReceiveAmount(0)
+          return
         }
-        setGasFee(0);
-        setReceiveAmount(inputAmount);
+    
+        let curWeb3 = l1Web3
+        if (selectSource == 'sepolia') {
+          curWeb3 = l2Web3
+        }
+        try {
+          // 构建交易数据
+          const curContract = new curWeb3.eth.Contract(bridgeConfig[selectSource].abi, chainState)
+          const sendBigAmount = web3.utils.toBigInt(Number(inputAmount) * 1000000000000000000)
+          const transactionObject = {
+            from: account,
+            to: chainState,
+            data: curContract.methods.deposit({
+              value: sendBigAmount,
+            }).encodeABI() // yourMethod是你要调用的方法名，params是方法的参数
+          };
+    
+          // 预估gas
+          curWeb3.eth.estimateGas(transactionObject)
+            .then((gasPrice) => {
+              const gasAmount = new Decimal(gasPrice.toString())
+              const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)
+              const receiveAmount = transferAmount.sub(gasAmount)
+              const showGas = gasAmount.div(1000000000000000000)
+              const showReceive = receiveAmount.div(1000000000000000000)
+    
+              let gasText = "0"
+              if (showGas.toNumber() > 0) {
+                gasText = showGas.toFixed(18)
+              }
+              setGasFee(gasText)
+              setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
+              console.log(`预估的gas消耗量为: ${gasPrice}`, gasPrice, receiveAmount);
+            })
+            .catch((error) => {
+              setGasFee(0)
+              setReceiveAmount(0)
+              console.error(`估算失败: ${error}`);
+            });
+        } catch (err) {
+          console.error(`估算失败: ${err}`);
+          curWeb3.eth.getGasPrice().then(gasPrice => {
+            const gasAmount = new Decimal(gasPrice.toString())
+            const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)
+            const receiveAmount = transferAmount.sub(gasAmount)
+            
+            const showGas = gasAmount.div(1000000000000000000)
+            const showReceive = receiveAmount.div(1000000000000000000)
+    
+            let gasText = "0"
+            if (showGas.greaterThan(new Decimal(0))) {
+              gasText = showGas.toFixed(18)
+            }
+            setGasFee(gasText)
+            setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
+            console.log('====>', gasPrice, receiveAmount)
+          })
+        }
     }
 
     return (
