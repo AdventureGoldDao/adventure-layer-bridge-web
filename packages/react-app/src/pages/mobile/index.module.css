@@ -19,13 +19,13 @@
     background: #1F1A15;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
 
-    
+  }
     .logoBox {
       width: 20px;
-      height: x;
+      height: 20px;
       padding-left: 10px;
     }
   
@@ -34,6 +34,15 @@
       height: 100%;
     }
 
+    .menuRight {
+      width: 90%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+
+    }
+    
     .mobileMenuIcon {
       width: 14px;
       height: 17px;
@@ -71,12 +80,11 @@
           font-size: 25px;
           text-decoration: none;
         }
-    
         
       }
 
   
-    .connect {
+    /* .connectBox1 {
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -85,14 +93,38 @@
       background: #f39b4b;
       border-radius: 6px;
       padding: 0 12px;
-  
-      .Button {
+      margin-right: 14px;
+      width: 133px;
+      height: 28px;
+      font-family: 'NeueHaasDisplayMediu';
+    } */
+
+    .connectBox {
+      width: 133px;
+      height: 28px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin-right: 14px;
+      border: 1px solid #f39b4b;
+      background: #f39b4b;
+      border-radius: 6px;
+      font-family: 'NeueHaasDisplayMediu';
+
+    }
+    .connectBox:hover {
+      background: #f39b4b; /* 设置悬停时的背景颜色 */
+      color: #000; /* 设置悬停时的文本颜色 */
+    }
+
+    .connectBtn {
         color: #000;
         font-size: 16px;
         font-weight: 600;
-      }
-    }
-  }
+        background: #f39b4b;
+        }
+  
   
   .rightBox {
     display: flex;

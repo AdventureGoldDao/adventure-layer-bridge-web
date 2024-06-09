@@ -47,19 +47,8 @@ import trans_log from '../../img/trans_logo.png';
 import adv_logo from '../../img/adv-logo.png';
 // import { styled } from '@mui/material/styles';
 
-// import { ReactComponent as Logo1 } from '../../img/agld-logo1.svg'; // 导入 SVG 作为组件
-// import { ReactComponent as Logo2 } from '../../img/agld-logo2.svg'; // 导入 SVG 作为组件
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
-
-const pages = ['Faucet', 'Bridge', 'Doc'];
-const pageLinks = {
-  "Faucet": 'https://faucet.adventurelayer.dev/',
-  "Bridge": 'https://bridge.adventurelayer.dev/',
-  "Doc": 'https://docs.adventurelayer.dev/',
-}
-
-
 const AdventureLayer = {
   chainId: 412346,
   rpcUrl: "https://rpc.adventurelayer.dev",
@@ -91,7 +80,6 @@ function ResponsiveAppBar() {
     <div className='menuBox'>
       <div className='logoBox'>
         <img className='logo' src={Logo1} alt='background' />
-        {/* <Logo1 className='logo' alt="Adventure bridge Logo" /> */}
       </div>
       <div className='menu'>
         <a className='menuItem' href="https://faucet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
@@ -429,7 +417,6 @@ const BridgeIndex = () => {
           </div>
           <div className='content_box'>
             <div className='detail_box'>
-              {/* <span>Balance: {accountBalance.l1} ETH</span> */}
               <div className='from_box'>
                 <div className='from_select'>
                   <div className='item1'>From</div>
@@ -437,19 +424,6 @@ const BridgeIndex = () => {
                     <img src={selectSource && bridgeConfig[selectSource].logo} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
                     <div className='item3'>{sourceChainName}</div>
                   </div>
-                  {/* <div className='select'>
-                    <FormControl sx={{ marginBottom: 1, Width: 159 }} size="small">
-                      <MuiSelect sx={{ color: '#fff' }}
-                        labelId="demo-select-small-label"
-                        id="demo-select-small"
-                        value={selectSource}
-                        label="Transfer Chain"
-                        onChange={handleChainChange}>
-                        <MenuItem sx={{ color: '#211a12' }} value={"sepolia"}>Sepolia (L1)</MenuItem>
-                        <MenuItem sx={{ color: '#211a12' }} value={"adventure"}>Adventure Layer (L2)</MenuItem>
-                      </MuiSelect>
-                    </FormControl>
-                  </div> */}
                 </div>
 
                 <div className='send_box'>
@@ -457,21 +431,6 @@ const BridgeIndex = () => {
                     <div className='send_txt'>Send</div>
                     <div className='send_txt'>Max: {selectSource == 'sepolia' ? accountBalance.l1 : accountBalance.l2} ETH</div>
                   </div>
-                  {/* <FormControl sx={{ width: '100%', color: '#fff' }} variant="outlined"> */}
-                  {/* <OutlinedInput
-                      id="outlined-adornment-weight"
-                      endAdornment={<InputAdornment position="end" sx={{ color: '#fff' }}><span style={{ color: '#fff' }}>ETH</span></InputAdornment>}
-                      aria-describedby="outlined-weight-helper-text"
-                      inputProps={{
-                        'aria-label': 'weight', 'color': '#fff'
-                      }}
-                      value={sendAmount}
-                      onChange={(e) => {
-                        setSendAmount(e.target.value);
-                      }}
-                    /> */}
-                  {/* </FormControl> */}
-
                   <div className="send_input_box">
                     <Input className='send_custom_input' style={{
                       // width: '90%', 
