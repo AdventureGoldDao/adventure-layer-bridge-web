@@ -33,9 +33,11 @@ const AddressText = styled.div`
 `;
 
 const AdventureLayer = {
-  chainId: "412346",
+  // chainId: "412346",
+  chainId: 12340054 ,
   rpcUrl: "https://rpc.adventurelayer.dev",
-  wssUrl: "ws://3.84.203.161:8548",
+  // wssUrl: "ws://3.84.203.161:8548",
+  wssUrl: "ws://54.145.142.106:8548",
 }
 
 function WalletButton() {

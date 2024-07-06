@@ -50,9 +50,11 @@ import adv_logo from '../../img/adv-logo.png';
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 const AdventureLayer = {
-  chainId: 412346,
+  // chainId: 412346,
+  chainId: 12340054 ,
   rpcUrl: "https://rpc.adventurelayer.dev",
-  wssUrl: "ws://3.84.203.161:8548",
+  // wssUrl: "ws://3.84.203.161:8548",
+  wssUrl: "ws://54.145.142.106:8548",
 }
 
 

@@ -12,7 +12,8 @@ const getAddressLink = (explorerUrl) => (address) => `${explorerUrl}/address/${a
 const getTransactionLink = (explorerUrl) => (txnId) => `${explorerUrl}/tx/${txnId}`
 
 const AdventureLayer = {
-  chainId: 412346,
+  // chainId: 412346,
+  chainId: 12340054 ,
   chainName: 'Adventure Layer L2',
   isTestChain: false,
   isLocalChain: false,
@@ -26,7 +27,8 @@ const AdventureLayer = {
   blockExplorerUrl: 'https://explorer.adventurelayer.dev',
   getExplorerAddressLink: getAddressLink('https://explorer.adventurelayer.dev'),
   getExplorerTransactionLink: getTransactionLink('https://explorer.adventurelayer.dev'),
-  wssUrl: "ws://3.84.203.161:8548",
+  // wssUrl: "ws://3.84.203.161:8548",
+  wssUrl: "ws://54.145.142.106:8548",
 }
 // {
 //   chainId: 412346,
