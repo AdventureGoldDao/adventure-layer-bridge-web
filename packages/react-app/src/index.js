@@ -13,12 +13,15 @@ const getTransactionLink = (explorerUrl) => (txnId) => `${explorerUrl}/tx/${txnI
 
 const AdventureLayer = {
   // chainId: 412346,
-  chainId: 12340054 ,
+  // chainId: 12340054 ,
+  chainId: 242069,
+  rpcUrl: "http://3.84.203.161:8515",
+  wssUrl: "ws://3.84.203.161:8516",
   chainName: 'Adventure Layer L2',
   isTestChain: false,
   isLocalChain: false,
   // multicallAddress: '0x4E74EBd9CABff51cE9a43EFe059bA8c5A28E4A14',
-  rpcUrl: 'https://rpc.adventurelayer.dev',
+  // rpcUrl: 'https://rpc.adventurelayer.dev',
   nativeCurrency: {
     name: 'Ether',
     symbol: 'ETH',
@@ -28,7 +31,33 @@ const AdventureLayer = {
   getExplorerAddressLink: getAddressLink('https://explorer.adventurelayer.dev'),
   getExplorerTransactionLink: getTransactionLink('https://explorer.adventurelayer.dev'),
   // wssUrl: "ws://3.84.203.161:8548",
-  wssUrl: "ws://54.145.142.106:8548",
+  // wssUrl: "ws://54.145.142.106:8548",
+}
+const AdventureLocal1 = {
+  chainId: 12340111,
+  chainName: 'Adventure Local 1',
+  isTestChain: false,
+  isLocalChain: false,
+  rpcUrl: "http://3.84.203.161:8547",
+  wssUrl: "ws://3.84.203.161:8548",
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+}
+const AdventureLocal2 = {
+  chainId: 12340112,
+  chainName: 'Adventure Local 2',
+  isTestChain: false,
+  isLocalChain: false,
+  rpcUrl: "http://3.84.203.161:8557",
+  wssUrl: "ws://3.84.203.161:8558",
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
 }
 // {
 //   chainId: 412346,
@@ -47,9 +76,11 @@ const config = {
     [Mainnet.chainId]: "https://mainnet.infura.io/v3/" + INFURA_PROJECT_ID,
     [Sepolia.chainId]: Sepolia.rpcUrl,
     [AdventureLayer.chainId]: AdventureLayer.rpcUrl,
+    [AdventureLocal1.chainId]: AdventureLocal1.rpcUrl,
+    [AdventureLocal2.chainId]: AdventureLocal2.rpcUrl,
   },
   // supportedChains: [ChainId.Mainnet, ChainId.Goerli, ChainId.Kovan, ChainId.Rinkeby, ChainId.Ropsten, ChainId.Arbitrum, ChainId.Sepolia, AdventureLayer.chainId],
-  networks: [...DEFAULT_SUPPORTED_CHAINS, AdventureLayer]
+  networks: [...DEFAULT_SUPPORTED_CHAINS, AdventureLayer, AdventureLocal1, AdventureLocal2]
 }
 
 // You should replace this url with your own and put it into a .env file

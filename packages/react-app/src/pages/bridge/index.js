@@ -49,14 +49,14 @@ import adv_logo from '../../img/adv-logo.png';
 
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
-const AdventureLayer = {
-  // chainId: 412346,
-  chainId: 12340054 ,
-  rpcUrl: "https://rpc.adventurelayer.dev",
-  // wssUrl: "ws://3.84.203.161:8548",
-  wssUrl: "ws://54.145.142.106:8548",
-}
 
+import {
+  AdventureLayer,
+  AdventureLocal1,
+  AdventureLocal2,
+  bridgeConfig,
+  fromChainSelect,
+} from '../../bridge/config'
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -152,23 +152,13 @@ function WalletButton() {
   );
 }
 
-const bridgeConfig = {
-  sepolia: {
-    address: addresses.depositL1,
-    chainId: Sepolia.chainId,
-    text: 'Sepolia Layer 1',
-    target_text: 'Adventure Layer',
-    logo: eth_logo,
-    abi: abis['adventureSepolia'],
-  },
-  adventure: {
-    address: addresses.depositL2,
-    chainId: AdventureLayer.chainId,
-    text: 'Adventure Layer',
-    target_text: 'Sepolia Layer 1',
-    logo: adv_logo,
-    abi: abis['adventureL2'],
-  },
+const useMyContractFunction = (chain, target, addr) => {
+  const chainConfig = bridgeConfig[chain]
+  const address = addr
+  const abi = new utils.Interface(chainConfig.abis[target])
+  const contract = new Contract(address, abi);
+  const { state, send } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' });
+  return { state, send };
 }
 
 const BridgeIndex = () => {
@@ -178,17 +168,6 @@ const BridgeIndex = () => {
     setOpenAlert(false);
   };
 
-  const [sendAmount, setSendAmount] = useState('');
-  const { account, activateBrowserWallet, deactivate, switchNetwork, error, library, chainId } = useEthers();
-  const wethInterface = new utils.Interface(abis.adventureSepolia)
-  const wethL2Interface = new utils.Interface(abis.adventureL2)
-  const wethContractAddress = addresses.depositL1
-  const wethContractAddressL2 = addresses.depositL2
-  const contract = new Contract(wethContractAddress, wethInterface)
-  const contractL2 = new Contract(wethContractAddressL2, wethL2Interface)
-  const { state: stateDeposit, send: sendDeposit } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' })
-  const { state: stateDepositL2, send: sendDepositL2 } = useContractFunction(contractL2, 'deposit', { transactionName: 'Transfer L2' })
-
   // const { loading, error: subgraphQueryError, data } = useQuery(GET_TRANSFERS);
   const [gasFee, setGasFee] = React.useState("0");
   const [receiveAmount, setReceiveAmount] = React.useState("0");
@@ -197,42 +176,70 @@ const BridgeIndex = () => {
   const [selectTarget, setSelectTarget] = React.useState("adventure");
   const [targetChainName, setTargetChainName] = React.useState("Adventure Layer");
   const [sourceChainName, setSourceChainName] = React.useState("Sepolia Layer 1");
+  const [toChainList, setToChainList] = React.useState(['adventure']);
 
-  // const handleChainChange = (event) => {
-  //   // console.log(event)
-  //   setSelectSource(event.target.value);
-  //   const chain = bridgeConfig[event.target.value]
-  //   setChainState(chain.address);
-  //   setTargetChainName(chain.target_text);
-  //   setSourceChainName(chain.text);
-  // };
-
-  const handleSwitchChain = (event) => {
-    let source = 'sepolia'
-    let target = 'adventure'
-    if (selectSource === 'sepolia') {
-      source = 'adventure'
-      target = 'sepolia'
-    }
-
-    setSelectSource(source);
-    setSelectTarget(target);
-    const chain = bridgeConfig[source]
-    setChainState(chain.address);
-    setTargetChainName(chain.target_text);
-    setSourceChainName(chain.text);
-  }
+  const [sendAmount, setSendAmount] = useState('');
+  const { account, activateBrowserWallet, deactivate, switchNetwork, error, library, chainId } = useEthers();
+  // const wethInterface = new utils.Interface(abis.adventureSepolia)
+  // const wethL2Interface = new utils.Interface(abis.adventureL2)
+  // const wethContractAddress = addresses.depositL1
+  // const wethContractAddressL2 = addresses.depositL2
+  // const contract = new Contract(wethContractAddress, wethInterface)
+  // const contractL2 = new Contract(wethContractAddressL2, wethL2Interface)
+  // const { state: stateDeposit, send: sendDeposit } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' })
+  // const { state: stateDepositL2, send: sendDepositL2 } = useContractFunction(contractL2, 'deposit', { transactionName: 'Transfer L2' })
+  const { state: stateDeposit, send: sendDeposit } = useMyContractFunction(selectSource, selectTarget, chainState)
 
   const gasPriceGwei = '15'
-  const l1Web3 = new Web3(Sepolia.rpcUrl)
-  const l2Web3 = new Web3(AdventureLayer.rpcUrl)
+  const [fromWeb3, setFromWeb3] = useState(new Web3(Sepolia.rpcUrl))
+  const [toWeb3, setToWeb3] = useState(new Web3(AdventureLayer.rpcUrl))
+  // let l1Web3 = new Web3(Sepolia.rpcUrl)
+  // let l2Web3 = new Web3(AdventureLayer.rpcUrl)
+  // let fromWeb3 = new Web3(Sepolia.rpcUrl)
+  // let toWeb3 = new Web3(AdventureLayer.rpcUrl)
 
   let l1BalanceAmount = 0
   let l2BalanceAmount = 0
+  let fromBalanceAmount = 0
+  let toBalanceAmount = 0
   const [accountBalance, setAccountBalance] = useState({
     l1: l1BalanceAmount,
     l2: l2BalanceAmount,
+
+    from: fromBalanceAmount,
+    to: toBalanceAmount,
   })
+
+  const handleSwitchChain = (event) => {
+    let source = selectTarget
+    let target = selectSource
+    // if (selectSource === 'sepolia') {
+    //   source = 'adventure'
+    //   target = 'sepolia'
+    // }
+    const chain = bridgeConfig[source]
+    const chainTarget = bridgeConfig[target]
+
+    let sourceWeb3 = fromWeb3
+    let targetWeb3 = toWeb3
+
+    setFromWeb3(targetWeb3)
+    setToWeb3(sourceWeb3)
+    setAccountBalance({
+      ...accountBalance,
+      from: accountBalance.to,
+      to: accountBalance.from,
+    })
+    setSelectSource(source);
+    setSelectTarget(target);
+    
+    setToChainList(chain.target);
+
+    const address = chain.addresses[target]
+    setChainState(address);
+    setTargetChainName(chainTarget.text);
+    setSourceChainName(chain.text);
+  }
 
   const reloadAccountBalance = async () => {
     // if (account && library) {
@@ -247,28 +254,91 @@ const BridgeIndex = () => {
     // }
     if (account) {
       try {
-        const l1Balance = await l1Web3.eth.getBalance(account)
-        // console.log('=============', l1Balance)
-        l1BalanceAmount = new Decimal(l1Balance.toString()).div(1000000000000000000).toFixed(5)
-        // ethers.utils.formatEther(l1Balance)
-      } catch (err) { }
+        const fromBalance = await fromWeb3.eth.getBalance(account)
+        fromBalanceAmount = new Decimal(fromBalance.toString()).div(1000000000000000000).toFixed(5)
+        // ethers.utils.formatEther(fromBalance)
+      } catch (err) { console.error('From:', err) } 
 
       try {
-        const l2Balance = await l2Web3.eth.getBalance(account)
-        // console.log('=============', l2Balance)
-        l2BalanceAmount = new Decimal(l2Balance.toString()).div(1000000000000000000).toFixed(5)
-        // ethers.utils.formatEther(l2Balance)
-      } catch (err) { }
+        const toBalance = await toWeb3.eth.getBalance(account)
+        toBalanceAmount = new Decimal(toBalance.toString()).div(1000000000000000000).toFixed(5)
+        // ethers.utils.formatEther(toBalance)
+      } catch (err) { console.error('To:', err) } 
       setAccountBalance({
         ...accountBalance,
-        l1: l1BalanceAmount,
-        l2: l2BalanceAmount,
+        from: fromBalanceAmount,
+        to: toBalanceAmount,
       })
     }
   }
   useEffect(() => {
     reloadAccountBalance()
-  }, [account, library])
+  }, [account, library, fromWeb3, toWeb3])
+
+  const [anchorFromEl, setAnchorFromEl] = React.useState(null);
+  const openFromList = Boolean(anchorFromEl);
+  const handleClickFromList = (event) => {
+    setAnchorFromEl(event.currentTarget);
+  };
+  const handleCloseFromList = () => {
+    setAnchorFromEl(null);
+  };
+  const handleChangeFromChain = (chain) => {
+    console.log("Change from chain:", chain, selectTarget);
+    setAnchorFromEl(null);
+
+    const chainConfig = bridgeConfig[chain]
+    let contractAddress = chainConfig.addresses[selectTarget]
+    if (!contractAddress && chainConfig.target) {
+      const target = chainConfig.target[0]
+      contractAddress = chainConfig.addresses[target]
+      const targetChain = bridgeConfig[target]
+      // console.log(targetChain)
+      setSelectTarget(target)
+      setTargetChainName(targetChain.text);
+      let targetWeb3 = new Web3(targetChain.rpcUrl)
+      setToWeb3(targetWeb3)
+    } else if (!chainConfig || !contractAddress) {
+      alert('Bridge Contract Not Found')
+      return
+    }
+    setSelectSource(chain)
+    
+    setChainState(contractAddress);
+    // setTargetChainName(chainConfig.target_text);
+    setToChainList(chainConfig.target);
+    setSourceChainName(chainConfig.text);
+    let sourceWeb3 = new Web3(chainConfig.rpcUrl)
+    setFromWeb3(sourceWeb3)
+  };
+
+  const [anchorToEl, setAnchorToEl] = React.useState(null);
+  const openToList = Boolean(anchorToEl);
+  const handleClickToList = (event) => {
+    setAnchorToEl(event.currentTarget);
+  };
+  const handleCloseToList = () => {
+    setAnchorToEl(null);
+  };
+  const handleChangeToChain = (chain) => {
+    console.log("Change to chain:", chain);
+    setAnchorToEl(null);
+
+    const chainConfig = bridgeConfig[chain]
+    const fromConfig = bridgeConfig[selectSource]
+    const contractAddress = fromConfig.addresses[chain]
+    if (!contractAddress) {
+      alert('Bridge Contract Not Found')
+      return
+    }
+  
+    setSelectTarget(chain)
+    setChainState(contractAddress);
+    // setTargetChainName(chainConfig.target_text);
+    setTargetChainName(chainConfig.text);
+    let targetWeb3 = new Web3(chainConfig.rpcUrl)
+    setToWeb3(targetWeb3)
+  };
 
   const onClickTransfer = async () => {
     console.log({ chainId, transfers: sendAmount });
@@ -295,41 +365,22 @@ const BridgeIndex = () => {
     // console.log(gasEstimate, "gasEstimate")
     // return
 
-    console.log('start contract', sendBigAmount, sendAmount);
+    // console.log('start contract', sendBigAmount, sendAmount);
     try {
-      if (addresses.depositL1 === chainState) {
-        const nonce = await l1Web3.eth.getTransactionCount(account, 'pending')
-        console.log('nonce', nonce, account, sendBigAmount)
-        sendDeposit({
-          value: sendBigAmount,
-          // sender: account,
-          // gasLimit: 3e7,
-          // nonce: Number(nonce) + 7,
-          // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-        }).then(() => {
-          reloadAccountBalance()
-        })
-      } else {
-        const nonce = await l2Web3.eth.getTransactionCount(account, 'pending')
-        console.log('nonce', wethContractAddressL2, nonce, account, sendBigAmount, {
-          value: sendBigAmount,
-          // gasLimit: 3e7,
-          // nonce: Number(nonce) + 1,
-          // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-        })
-        sendDepositL2({
-          value: sendBigAmount,
-          // gasLimit: 3e7,
-          // nonce: Number(nonce) + 1,
-          // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-        }).then(() => {
-          reloadAccountBalance()
-        })
-      }
+      const nonce = await fromWeb3.eth.getTransactionCount(account, 'pending')
+      console.log('nonce', nonce, account, sendBigAmount)
+      sendDeposit({
+        value: sendBigAmount,
+        // sender: account,
+        // gasLimit: 3e7,
+        // nonce: Number(nonce) + 7,
+        // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+      }).then(() => {
+        reloadAccountBalance()
+      })
     } catch (e) {
       console.log("error", e)
     }
-
   }
 
   const handleInputChange = (e) => {
@@ -342,10 +393,10 @@ const BridgeIndex = () => {
       return
     }
 
-    let curWeb3 = l1Web3
-    if (selectSource == 'sepolia') {
-      curWeb3 = l2Web3
-    }
+    let curWeb3 = fromWeb3
+    // if (selectSource == 'sepolia') {
+    //   curWeb3 = l2Web3
+    // }
     try {
       // 构建交易数据
       const curContract = new curWeb3.eth.Contract(bridgeConfig[selectSource].abi, chainState)
@@ -386,7 +437,7 @@ const BridgeIndex = () => {
         const gasAmount = new Decimal(gasPrice.toString())
         const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)
         const receiveAmount = transferAmount.sub(gasAmount)
-        
+
         const showGas = gasAmount.div(1000000000000000000)
         const showReceive = receiveAmount.div(1000000000000000000)
 
@@ -422,16 +473,31 @@ const BridgeIndex = () => {
               <div className='from_box'>
                 <div className='from_select'>
                   <div className='item1'>From</div>
-                  <div className='item2' style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                  <div
+                    className='item2'
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', cursor: 'pointer' }}
+                    onClick={handleClickFromList}
+                  >
                     <img src={selectSource && bridgeConfig[selectSource].logo} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
                     <div className='item3'>{sourceChainName}</div>
                   </div>
+                  <MuiMenu
+                    id="from-menu"
+                    anchorEl={anchorFromEl}
+                    open={openFromList}
+                    onClose={handleCloseFromList}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                  >
+                    {fromChainSelect.map(item => <MenuItem onClick={() => handleChangeFromChain(item.name)} key={item.name}>{item.text}</MenuItem>)}
+                  </MuiMenu>
                 </div>
 
                 <div className='send_box'>
                   <div className='send_title'>
                     <div className='send_txt'>Send</div>
-                    <div className='send_txt'>Max: {selectSource == 'sepolia' ? accountBalance.l1 : accountBalance.l2} ETH</div>
+                    <div className='send_txt'>Max: {accountBalance.from} ETH</div>
                   </div>
                   <div className="send_input_box">
                     <Input className='send_custom_input' style={{
@@ -464,10 +530,27 @@ const BridgeIndex = () => {
               </div>
               <div className='to_box'>
                 <div className='to_1'>To</div>
-                <div className='to_2' style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                <div className='to_2'
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', cursor: 'pointer'  }}
+                  onClick={handleClickToList}
+                >
                   <img src={selectTarget && bridgeConfig[selectTarget].logo} alt='background' style={{ marginLeft: '13px', width: '22px', height: '22px' }} />
                   <div className='to_3' >{targetChainName}</div>
                 </div>
+                <MuiMenu
+                  id="to-menu"
+                  anchorEl={anchorToEl}
+                  open={openToList}
+                  onClose={handleCloseToList}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+                  {toChainList.map((chain, i) => {
+                    const item = bridgeConfig[chain]
+                    return <MenuItem onClick={() => handleChangeToChain(chain)} key={`to-${chain}-${i}`}>{item.text}</MenuItem>
+                  })}
+                </MuiMenu>
               </div>
 
               <div className='receive_box'>
