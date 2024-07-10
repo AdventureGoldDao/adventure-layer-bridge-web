@@ -39,6 +39,7 @@ export const bridgeConfig = {
       adventure: abis['adventureSepolia'],
     },
     addresses: {
+      // Sepolia ==> Adventure Layer L2 = 0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24
       adventure: addresses.depositL1,
     },
   },
@@ -57,15 +58,18 @@ export const bridgeConfig = {
       local2: abis['adventureL2'],
     },
     addresses: {
+      // Adventure Layer L2 ==> Sepolia = 0xe8b68a74d8527e650e144bfecd999302b676df2f
+      // Adventure Layer L2 ==> Shard1 = 0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa
+      // Adventure Layer L2 ==> Shard2 = 0x7eb75992b53d5b603cc566575b5427e6d52ff6cd
       sepolia: addresses.depositL2,
-      local1: addresses.depositL2,
-      local2: addresses.depositL2,
+      local1: '0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa',
+      local2: '0x7eb75992b53d5b603cc566575b5427e6d52ff6cd',
     },
   },
   local1: {
     address: addresses.depositL2,
     chainId: AdventureLocal1.chainId,
-    text: 'Adventure Local 1',
+    text: 'Adventure Shard 1',
     target_text: 'Adventure Layer',
     logo: adv_logo,
     abi: abis['adventureL2'],
@@ -75,13 +79,14 @@ export const bridgeConfig = {
       adventure: abis['adventureL2'],
     },
     addresses: {
+      // Shard1 ==> Adventure Layer L2 = 0xe8b68a74d8527e650e144bfecd999302b676df2f
       adventure: addresses.depositL2,
     },
   },
   local2: {
     address: addresses.depositL2,
     chainId: AdventureLocal2.chainId,
-    text: 'Adventure Local 2',
+    text: 'Adventure Shard 2',
     target_text: 'Adventure Layer',
     logo: adv_logo,
     abi: abis['adventureL2'],
@@ -91,6 +96,7 @@ export const bridgeConfig = {
       adventure: abis['adventureL2'],
     },
     addresses: {
+      // Shard2 ==> Adventure Layer L2 = 0xe8b68a74d8527e650e144bfecd999302b676df2f
       adventure: addresses.depositL2,
     },
   },
@@ -106,10 +112,10 @@ export const fromChainSelect = [{
   target: ['sepolia', 'local1', 'local2'],
 }, {
   name: 'local1',
-  text: 'Adventure Local 1',
+  text: 'Adventure Shard 1',
   target: ['adventure'],
 }, {
   name: 'local2',
-  text: 'Adventure Local 2',
+  text: 'Adventure Shard 2',
   target: ['adventure'],
 }]
