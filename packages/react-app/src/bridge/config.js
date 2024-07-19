@@ -5,24 +5,49 @@ import eth_logo from '../img/eth_logo.png';
 // import trans_log from '../img/trans_logo.png';
 import adv_logo from '../img/adv-logo.png';
 
+// l2 info
+// sequencer: 
+// rpc     https://rpc-devnet.adventurelayer.dev
+// ws     wss://rpc-devnet.adventurelayer.dev
+// chainid 242069
+
+// replica1:
+// rpc     https://rpc-devnet.adventurelayer.dev/node1
+// ws     wss://rpc-devnet.adventurelayer.dev/node1
+// chainid 242069
+
+// replica1:
+// rpc     https://rpc-devnet.adventurelayer.dev/node2
+// ws     wss://rpc-devnet.adventurelayer.dev/node2
+// chainid 242069
+
+// shard1:
+// rpc     https://rpc-devnet.adventurelayer.dev/node1/shard
+// ws     wss://rpc-devnet.adventurelayer.dev/node1/shard
+// chainid 12340140
+
+// shard2:
+// rpc     https://rpc-devnet.adventurelayer.dev/node2/shard
+// ws     wss://rpc-devnet.adventurelayer.dev/node2/shard
+// chainid 12340141
 export const AdventureLayer = {
   // chainId: 412346,
   chainId: 242069,
-  rpcUrl: "http://3.84.203.161:8515",
-  wssUrl: "ws://3.84.203.161:8516",
+  rpcUrl: "https://rpc-devnet.adventurelayer.dev",
+  wssUrl: "wss://rpc-devnet.adventurelayer.dev",
   // rpcUrl: "https://rpc.adventurelayer.dev",
   // wssUrl: "ws://3.84.203.161:8548",
   // wssUrl: "ws://54.145.142.106:8548",
 }
 export const AdventureLocal1 = {
-  chainId: 12340111,
-  rpcUrl: "http://3.84.203.161:8547",
-  wssUrl: "ws://3.84.203.161:8548",
+  chainId: 12340140,
+  rpcUrl: "https://rpc-devnet.adventurelayer.dev/node1/shard",
+  wssUrl: "wss://rpc-devnet.adventurelayer.dev/node1/shard",
 }
 export const AdventureLocal2 = {
-  chainId: 12340112,
-  rpcUrl: "http://3.84.203.161:8557",
-  wssUrl: "ws://3.84.203.161:8558",
+  chainId: 12340141,
+  rpcUrl: "https://rpc-devnet.adventurelayer.dev/node2/shard",
+  wssUrl: "wss://rpc-devnet.adventurelayer.dev/node2/shard",
 }
 
 export const bridgeConfig = {
