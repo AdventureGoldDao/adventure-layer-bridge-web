@@ -3,7 +3,7 @@
 ## 在项目根目录下执行
 # 定义本地和远程目录
 LOCAL_DIR="./packages/react-app/build"
-REMOTE_DIR="/home/ubuntu/liuwill/webserver/sites/bridge"
+REMOTE_DIR="/data/adventure-layer-bridge-web-second/packages/react-app/build"
 KEY_PATH="./secrets/key.pem"
 
 # 检查本地目录是否存在 index.html 文件

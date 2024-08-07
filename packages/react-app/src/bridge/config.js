@@ -36,8 +36,6 @@ export const AdventureLayer = {
   rpcUrl: "https://rpc-devnet.adventurelayer.dev",
   wssUrl: "wss://rpc-devnet.adventurelayer.dev",
   // rpcUrl: "https://rpc.adventurelayer.dev",
-  // wssUrl: "ws://3.84.203.161:8548",
-  // wssUrl: "ws://54.145.142.106:8548",
 }
 export const AdventureLocal1 = {
   chainId: 12340140,

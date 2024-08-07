@@ -13,10 +13,9 @@ const getTransactionLink = (explorerUrl) => (txnId) => `${explorerUrl}/tx/${txnI
 
 const AdventureLayer = {
   // chainId: 412346,
-  // chainId: 12340054 ,
   chainId: 242069,
-  rpcUrl: "http://3.84.203.161:8515",
-  wssUrl: "ws://3.84.203.161:8516",
+  rpcUrl: "https://rpc-devnet.adventurelayer.dev",
+  wssUrl: "wss://rpc-devnet.adventurelayer.dev",
   chainName: 'Adventure Layer L2',
   isTestChain: false,
   isLocalChain: false,
@@ -30,16 +29,14 @@ const AdventureLayer = {
   blockExplorerUrl: 'https://explorer.adventurelayer.dev',
   getExplorerAddressLink: getAddressLink('https://explorer.adventurelayer.dev'),
   getExplorerTransactionLink: getTransactionLink('https://explorer.adventurelayer.dev'),
-  // wssUrl: "ws://3.84.203.161:8548",
-  // wssUrl: "ws://54.145.142.106:8548",
 }
 const AdventureLocal1 = {
-  chainId: 12340111,
+  chainId: 12340140,
+  rpcUrl: "https://rpc-devnet.adventurelayer.dev/node1/shard",
+  wssUrl: "wss://rpc-devnet.adventurelayer.dev/node1/shard",
   chainName: 'Adventure Local 1',
   isTestChain: false,
   isLocalChain: false,
-  rpcUrl: "http://3.84.203.161:8547",
-  wssUrl: "ws://3.84.203.161:8548",
   nativeCurrency: {
     name: 'Ether',
     symbol: 'ETH',
@@ -47,23 +44,18 @@ const AdventureLocal1 = {
   },
 }
 const AdventureLocal2 = {
-  chainId: 12340112,
+  chainId: 12340141,
+  rpcUrl: "https://rpc-devnet.adventurelayer.dev/node2/shard",
+  wssUrl: "wss://rpc-devnet.adventurelayer.dev/node2/shard",
   chainName: 'Adventure Local 2',
   isTestChain: false,
   isLocalChain: false,
-  rpcUrl: "http://3.84.203.161:8557",
-  wssUrl: "ws://3.84.203.161:8558",
   nativeCurrency: {
     name: 'Ether',
     symbol: 'ETH',
     decimals: 18,
   },
 }
-// {
-//   chainId: 412346,
-//   rpcUrl: "http://3.84.203.161:8547",
-//   wssUrl: "ws://3.84.203.161:8548",
-// }
 
 // IMPORTANT, PLEASE READ
 // To avoid disruptions in your app, change this to your own Infura project id.
