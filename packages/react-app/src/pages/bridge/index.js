@@ -7,7 +7,6 @@ import { shortenAddress, useContractFunction, useEthers, useLookupAddress, Sepol
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Decimal from "decimal.js"
-
 import { AppstoreOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import './index.css';
