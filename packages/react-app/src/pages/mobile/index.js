@@ -31,7 +31,7 @@ import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 
 const AdventureLayer = {
     chainId: 412346,
-    rpcUrl: "https://rpc.adventurelayer.dev",
+    rpcUrl: "https://rpc.adventurelayer.xyz",
     wssUrl: "ws://3.84.203.161:8548",
 }
 
@@ -78,9 +78,9 @@ function ResponsiveAppBar() {
                 {isMenuOpen && (
                     <div className={styles.mobileMenu}>
                         <div className={styles.itemBox}>
-                            <a className={styles.MobileMenuItem} href="https://faucet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
-                            <a className={styles.MobileMenuItem} href="https://bridge.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Bridge</a>
-                            <a className={styles.MobileMenuItem} href="https://docs.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Doc</a>
+                            <a className={styles.MobileMenuItem} href="https://faucet.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Faucet</a>
+                            <a className={styles.MobileMenuItem} href="https://bridge.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Bridge</a>
+                            <a className={styles.MobileMenuItem} href="https://docs.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Doc</a>
                         </div>
                     </div>
                 )}
