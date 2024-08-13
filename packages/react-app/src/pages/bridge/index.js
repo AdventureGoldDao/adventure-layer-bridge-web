@@ -50,7 +50,7 @@ import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 const AdventureLayer = {
   chainId: 412346,
-  rpcUrl: "https://rpc.adventurelayer.dev",
+  rpcUrl: "https://rpc.adventurelayer.xyz",
   wssUrl: "ws://3.84.203.161:8548",
 }
 
@@ -81,9 +81,9 @@ function ResponsiveAppBar() {
         <img className='logo' src={Logo1} alt='background' />
       </div>
       <div className='menu'>
-        <a className='menuItem' href="https://faucet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
-        <a className='menuItem' href="https://bridge.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Bridge</a>
-        <a className='menuItem' href="https://docs.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Doc</a>
+        <a className='menuItem' href="https://faucet.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Faucet</a>
+        <a className='menuItem' href="https://bridge.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Bridge</a>
+        <a className='menuItem' href="https://docs.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Doc</a>
       </div>
       {/* <div className='connect'>
       <div className='Button'>Connect</div>
