@@ -14,8 +14,8 @@ const getTransactionLink = (explorerUrl) => (txnId) => `${explorerUrl}/tx/${txnI
 const AdventureLayer = {
   // chainId: 412346,
   chainId: 242069,
-  rpcUrl: "https://rpc-devnet.adventurelayer.dev",
-  wssUrl: "wss://rpc-devnet.adventurelayer.dev",
+  rpcUrl: "https://rpc-devnet.adventurelayer.xyz",
+  wssUrl: "wss://rpc-devnet.adventurelayer.xyz",
   chainName: 'Adventure Layer L2',
   isTestChain: false,
   isLocalChain: false,
@@ -26,14 +26,14 @@ const AdventureLayer = {
     symbol: 'ETH',
     decimals: 18,
   },
-  blockExplorerUrl: 'https://explorer.adventurelayer.dev',
-  getExplorerAddressLink: getAddressLink('https://explorer.adventurelayer.dev'),
-  getExplorerTransactionLink: getTransactionLink('https://explorer.adventurelayer.dev'),
+  blockExplorerUrl: 'https://explorer.adventurelayer.xyz',
+  getExplorerAddressLink: getAddressLink('https://explorer.adventurelayer.xyz'),
+  getExplorerTransactionLink: getTransactionLink('https://explorer.adventurelayer.xyz'),
 }
 const AdventureLocal1 = {
   chainId: 12340140,
-  rpcUrl: "https://rpc-devnet.adventurelayer.dev/node1/shard",
-  wssUrl: "wss://rpc-devnet.adventurelayer.dev/node1/shard",
+  rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node1/shard",
+  wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node1/shard",
   chainName: 'Adventure Local 1',
   isTestChain: false,
   isLocalChain: false,
@@ -45,8 +45,8 @@ const AdventureLocal1 = {
 }
 const AdventureLocal2 = {
   chainId: 12340141,
-  rpcUrl: "https://rpc-devnet.adventurelayer.dev/node2/shard",
-  wssUrl: "wss://rpc-devnet.adventurelayer.dev/node2/shard",
+  rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node2/shard",
+  wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node2/shard",
   chainName: 'Adventure Local 2',
   isTestChain: false,
   isLocalChain: false,
@@ -69,10 +69,10 @@ const config = {
     [Sepolia.chainId]: Sepolia.rpcUrl,
     [AdventureLayer.chainId]: AdventureLayer.rpcUrl,
     [AdventureLocal1.chainId]: AdventureLocal1.rpcUrl,
-    [AdventureLocal2.chainId]: AdventureLocal2.rpcUrl,
+    // [AdventureLocal2.chainId]: AdventureLocal2.rpcUrl,
   },
   // supportedChains: [ChainId.Mainnet, ChainId.Goerli, ChainId.Kovan, ChainId.Rinkeby, ChainId.Ropsten, ChainId.Arbitrum, ChainId.Sepolia, AdventureLayer.chainId],
-  networks: [...DEFAULT_SUPPORTED_CHAINS, AdventureLayer, AdventureLocal1, AdventureLocal2]
+  networks: [...DEFAULT_SUPPORTED_CHAINS, AdventureLayer, AdventureLocal1], // AdventureLocal2
 }
 
 // You should replace this url with your own and put it into a .env file

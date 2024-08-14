@@ -33,19 +33,19 @@ import adv_logo from '../img/adv-logo.png';
 export const AdventureLayer = {
   // chainId: 412346,
   chainId: 242069,
-  rpcUrl: "https://rpc-devnet.adventurelayer.dev",
-  wssUrl: "wss://rpc-devnet.adventurelayer.dev",
+  rpcUrl: "https://rpc-devnet.adventurelayer.xyz",
+  wssUrl: "wss://rpc-devnet.adventurelayer.xyz",
   // rpcUrl: "https://rpc.adventurelayer.dev",
 }
 export const AdventureLocal1 = {
-  chainId: 12340140,
-  rpcUrl: "https://rpc-devnet.adventurelayer.dev/node1/shard",
-  wssUrl: "wss://rpc-devnet.adventurelayer.dev/node1/shard",
+  chainId: 12340188,
+  rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node1/shard",
+  wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node1/shard",
 }
 export const AdventureLocal2 = {
   chainId: 12340141,
-  rpcUrl: "https://rpc-devnet.adventurelayer.dev/node2/shard",
-  wssUrl: "wss://rpc-devnet.adventurelayer.dev/node2/shard",
+  rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node2/shard",
+  wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node2/shard",
 }
 
 export const bridgeConfig = {
@@ -74,11 +74,11 @@ export const bridgeConfig = {
     logo: adv_logo,
     abi: abis['adventureL2'],
     rpcUrl: AdventureLayer.rpcUrl,
-    target: ['sepolia', 'local1', 'local2'],
+    target: ['sepolia', 'local1'], // , 'local2'
     abis: {
       sepolia: abis['adventureL2'],
       local1: abis['adventureL2'],
-      local2: abis['adventureL2'],
+      // local2: abis['adventureL2'],
     },
     addresses: {
       // Adventure Layer L2 ==> Sepolia = 0xe8b68a74d8527e650e144bfecd999302b676df2f
@@ -86,7 +86,7 @@ export const bridgeConfig = {
       // Adventure Layer L2 ==> Shard2 = 0x7eb75992b53d5b603cc566575b5427e6d52ff6cd
       sepolia: addresses.depositL2,
       local1: '0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa',
-      local2: '0x7eb75992b53d5b603cc566575b5427e6d52ff6cd',
+      // local2: '0x7eb75992b53d5b603cc566575b5427e6d52ff6cd',
     },
   },
   local1: {
@@ -132,13 +132,15 @@ export const fromChainSelect = [{
 }, {
   name: 'adventure',
   text: 'Adventure Layer',
-  target: ['sepolia', 'local1', 'local2'],
+  target: ['sepolia', 'local1'], // , 'local2'
 }, {
   name: 'local1',
   text: 'Adventure Shard 1',
   target: ['adventure'],
-}, {
-  name: 'local2',
-  text: 'Adventure Shard 2',
-  target: ['adventure'],
-}]
+}
+// , {
+//   name: 'local2',
+//   text: 'Adventure Shard 2',
+//   target: ['adventure'],
+// }
+]
