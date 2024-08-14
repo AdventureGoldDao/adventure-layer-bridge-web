@@ -12,24 +12,24 @@ const getAddressLink = (explorerUrl) => (address) => `${explorerUrl}/address/${a
 const getTransactionLink = (explorerUrl) => (txnId) => `${explorerUrl}/tx/${txnId}`
 
 const AdventureLayer = {
-  chainId: 412346,
+  chainId: 12340189,
   chainName: 'Adventure Layer L2',
   isTestChain: false,
   isLocalChain: false,
   // multicallAddress: '0x4E74EBd9CABff51cE9a43EFe059bA8c5A28E4A14',
-  rpcUrl: 'https://rpc.adventurelayer.dev',
+  rpcUrl: 'https://rpc.adventurelayer.xyz',
   nativeCurrency: {
     name: 'Ether',
     symbol: 'ETH',
     decimals: 18,
   },
-  blockExplorerUrl: 'https://explorer.adventurelayer.dev',
-  getExplorerAddressLink: getAddressLink('https://explorer.adventurelayer.dev'),
-  getExplorerTransactionLink: getTransactionLink('https://explorer.adventurelayer.dev'),
-  wssUrl: "ws://3.84.203.161:8548",
+  blockExplorerUrl: 'https://explorer.adventurelayer.xyz',
+  getExplorerAddressLink: getAddressLink('https://explorer.adventurelayer.xyz'),
+  getExplorerTransactionLink: getTransactionLink('https://explorer.adventurelayer.xyz'),
+  wssUrl: "wss://rpc.adventurelayer.xyz",
 }
 // {
-//   chainId: 412346,
+//   chainId: 12340189,
 //   rpcUrl: "http://3.84.203.161:8547",
 //   wssUrl: "ws://3.84.203.161:8548",
 // }

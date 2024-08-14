@@ -30,9 +30,9 @@ import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 
 const AdventureLayer = {
-    chainId: 412346,
+    chainId: 12340189,
     rpcUrl: "https://rpc.adventurelayer.xyz",
-    wssUrl: "ws://3.84.203.161:8548",
+    wssUrl: "wss://rpc.adventurelayer.xyz",
 }
 
 
