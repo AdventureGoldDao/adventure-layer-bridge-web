@@ -38,7 +38,7 @@ import {
   AdventureLocal2,
   bridgeConfig,
   fromChainSelect,
-} from '../../bridge/config'
+} from '../../config'
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
