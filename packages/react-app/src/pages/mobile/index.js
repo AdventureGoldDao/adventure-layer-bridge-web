@@ -9,10 +9,8 @@ import Decimal from "decimal.js"
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import styles from './index.module.css';
-
 import Box from '@mui/material/Box';
-
-import MuiButton from '@mui/material/Button';
+import config from '../../config';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -31,8 +29,8 @@ import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 
 const AdventureLayer = {
     chainId: 12340189,
-    rpcUrl: "https://rpc.adventurelayer.xyz",
-    wssUrl: "wss://rpc.adventurelayer.xyz",
+    rpcUrl: config.rpcUrl,
+    wssUrl: config.wssRpcUrl,
 }
 
 
@@ -78,9 +76,9 @@ function ResponsiveAppBar() {
                 {isMenuOpen && (
                     <div className={styles.mobileMenu}>
                         <div className={styles.itemBox}>
-                            <a className={styles.MobileMenuItem} href="https://faucet.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Faucet</a>
-                            <a className={styles.MobileMenuItem} href="https://bridge.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Bridge</a>
-                            <a className={styles.MobileMenuItem} href="https://docs.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Doc</a>
+                            <a className={styles.MobileMenuItem} href="{config.faucetUrl}" target="_blank" rel="noopener noreferrer">Faucet</a>
+                            <a className={styles.MobileMenuItem} href="{config.bridgeUrl}" target="_blank" rel="noopener noreferrer">Bridge</a>
+                            <a className={styles.MobileMenuItem} href="{config.docsUrl}" target="_blank" rel="noopener noreferrer">Doc</a>
                         </div>
                     </div>
                 )}

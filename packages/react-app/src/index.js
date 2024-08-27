@@ -1,5 +1,5 @@
 import "./index.css";
-
+import config from './config';
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { DAppProvider, Mainnet, Sepolia, ChainId, DEFAULT_SUPPORTED_CHAINS } from "@usedapp/core";
 // import { getAddressLink, getTransactionLink } from '@usedapp/core/helpers'
@@ -17,16 +17,16 @@ const AdventureLayer = {
   isTestChain: false,
   isLocalChain: false,
   // multicallAddress: '0x4E74EBd9CABff51cE9a43EFe059bA8c5A28E4A14',
-  rpcUrl: 'https://rpc.adventurelayer.xyz',
+  rpcUrl: config.rpcUrl,
   nativeCurrency: {
     name: 'Ether',
     symbol: 'ETH',
     decimals: 18,
   },
-  blockExplorerUrl: 'https://explorer.adventurelayer.xyz',
-  getExplorerAddressLink: getAddressLink('https://explorer.adventurelayer.xyz'),
-  getExplorerTransactionLink: getTransactionLink('https://explorer.adventurelayer.xyz'),
-  wssUrl: "wss://rpc.adventurelayer.xyz",
+  blockExplorerUrl: config.explorerUrl,
+  getExplorerAddressLink: getAddressLink(config.explorerUrl),
+  getExplorerTransactionLink: getTransactionLink(config.explorerUrl),
+  wssUrl: config.wssRpcUrl,
 }
 // {
 //   chainId: 12340189,

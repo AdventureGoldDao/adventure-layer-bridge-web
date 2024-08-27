@@ -10,6 +10,7 @@ import Decimal from "decimal.js"
 import { AppstoreOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import './index.css';
+import config from '../../config';
 
 import Alert from '@mui/material/Alert';
 import AppBar from '@mui/material/AppBar';
@@ -50,8 +51,8 @@ import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 const AdventureLayer = {
   chainId: 12340189,
-  rpcUrl: "https://rpc.adventurelayer.xyz",
-  wssUrl: "wss://rpc.adventurelayer.xyz",
+  rpcUrl: config.rpcUrl,
+  wssUrl: config.wssRpcUrl,
 }
 
 
@@ -81,9 +82,9 @@ function ResponsiveAppBar() {
         <img className='logo' src={Logo1} alt='background' />
       </div>
       <div className='menu'>
-        <a className='menuItem' href="https://faucet.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Faucet</a>
-        <a className='menuItem' href="https://bridge.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Bridge</a>
-        <a className='menuItem' href="https://docs.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Doc</a>
+        <a className='menuItem' href="{config.faucetUrl}" target="_blank" rel="noopener noreferrer">Faucet</a>
+        <a className='menuItem' href="{config.bridgeUrl}" target="_blank" rel="noopener noreferrer">Bridge</a>
+        <a className='menuItem' href="{config.docsUrl}" target="_blank" rel="noopener noreferrer">Doc</a>
       </div>
       {/* <div className='connect'>
       <div className='Button'>Connect</div>
