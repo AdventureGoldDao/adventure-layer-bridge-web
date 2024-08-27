@@ -7,6 +7,7 @@ import { shortenAddress, useContractFunction, useEthers, useLookupAddress, Sepol
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Decimal from "decimal.js"
+import config from "../../config";
 
 import { AppstoreOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
@@ -84,9 +85,9 @@ function ResponsiveAppBar() {
         <img className='logo' src={Logo1} alt='background' />
       </div>
       <div className='menu'>
-        <a className='menuItem' href="https://faucet-devnet.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Faucet</a>
-        <a className='menuItem' href="https://bridge-devnet.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Bridge</a>
-        <a className='menuItem' href="https://docs.adventurelayer.xyz" target="_blank" rel="noopener noreferrer">Doc</a>
+        <a className='menuItem' href="{config.faucetUrl}" target="_blank" rel="noopener noreferrer">Faucet</a>
+        <a className='menuItem' href="{config.bridgeUrl}" target="_blank" rel="noopener noreferrer">Bridge</a>
+        <a className='menuItem' href="{config.docsUrl}" target="_blank" rel="noopener noreferrer">Doc</a>
       </div>
       {/* <div className='connect'>
       <div className='Button'>Connect</div>
