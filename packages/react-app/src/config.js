@@ -5,3 +5,5 @@ const config = {
     rpcUrl: "https://rpc-devnet.adventurelayer.xyz",
     wssRpcUrl: "wss://rpc-devnet.adventurelayer.xyz",
   };
+
+  export default config;
