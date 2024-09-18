@@ -9,7 +9,7 @@ import Decimal from "decimal.js"
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import styles from './index.module.css';
-
+import configUrl from "../../config";
 import Box from '@mui/material/Box';
 
 import MuiMenu from '@mui/material/Menu';
@@ -82,9 +82,9 @@ function ResponsiveAppBar() {
         {isMenuOpen && (
           <div className={styles.mobileMenu}>
             <div className={styles.itemBox}>
-              <a className={styles.MobileMenuItem} href="{config.faucetUrl}" target="_blank" rel="noopener noreferrer">Faucet</a>
-              <a className={styles.MobileMenuItem} href="{config.bridgeUrl}" target="_blank" rel="noopener noreferrer">Bridge</a>
-              <a className={styles.MobileMenuItem} href="{config.docsUrl}" target="_blank" rel="noopener noreferrer">Doc</a>
+              <a className={styles.MobileMenuItem} href={configUrl.faucetUrl} target="_blank" rel="noopener noreferrer">Faucet</a>
+              <a className={styles.MobileMenuItem} href={configUrl.bridgeUrl} target="_blank" rel="noopener noreferrer">Bridge</a>
+              <a className={styles.MobileMenuItem} href={configUrl.docsUrl} target="_blank" rel="noopener noreferrer">Doc</a>
             </div>
           </div>
         )}
