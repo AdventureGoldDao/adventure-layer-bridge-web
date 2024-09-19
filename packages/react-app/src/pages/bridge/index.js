@@ -59,20 +59,21 @@ import {
 } from '../../config'
 
 // Minimal ABI to get ERC-20 Token balance
-const minABI = [
-  // balanceOf
-  {
-    "constant": true,
-    "inputs": [{ "name": "_owner", "type": "address" }],
-    "name": "balanceOf",
-    "outputs": [{ "name": "balance", "type": "uint256" }],
-    "type": "function"
-  },
-];
+const minABI = abis.erc20
+// const minABI = [
+//   // balanceOf
+//   {
+//     "constant": true,
+//     "inputs": [{ "name": "_owner", "type": "address" }],
+//     "name": "balanceOf",
+//     "outputs": [{ "name": "balance", "type": "uint256" }],
+//     "type": "function"
+//   },
+// ];
 
 async function getAccountBalance(web3, chain, userAddress) {
-  if (bridgeConfig[chain] && bridgeConfig[chain].tokenAdress) {
-    return getTokenBalance(web3, bridgeConfig[chain].tokenAdress, userAddress)
+  if (bridgeConfig[chain] && bridgeConfig[chain].tokenAddress) {
+    return getTokenBalance(web3, bridgeConfig[chain].tokenAddress, userAddress)
   }
   return web3.eth.getBalance(userAddress)
 }

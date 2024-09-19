@@ -40,6 +40,28 @@ import {
   fromChainSelect,
 } from '../../config'
 
+const minABI = abis.erc20
+
+async function getAccountBalance(web3, chain, userAddress) {
+  if (bridgeConfig[chain] && bridgeConfig[chain].tokenAddress) {
+    return getTokenBalance(web3, bridgeConfig[chain].tokenAddress, userAddress)
+  }
+  return web3.eth.getBalance(userAddress)
+}
+
+async function getTokenBalance(web3, tokenAddress, userAddress) {
+  try {
+    const contract = new web3.eth.Contract(minABI, tokenAddress);
+    // Call the balanceOf method
+    const balance = await contract.methods.balanceOf(userAddress).call();
+    // console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')}`);
+    return balance;
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+  return 0
+}
+
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -218,13 +240,15 @@ const BridgeIndex = () => {
   const reloadAccountBalance = async () => {
     if (account) {
       try {
-        const fromBalance = await fromWeb3.eth.getBalance(account)
+        // const fromBalance = await fromWeb3.eth.getBalance(account)
+        const fromBalance = await getAccountBalance(fromWeb3, selectSource, account)
         fromBalanceAmount = new Decimal(fromBalance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(fromBalance)
       } catch (err) { console.error('From:', err) }
 
       try {
-        const toBalance = await toWeb3.eth.getBalance(account)
+        // const toBalance = await toWeb3.eth.getBalance(account)
+        const toBalance = await getAccountBalance(toWeb3, selectTarget, account)
         toBalanceAmount = new Decimal(toBalance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(toBalance)
       } catch (err) { console.error('To:', err) }
