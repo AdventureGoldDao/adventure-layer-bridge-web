@@ -58,6 +58,38 @@ import {
   fromChainSelect,
 } from '../../config'
 
+// Minimal ABI to get ERC-20 Token balance
+const minABI = [
+  // balanceOf
+  {
+    "constant": true,
+    "inputs": [{ "name": "_owner", "type": "address" }],
+    "name": "balanceOf",
+    "outputs": [{ "name": "balance", "type": "uint256" }],
+    "type": "function"
+  },
+];
+
+async function getAccountBalance(web3, chain, userAddress) {
+  if (bridgeConfig[chain] && bridgeConfig[chain].tokenAdress) {
+    return getTokenBalance(web3, bridgeConfig[chain].tokenAdress, userAddress)
+  }
+  return web3.eth.getBalance(userAddress)
+}
+
+async function getTokenBalance(web3, tokenAddress, userAddress) {
+  try {
+    const contract = new web3.eth.Contract(minABI, tokenAddress);
+    // Call the balanceOf method
+    const balance = await contract.methods.balanceOf(userAddress).call();
+    // console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')}`);
+    return balance;
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+  return 0
+}
+
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -254,13 +286,15 @@ const BridgeIndex = () => {
     // }
     if (account) {
       try {
-        const fromBalance = await fromWeb3.eth.getBalance(account)
+        // const fromBalance = await fromWeb3.eth.getBalance(account)
+        const fromBalance = await getAccountBalance(fromWeb3, selectSource, account)
         fromBalanceAmount = new Decimal(fromBalance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(fromBalance)
       } catch (err) { console.error('From:', err) } 
 
       try {
-        const toBalance = await toWeb3.eth.getBalance(account)
+        // const toBalance = await toWeb3.eth.getBalance(account)
+        const toBalance = await getAccountBalance(toWeb3, selectTarget, account)
         toBalanceAmount = new Decimal(toBalance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(toBalance)
       } catch (err) { console.error('To:', err) } 
@@ -497,7 +531,7 @@ const BridgeIndex = () => {
                 <div className='send_box'>
                   <div className='send_title'>
                     <div className='send_txt'>Send</div>
-                    <div className='send_txt'>Max: {accountBalance.from} ETH</div>
+                    <div className='send_txt'>Max: {accountBalance.from} AGLD</div>
                   </div>
                   <div className="send_input_box">
                     <Input className='send_custom_input' style={{
@@ -517,7 +551,7 @@ const BridgeIndex = () => {
                     />
                     <div className='send_input_logo'>
                       <img src={eth_logo} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
-                      <div className='eth_txt'>ETH</div>
+                      <div className='eth_txt'>AGLD</div>
                     </div>
                   </div>
 
@@ -560,14 +594,14 @@ const BridgeIndex = () => {
 
                   <div className='receive_eth'>
                     <img src={eth_logo} alt='background' style={{ marginRight: '8px', width: '22px', height: '22px' }} />
-                    <div className='eth_txt'>ETH</div>
+                    <div className='eth_txt'>AGLD</div>
                   </div>
                 </div>
                 {/* <span>{targetChainName} gas fee 0 ETH</span> */}
               </div>
 
               {/* <div className='gas'>{targetChainName}gas fee 0 ETH</div> */}
-              <div className='gas'>gas fee {gasFee} ETH</div>
+              <div className='gas'>gas fee {gasFee} AGLD</div>
               <div className="btn-box">
                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                   Transfer

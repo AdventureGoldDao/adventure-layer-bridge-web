@@ -457,7 +457,7 @@ const BridgeIndex = () => {
                 <div className={styles.send_box}>
                   <div className={styles.send_title}>
                     <div className={styles.send_txt}>Send</div>
-                    <div className={styles.send_txt}>Max: {accountBalance.from} ETH</div>
+                    <div className={styles.send_txt}>Max: {accountBalance.from} AGLD</div>
                   </div>
 
                   <div style={{
@@ -486,7 +486,7 @@ const BridgeIndex = () => {
                       onChange={handleInputChange} />
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                       <img src={eth_logo} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
-                      <div className={styles.mb_eth_txt}>ETH</div>
+                      <div className={styles.mb_eth_txt}>AGLD</div>
                     </div>
                   </div>
 
@@ -530,14 +530,14 @@ const BridgeIndex = () => {
                   <div className={styles.mb_eth_num}>{receiveAmount}</div>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <img src={eth_logo} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
-                    <div style={{ fontSize: '14px', fontWeight: 600, height: '14px' }} >ETH</div>
+                    <div style={{ fontSize: '14px', fontWeight: 600, height: '14px' }} >AGLD</div>
                   </div>
                 </div>
                 {/* <span>{targetChainName} gas fee 0 ETH</span> */}
               </div>
 
               {/* <div className={styles.gas}>{targetChainName}gas fee 0 ETH</div> */}
-              <div className={styles.gas}>gas fee {gasFee} ETH</div>
+              <div className={styles.gas}>gas fee {gasFee} AGLD</div>
               <div className={styles.btnBox}>
                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                   Transfer

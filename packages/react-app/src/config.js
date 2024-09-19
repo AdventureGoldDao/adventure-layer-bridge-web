@@ -69,6 +69,7 @@ export const bridgeConfig = {
       // Sepolia ==> Adventure Layer L2 = 0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24
       adventure: addresses['depositL1'],
     },
+    tokenAdress: '0x4bff082a07c50724FEce17d9ecFC6dE1FF809722',
   },
   adventure: {
     address: addresses['depositL2'],
