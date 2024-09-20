@@ -38,6 +38,7 @@ import {
   AdventureLocal2,
   bridgeConfig,
   fromChainSelect,
+  MenuURL,
 } from '../../config'
 
 const minABI = abis.erc20
@@ -104,9 +105,9 @@ function ResponsiveAppBar() {
         {isMenuOpen && (
           <div className={styles.mobileMenu}>
             <div className={styles.itemBox}>
-              <a className={styles.MobileMenuItem} href="https://faucet-devnet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
-              <a className={styles.MobileMenuItem} href="https://bridge-devnet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Bridge</a>
-              <a className={styles.MobileMenuItem} href="https://docs-devnet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Doc</a>
+              <a className={styles.MobileMenuItem} href={MenuURL.faucetUrl} target="_blank" rel="noopener noreferrer">Faucet</a>
+              <a className={styles.MobileMenuItem} href={MenuURL.bridgeUrl} target="_blank" rel="noopener noreferrer">Bridge</a>
+              <a className={styles.MobileMenuItem} href={MenuURL.docsUrl} target="_blank" rel="noopener noreferrer">Doc</a>
             </div>
           </div>
         )}

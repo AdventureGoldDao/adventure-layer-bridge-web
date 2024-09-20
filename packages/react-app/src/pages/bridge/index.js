@@ -56,6 +56,7 @@ import {
   AdventureLocal2,
   bridgeConfig,
   fromChainSelect,
+  MenuURL,
 } from '../../config'
 
 // Minimal ABI to get ERC-20 Token balance
@@ -117,9 +118,9 @@ function ResponsiveAppBar() {
         <img className='logo' src={Logo1} alt='background' />
       </div>
       <div className='menu'>
-        <a className='menuItem' href="https://faucet-devnet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Faucet</a>
-        <a className='menuItem' href="https://bridge-devnet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Bridge</a>
-        <a className='menuItem' href="https://docs-devnet.adventurelayer.dev" target="_blank" rel="noopener noreferrer">Doc</a>
+        <a className='menuItem' href={MenuURL.faucetUrl} target="_blank" rel="noopener noreferrer">Faucet</a>
+        <a className='menuItem' href={MenuURL.bridgeUrl} target="_blank" rel="noopener noreferrer">Bridge</a>
+        <a className='menuItem' href={MenuURL.docsUrl} target="_blank" rel="noopener noreferrer">Doc</a>
       </div>
       {/* <div className='connect'>
       <div className='Button'>Connect</div>
