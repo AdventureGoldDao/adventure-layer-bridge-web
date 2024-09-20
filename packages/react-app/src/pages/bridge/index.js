@@ -185,6 +185,64 @@ function WalletButton() {
   );
 }
 
+
+async function connectWallet() {
+  if (window.ethereum) {
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    return provider.getSigner();
+  } else {
+    console.error('MetaMask not found');
+    return null;
+  }
+}
+
+async function depositTokenToL2(signer, amount) {
+  const bridgeAddress = '0x316712e1153b550a155de19c8cc99fb3996446c8';
+  const tokenAddress = '0x4bff082a07c50724FEce17d9ecFC6dE1FF809722';
+  const tokenAbi = [
+    'function approve(address spender, uint256 amount) public returns (bool)'
+  ];
+  const bridgeAbi = [
+    // 假设桥接合约有一个 depositToken 方法
+    `function depositERC20Transaction(
+        address _to,
+        uint256 _mint,
+        uint256 _value,
+        uint64 _gasLimit,
+        bool _isCreation,
+        bytes memory _data
+    ) public
+    `
+  ];
+// 实例化代币合约
+  const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+
+  // 步骤 1：批准桥接合约转移代币
+  console.log('Approving token transfer...');
+  const approveTx = await tokenContract.approve(bridgeAddress, amount);
+  await approveTx.wait();  // 等待交易确认
+  console.log(`Approved transaction hash: ${approveTx.hash}`);
+
+  // 实例化桥接合约
+  const bridgeContract = new ethers.Contract(bridgeAddress, bridgeAbi, signer);
+
+  const address = await signer.getAddress();
+  // 步骤 2：调用桥接合约的存款方法
+  console.log(`Depositing token..., address: ${address}`);
+  const depositTx = await bridgeContract.depositERC20Transaction(
+      address,
+      amount,
+      amount,
+      500000,
+      false,
+      []
+  );
+  await depositTx.wait();  // 等待交易确认
+  console.log(`Deposit transaction hash: ${depositTx.hash}`);
+}
+
+
 const useMyContractFunction = (chain, target, addr) => {
   const chainConfig = bridgeConfig[chain]
   const address = addr
@@ -404,15 +462,23 @@ const BridgeIndex = () => {
     try {
       const nonce = await fromWeb3.eth.getTransactionCount(account, 'pending')
       console.log('nonce', nonce, account, sendBigAmount)
-      sendDeposit({
-        value: sendBigAmount,
-        // sender: account,
-        // gasLimit: 3e7,
-        // nonce: Number(nonce) + 7,
-        // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-      }).then(() => {
-        reloadAccountBalance()
-      })
+      if (selectSource === 'sepolia'){
+        const signer = await connectWallet();
+        if (!signer) return;
+        await depositTokenToL2(signer,sendBigAmount)
+      } else{
+        sendDeposit({
+          value: sendBigAmount,
+          // sender: account,
+          // gasLimit: 3e7,
+          // nonce: Number(nonce) + 7,
+          // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+        }).finally((e)=>{
+          console.log("error", e)
+          return
+        })
+      }
+      await reloadAccountBalance()
     } catch (e) {
       console.log("error", e)
     }
