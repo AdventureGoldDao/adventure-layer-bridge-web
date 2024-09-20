@@ -501,8 +501,6 @@ const BridgeIndex = () => {
       if (!signer) return;
       if (selectSource === 'sepolia'){
         await depositTokenToL2(signer,sendBigAmount)
-      } else if (selectSource === 'adventure') {
-        await depositL2ToToken(signer,sendBigAmount)
       } else {
           sendDeposit({
             value: sendBigAmount,
