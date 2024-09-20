@@ -31,8 +31,7 @@ import adv_logo from './img/adv-logo.png';
 // ws     wss://rpc-devnet.adventurelayer.dev/node2/shard
 // chainid 12340141
 export const AdventureLayer = {
-  // chainId: 412346,
-  chainId: 242069,
+  chainId: 242070,
   rpcUrl: "https://rpc-devnet.adventurelayer.xyz",
   wssUrl: "wss://rpc-devnet.adventurelayer.xyz",
   chainName: 'Adventure Layer L2',

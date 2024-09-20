@@ -197,7 +197,9 @@ async function connectWallet() {
   }
 }
 
-async function checkAllowance(signer, tokenAddress, bridgeAddress) {
+const bridgeAddress = '0x316712e1153b550a155de19c8cc99fb3996446c8';
+const tokenAddress = '0x4bff082a07c50724FEce17d9ecFC6dE1FF809722';
+async function checkAllowance(signer) {
   const tokenAbi = [
     'function allowance(address owner, address spender) public view returns (uint256)'
   ];
@@ -208,9 +210,30 @@ async function checkAllowance(signer, tokenAddress, bridgeAddress) {
   return allowance;
 }
 
+async function depositL2ToToken(signer, amount) {
+  const l2BridgeAbi = [
+    "function initiateWithdrawal(address _target, uint256 _gasLimit, bytes memory _data) public payable"
+  ];
+
+  const l2BridgeContract = new ethers.Contract(bridgeAddress, l2BridgeAbi, signer);
+  const gasLimit = 500_000; // 设置合理的 L1 gas 限制
+  const address = await signer.getAddress();
+  try {
+    const tx = await l2BridgeContract.initiateWithdrawal(
+        address, // L1 目标地址
+        gasLimit, // L1 上的 gas 限制
+        '0x', // 如果没有特定的合约调用数据，可以设置为空
+        { value: amount } // 提现金额
+    );
+    tx.wait()
+    console.log(`Initiated withdrawal. Transaction hash: ${tx.hash}`);
+  } catch (error) {
+    console.error('Error initiating withdrawal:', error);
+  }
+}
+
+
 async function depositTokenToL2(signer, amount) {
-  const bridgeAddress = '0x316712e1153b550a155de19c8cc99fb3996446c8';
-  const tokenAddress = '0x4bff082a07c50724FEce17d9ecFC6dE1FF809722';
   const currentAllowance = await checkAllowance(signer, tokenAddress, bridgeAddress);
   if (currentAllowance.lt(amount)) {
     const tokenAbi = [
@@ -474,22 +497,24 @@ const BridgeIndex = () => {
     try {
       const nonce = await fromWeb3.eth.getTransactionCount(account, 'pending')
       console.log('nonce', nonce, account, sendBigAmount)
+      const signer = await connectWallet();
+      if (!signer) return;
       if (selectSource === 'sepolia'){
-        const signer = await connectWallet();
-        if (!signer) return;
         await depositTokenToL2(signer,sendBigAmount)
-      } else{
-        sendDeposit({
-          value: sendBigAmount,
-          // sender: account,
-          // gasLimit: 3e7,
-          // nonce: Number(nonce) + 7,
-          // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-        }).finally((e)=>{
-          console.log("error", e)
-          return
-        })
-      }
+      } else if (selectSource === 'adventure') {
+        await depositL2ToToken(signer,sendBigAmount)
+      } else {
+          sendDeposit({
+            value: sendBigAmount,
+            // sender: account,
+            // gasLimit: 3e7,
+            // nonce: Number(nonce) + 7,
+            // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+          }).finally((e)=>{
+            console.log("error", e)
+            return
+          })
+        }
       await reloadAccountBalance()
     } catch (e) {
       console.log("error", e)
