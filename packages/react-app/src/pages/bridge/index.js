@@ -197,14 +197,34 @@ async function connectWallet() {
   }
 }
 
+async function checkAllowance(signer, tokenAddress, bridgeAddress) {
+  const tokenAbi = [
+    'function allowance(address owner, address spender) public view returns (uint256)'
+  ];
+  const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+  const userAddress = await signer.getAddress();
+  const allowance = await tokenContract.allowance(userAddress, bridgeAddress);
+  console.log(`Current allowance: ${ethers.utils.formatUnits(allowance, 18)}`);
+  return allowance;
+}
+
 async function depositTokenToL2(signer, amount) {
   const bridgeAddress = '0x316712e1153b550a155de19c8cc99fb3996446c8';
   const tokenAddress = '0x4bff082a07c50724FEce17d9ecFC6dE1FF809722';
-  const tokenAbi = [
-    'function approve(address spender, uint256 amount) public returns (bool)'
-  ];
+  const currentAllowance = await checkAllowance(signer, tokenAddress, bridgeAddress);
+  if (currentAllowance.lt(amount)) {
+    const tokenAbi = [
+      'function approve(address spender, uint256 amount) public returns (bool)'
+    ];
+    const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+    // 步骤 1：批准桥接合约转移代币
+    console.log('Approving token transfer...');
+    const approveTx = await tokenContract.approve(bridgeAddress, ethers.constants.MaxUint256);
+    await approveTx.wait();  // 等待交易确认
+    console.log(`Approved transaction hash: ${approveTx.hash}`);
+  }
+
   const bridgeAbi = [
-    // 假设桥接合约有一个 depositToken 方法
     `function depositERC20Transaction(
         address _to,
         uint256 _mint,
@@ -215,14 +235,6 @@ async function depositTokenToL2(signer, amount) {
     ) public
     `
   ];
-// 实例化代币合约
-  const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
-
-  // 步骤 1：批准桥接合约转移代币
-  console.log('Approving token transfer...');
-  const approveTx = await tokenContract.approve(bridgeAddress, amount);
-  await approveTx.wait();  // 等待交易确认
-  console.log(`Approved transaction hash: ${approveTx.hash}`);
 
   // 实例化桥接合约
   const bridgeContract = new ethers.Contract(bridgeAddress, bridgeAbi, signer);
