@@ -36,6 +36,11 @@ export const AdventureLayer = {
   wssUrl: "wss://rpc-devnet.adventurelayer.xyz",
   chainName: 'Adventure Layer L2',
   blockExplorerUrl: 'https://explorer.adventurelayer.xyz',
+  nativeCurrency: {
+    name: 'AGLD',
+    symbol: 'AGLD',
+    decimals: 18,
+  },
   // rpcUrl: "https://rpc.adventurelayer.dev",
 }
 export const AdventureLocal1 = {
@@ -43,6 +48,11 @@ export const AdventureLocal1 = {
   rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node1/shard",
   wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node1/shard",
   chainName: 'Adventure Local 1',
+  nativeCurrency: {
+    name: 'AGLD',
+    symbol: 'AGLD',
+    decimals: 18,
+  },
 }
 export const AdventureLocal2 = {
   chainId: 12340141,

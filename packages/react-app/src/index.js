@@ -26,7 +26,7 @@ const AdventureLayer = {
   isLocalChain: false,
   // multicallAddress: '0x4E74EBd9CABff51cE9a43EFe059bA8c5A28E4A14',
   // rpcUrl: 'https://rpc.adventurelayer.dev',
-  nativeCurrency: {
+  nativeCurrency: l2.nativeCurrency || {
     name: 'Ether',
     symbol: 'ETH',
     decimals: 18,
@@ -46,7 +46,7 @@ const AdventureLocal1 = {
   chainName: shard1.chainName,
   isTestChain: false,
   isLocalChain: false,
-  nativeCurrency: {
+  nativeCurrency: shard1.nativeCurrency || {
     name: 'Ether',
     symbol: 'ETH',
     decimals: 18,
