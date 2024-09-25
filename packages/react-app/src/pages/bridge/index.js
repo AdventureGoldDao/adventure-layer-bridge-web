@@ -42,7 +42,8 @@ import SvgIcon from '@mui/material/SvgIcon';
 import MuiLink from '@mui/material/Link';
 import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
-import eth_logo from '../../img/eth_logo.png';
+// import eth_logo from '../../img/eth_logo.png';
+import eth_logo from '../../img/loot.ico';
 import trans_log from '../../img/trans_logo.png';
 import adv_logo from '../../img/adv-logo.png';
 // import { styled } from '@mui/material/styles';
@@ -603,7 +604,7 @@ const BridgeIndex = () => {
             <img className='logo' src={Logo2} alt='background' />
           </div>
           <div className='alb_box'>
-            <div className='alb_title'>Adventure Layer Bridge</div>
+            <div className='alb_title'>Adventure Layer Devnet Bridge</div>
           </div>
           <div className='content_box'>
             <div className='detail_box'>

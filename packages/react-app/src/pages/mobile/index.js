@@ -24,7 +24,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { addresses, abis } from "@my-app/contracts";
-import eth_logo from '../../img/eth_logo.png';
+// import eth_logo from '../../img/eth_logo.png';
+import eth_logo from '../../img/loot.ico';
 import adv_logo from '../../img/adv-logo.png';
 import trans_log from '../../img/trans_logo.png';
 // import { styled } from '@mui/material/styles';
@@ -452,7 +453,7 @@ const BridgeIndex = () => {
             <img className={styles.logo} src={Logo2} alt='background' />
           </div>
           <div className={styles.alb_box}>
-            <div className={styles.alb_title}>Adventure Layer Bridge</div>
+            <div className={styles.alb_title}>Adventure Layer Devnet Bridge</div>
           </div>
           <div className={styles.content_box}>
             <div className={styles.detail_box}>
@@ -511,7 +512,7 @@ const BridgeIndex = () => {
                       onChange={handleInputChange} />
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                       <img src={eth_logo} alt='background' style={{ marginRight: '5px', width: '16px', height: '16px' }} />
-                      <div className={styles.mb_eth_txt}>AGLD</div>
+                      <div className={styles.mb_eth_txt}>AGLD1</div>
                     </div>
                   </div>
 
