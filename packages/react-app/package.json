@@ -1,0 +1,62 @@
+{
+  "name": "@agld-bridge/react-app",
+  "version": "1.0.0",
+  "homepage": "./",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.10",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@ethersproject/contracts": "^5.6.0",
+    "@ethersproject/providers": "^5.6.0",
+    "@material-ui/core": "^4.12.4",
+    "@mui/icons-material": "^5.15.17",
+    "@mui/material": "^5.15.17",
+    "@agld-bridge/contracts": "^1.0.0",
+    "@testing-library/dom": "^8.11.3",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/react": "^17.0.40",
+    "@usedapp/core": "^1.1.5",
+    "antd": "^5.17.2",
+    "axios": "^1.6.8",
+    "decimal.js": "^10.4.3",
+    "ethers": "^5.7.0",
+    "graphql": "^16.3.0",
+    "ipfs-deploy": "^11.2.0",
+    "react": "17.0.2",
+    "react-device-detect": "^2.2.3",
+    "react-dom": "17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^6.23.1",
+    "react-scripts": "5.0.1",
+    "styled-components": "^6.1.11",
+    "tailwindcss": "^3.4.3",
+    "web3": "^4.8.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "scripts": {
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "ipfs": "yarn build && ipfs-deploy build/",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
+  }
+}

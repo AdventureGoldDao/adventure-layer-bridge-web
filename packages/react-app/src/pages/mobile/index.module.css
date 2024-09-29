@@ -1,0 +1,363 @@
+/* index.css */
+
+/* common style */
+.left-box {
+    display: flex;
+    height: 800px;
+    border: 1px solid #E09657;
+  
+    .logo-box {
+      display: flex;
+      height: 200px;
+    }
+  }
+  
+  .menuBox {
+    font-family: Neue Haas Grotesk Display Pro;
+    width: 100%;
+    height: 45px;
+    background: #1F1A15;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+
+  }
+    .logoBox {
+      width: 20px;
+      height: 20px;
+      padding-left: 10px;
+    }
+  
+    .logo {
+      width: 100%;
+      height: 100%;
+    }
+
+    .menuRight {
+      width: 90%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+
+    }
+    
+    .mobileMenuIcon {
+      width: 14px;
+      height: 17px;
+      cursor: pointer;
+      color: #fff;
+      padding-right: 16px;
+      display: block;
+    }
+  
+    .mobileMenu {
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 44px;
+        background: #1F1A15;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        text-align: left;
+        z-index: 1000;
+        
+        .itemBox{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          margin-left: 21px;
+          height: 190px;
+          width: 100px;
+        }
+        .MobileMenuItem {
+          font-family: 'NeueHaasDisplayMediu';
+          color: #fff;
+          font-size: 25px;
+          text-decoration: none;
+        }
+        
+      }
+
+    .connectBox {
+      width: 133px;
+      height: 28px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin-right: 14px;
+      border: 1px solid #f39b4b;
+      background: #f39b4b;
+      border-radius: 6px;
+      font-family: 'NeueHaasDisplayMediu';
+
+    }
+    .connectBox:hover {
+      background: #f39b4b;
+      color: #000;
+    }
+
+    .connectBtn {
+        color: #000;
+        font-size: 16px;
+        font-weight: 600;
+        background: #f39b4b;
+        }
+  
+  
+  .rightBox {
+    display: flex;
+    background-image: url('../../img/bridge_h5_bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+    /* padding: 16px; */
+    justify-content: center;
+  
+    .logoBox {
+      height: 36px;
+      width: 36px;
+      margin-top: 33px;
+    }
+  
+    .logo {
+      width: 100%;
+      height: 100%;
+    }
+  
+    .alb_box {
+      width: 395px;
+      height: 34px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 9px;
+      opacity: 1;
+    }
+  
+    .alb_title {
+      font-family: 'Parabole';
+      font-size: 28px;
+      color: #f39b4b;
+    }
+  
+    .content_box {
+      border-radius: 4.2px;
+      margin-top: 32px;
+      min-width: 332px;
+      height: 620px;
+      background: #31281f;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  
+    .detail_box {
+      padding: 17px 12px 33px 12px;
+      font-family: Neue Haas Grotesk Display Pro;
+      color: #fff;
+  
+      .from_box {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .item1 {
+        font-size: 12px;
+        font-weight: 600;
+        font-family: 'NeueHaasDisplayMediu';
+      }
+  
+      .from_select {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 10px;
+        width: 156px;
+        height: 38px;
+        border-radius: 4.34px;
+        opacity: 1;
+  
+        .item2 {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          height: 36px;
+          width: 159px;
+          background: #211a12;
+          border-radius: 6px;
+          opacity: 1;
+  
+          .item3 {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+            margin-left: 8px;
+          }
+        }
+      }
+  
+      .send_box {
+        margin-top: 15px;
+        height: 87px;
+        border-radius: 4.34px;
+        opacity: 1;
+        border: 1px solid #211a12;
+        background: #211a12;
+        padding: 14px;
+  
+        .send_title {
+          font-family: Neue Haas Grotesk Display Pro;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          color: #fff;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+
+        .send_txt {
+          font-size: 12px;
+          color: #fff;
+        }
+
+        .mb_send_custom_input {
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          background: '#211a12';
+          border-color: "#211a12";
+          font-size: 24px;
+          font-weight: 600;
+          background: '#211a12'; 
+          font-family: 'NeueHaasDisplayMediu';
+          color: '#ffffff';
+          padding: '0px 0px';
+          
+        }
+        .mb_send_custom_input:focus {
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        .mb_send_custom_input::placeholder {
+          color: #ffffff;
+          font-size: 24px;
+          font-weight: 600;
+          font-family: 'NeueHaasDisplayMediu';
+        }
+
+        .mb_eth_txt {
+          font-size: 14px;
+          font-weight: 600;
+        }
+      }
+  
+      .trans_box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16px;
+      }
+  
+      .to_box {
+        font-family: Neue Haas Grotesk Display Pro;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        justify-content: flex-start;
+        margin-top: 4.5px;
+      }
+  
+      .to_1 {
+        flex-shrink: 0;
+        font-size: 12px;
+        font-weight: 600;
+        font-family: 'NeueHaasDisplayMediu';
+      }
+
+      .to_2 {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        height: 36px;
+        width: 159px;
+        background: #211a12;
+        border-radius: 6px;
+        opacity: 1;
+        margin-top: 10px;
+      }
+
+      .to_3 {
+        font-size: 14px;
+        color: #fff;
+        font-weight: 600;
+        margin-left: 6px;
+        flex-shrink: 0;
+      }
+  
+      .mb_receive_box {
+        height: 87px;
+        background: #211a12;
+        margin-top: 15px;
+        border-radius: 4.3px;
+        font-family: Neue Haas Grotesk Display Pro;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 14px;
+  
+        .mb_receive_title {
+          font-size: 12px;
+          font-weight: 600;
+        }
+  
+        .mb_receive_num {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 24px;
+          margin-top: 36px;
+        }
+  
+          .mb_eth_num {
+            font-size: 24px;
+            font-weight: 600;
+            background: '#211a12'; 
+            font-family: 'NeueHaasDisplayMediu';
+          }
+  
+          .mb_logo_box {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+  
+            .eth_txt {
+              font-size: 14px;
+              font-weight: 600;
+              height: 14px;
+            }
+          }
+      }
+  
+      .gas {
+        margin-top: 16px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+  
+      .btnBox {
+        margin-top: 67px;
+      }
+    }
+  }
+  
+  

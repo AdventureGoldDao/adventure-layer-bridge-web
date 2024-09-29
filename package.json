@@ -1,0 +1,27 @@
+{
+  "name": "@agld-bridge/monorepo",
+  "version": "1.0.0",
+  "keywords": [
+    "ethereum",
+    "react",
+    "workspaces",
+    "yarn"
+  ],
+  "private": true,
+  "scripts": {
+    "subgraph:auth": "yarn workspace @agld-bridge/subgraph auth",
+    "subgraph:codegen": "yarn workspace @agld-bridge/subgraph codegen",
+    "subgraph:build": "yarn workspace @agld-bridge/subgraph build",
+    "subgraph:deploy": "yarn workspace @agld-bridge/subgraph deploy",
+    "react-app:build": "yarn workspace @agld-bridge/react-app build",
+    "react-app:eject": "yarn workspace @agld-bridge/react-app eject",
+    "react-app:ipfs": "yarn workspace @agld-bridge/react-app ipfs",
+    "react-app:start": "yarn workspace @agld-bridge/react-app start",
+    "react-app:test": "yarn workspace @agld-bridge/react-app test"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "Networks": {
+    "sepolia": {
+      "tokenAddress": "Address For Sepolia"
+    },
+    "L2": {
+      "chainId": 242070,
+      "rpcUrl": "https://rpc-devnet.example.xyz",
+      "wssUrl": "wss://rpc-devnet.example.xyz",
+      "chainName": "Adventure Layer L2",
+      "blockExplorerUrl": "https://explorer.example.xyz",
+      "nativeCurrency": {
+        "name": "AGLD",
+        "symbol": "AGLD",
+        "decimals": 18
+      }
+    },
+    "Shard1": {
+      "chainId": 12340188,
+      "rpcUrl": "https://rpc-devnet.example.xyz/node1/shard",
+      "wssUrl": "wss://rpc-devnet.example.xyz/node1/shard",
+      "chainName": "Adventure Local 1",
+      "nativeCurrency": {
+        "name": "AGLD",
+        "symbol": "AGLD",
+        "decimals": 18
+      }
+    }
+  },
+  "ContractAddress": {
+    "adventureSepolia": "0x start address",
+    "depositL1": "0x start address",
+    "depositL2": "0x start address",
+    "local1": "0x start address",
+
+    "bridgeDepositOp": "0x start address",
+    "tokenDepositOp": "0x start address"
+  },
+  "MenuURL": {
+    "faucetUrl": "https://faucet-devnet.example.xyz",
+    "bridgeUrl": "https://bridge-devnet.example.xyz",
+    "docsUrl": "https://docs.example.xyz",
+    "rpcUrl": "https://rpc-devnet.example.xyz",
+    "wssRpcUrl": "wss://rpc-devnet.example.xyz"
+  }
+}

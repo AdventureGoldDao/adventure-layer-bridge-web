@@ -1,0 +1,25 @@
+{
+  "short_name": "Adventure Layer",
+  "name": "Adventure Layer Bridge",
+  "icons": [
+    {
+      "src": "agld-ico.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "agld-ico.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "agld-ico.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
