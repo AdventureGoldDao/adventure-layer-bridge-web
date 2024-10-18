@@ -107,6 +107,7 @@ function ResponsiveAppBar() {
           <div className={styles.mobileMenu}>
             <div className={styles.itemBox}>
               <a className={styles.MobileMenuItem} href={MenuURL.faucetUrl} target="_blank" rel="noopener noreferrer">Faucet</a>
+              <a className={styles.MobileMenuItem} href={MenuURL.explorerUrl} target="_blank" rel="noopener noreferrer">Explorer</a>
               <a className={styles.MobileMenuItem} href={MenuURL.bridgeUrl} target="_blank" rel="noopener noreferrer">Bridge</a>
               <a className={styles.MobileMenuItem} href={MenuURL.docsUrl} target="_blank" rel="noopener noreferrer">Doc</a>
             </div>
