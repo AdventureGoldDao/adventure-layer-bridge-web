@@ -76,7 +76,6 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-
   return (
     <div className='menuBox'>
       <div className='logoBox'>
@@ -84,6 +83,7 @@ function ResponsiveAppBar() {
       </div>
       <div className='menu'>
         <a className='menuItem' href={MenuURL.faucetUrl} target="_blank" rel="noopener noreferrer">Faucet</a>
+        <a className='menuItem' href={MenuURL.explorerUrl} target="_blank" rel="noopener noreferrer">Explorer</a>
         <a className='menuItem' href={MenuURL.bridgeUrl} target="_blank" rel="noopener noreferrer">Bridge</a>
         <a className='menuItem' href={MenuURL.docsUrl} target="_blank" rel="noopener noreferrer">Doc</a>
       </div>
@@ -239,7 +239,6 @@ async function depositTokenToL2(signer, amount) {
   console.log(`Deposit transaction hash: ${depositTx.hash}`);
 }
 
-
 const useMyContractFunction = (chain, target, addr) => {
   const chainConfig = bridgeConfig[chain]
   const address = addr
@@ -284,7 +283,7 @@ const BridgeIndex = () => {
     to: toBalanceAmount,
   })
 
-  const handleSwitchChain = (event) => {
+  const handleSwitchChain = async (event) => {
     let source = selectTarget
     let target = selectSource
     const chain = bridgeConfig[source]
@@ -292,6 +291,21 @@ const BridgeIndex = () => {
 
     let sourceWeb3 = fromWeb3
     let targetWeb3 = toWeb3
+
+    if (chainId !== chain.chainId) {
+      const prevTarget = selectTarget
+      const prevSource = selectSource
+      try {
+        setSelectSource(prevTarget)
+        setSelectTarget(prevSource)
+        await switchNetwork(chain.chainId)
+        console.log('Switch chain: ', selectSource, selectTarget)
+      } catch (e) {
+        setSelectSource(prevSource)
+        setSelectTarget(prevTarget)
+        return
+      }
+    }
 
     setFromWeb3(targetWeb3)
     setToWeb3(sourceWeb3)
@@ -341,12 +355,30 @@ const BridgeIndex = () => {
   const handleCloseFromList = () => {
     setAnchorFromEl(null);
   };
-  const handleChangeFromChain = (chain) => {
+  const handleChangeFromChain = async (chain) => {
+    const chainConfig = bridgeConfig[chain]
+    let contractAddress = chainConfig.addresses[selectTarget]
+    if (chainId !== chainConfig.chainId) {
+      const prevTarget = selectTarget
+      const prevSource = selectSource
+      try {
+        setSelectSource(chain)
+        if (!contractAddress && chainConfig.target) {
+          const target = chainConfig.target[0]
+          setSelectTarget(target)
+        }
+        await switchNetwork(chainConfig.chainId)
+      } catch (e) {
+        setSelectSource(prevSource)
+        setSelectTarget(prevTarget)
+        return
+      }
+
+    }
+
     console.log("Change from chain:", chain, selectTarget);
     setAnchorFromEl(null);
 
-    const chainConfig = bridgeConfig[chain]
-    let contractAddress = chainConfig.addresses[selectTarget]
     if (!contractAddress && chainConfig.target) {
       const target = chainConfig.target[0]
       contractAddress = chainConfig.addresses[target]
@@ -415,15 +447,15 @@ const BridgeIndex = () => {
       const signer = await connectWallet();
       if (!signer) return;
       if (selectSource === 'sepolia'){
-        await depositTokenToL2(signer,sendBigAmount)
+        await depositTokenToL2(signer, sendBigAmount)
       } else {
-          sendDeposit({
-            value: sendBigAmount,
-          }).finally((e)=>{
-            console.log("error", e)
-            return
-          })
-        }
+        sendDeposit({
+          value: sendBigAmount,
+        }).finally((e)=>{
+          console.log("error", e)
+          return
+        })
+      }
       await reloadAccountBalance()
     } catch (e) {
       console.log("error", e)
@@ -534,7 +566,7 @@ const BridgeIndex = () => {
                       'aria-labelledby': 'basic-button',
                     }}
                   >
-                    {fromChainSelect.map(item => <MenuItem onClick={() => handleChangeFromChain(item.name)} key={item.name}>{item.text}</MenuItem>)}
+                    {fromChainSelect && fromChainSelect.map(item => <MenuItem onClick={() => handleChangeFromChain(item.name)} key={item.name}>{item.text}</MenuItem>)}
                   </MuiMenu>
                 </div>
 
@@ -590,7 +622,7 @@ const BridgeIndex = () => {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
-                  {toChainList.map((chain, i) => {
+                  {toChainList && toChainList.map((chain, i) => {
                     const item = bridgeConfig[chain]
                     return <MenuItem onClick={() => handleChangeToChain(chain)} key={`to-${chain}-${i}`}>{item.text}</MenuItem>
                   })}
