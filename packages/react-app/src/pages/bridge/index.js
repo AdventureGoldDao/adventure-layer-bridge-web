@@ -339,7 +339,7 @@ const BridgeIndex = () => {
     to: toBalanceAmount,
   })
 
-  const handleSwitchChain = (event) => {
+  const handleSwitchChain = async (event) => {
     let source = selectTarget
     let target = selectSource
     // if (selectSource === 'sepolia') {
@@ -351,6 +351,21 @@ const BridgeIndex = () => {
 
     let sourceWeb3 = fromWeb3
     let targetWeb3 = toWeb3
+
+    if (chainId !== chain.chainId) {
+      const prevTarget = selectTarget
+      const prevSource = selectSource
+      try {
+        setSelectSource(prevTarget)
+        setSelectTarget(prevSource)
+        await switchNetwork(chain.chainId)
+        console.log('Switch chain: ', selectSource, selectTarget)
+      } catch (e) {
+        setSelectSource(prevSource)
+        setSelectTarget(prevTarget)
+        return
+      }
+    }
 
     setFromWeb3(targetWeb3)
     setToWeb3(sourceWeb3)
@@ -414,12 +429,30 @@ const BridgeIndex = () => {
   const handleCloseFromList = () => {
     setAnchorFromEl(null);
   };
-  const handleChangeFromChain = (chain) => {
+  const handleChangeFromChain = async (chain) => {
+    const chainConfig = bridgeConfig[chain]
+    let contractAddress = chainConfig.addresses[selectTarget]
+    if (chainId !== chainConfig.chainId) {
+      const prevTarget = selectTarget
+      const prevSource = selectSource
+      try {
+        setSelectSource(chain)
+        if (!contractAddress && chainConfig.target) {
+          const target = chainConfig.target[0]
+          setSelectTarget(target)
+        }
+        await switchNetwork(chainConfig.chainId)
+      } catch (e) {
+        setSelectSource(prevSource)
+        setSelectTarget(prevTarget)
+        return
+      }
+
+    }
+
     console.log("Change from chain:", chain, selectTarget);
     setAnchorFromEl(null);
 
-    const chainConfig = bridgeConfig[chain]
-    let contractAddress = chainConfig.addresses[selectTarget]
     if (!contractAddress && chainConfig.target) {
       const target = chainConfig.target[0]
       contractAddress = chainConfig.addresses[target]
