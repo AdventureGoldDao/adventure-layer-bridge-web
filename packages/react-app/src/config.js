@@ -117,7 +117,7 @@ export const bridgeConfig = {
     },
     addresses: {
       // Shard1 ==> Adventure Layer L2 = 0xe8b68a74d8527e650e144bfecd999302b676df2f
-      adventure: addresses['depositL2'],
+      adventure: '0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa', // addresses['depositL2'],
     },
   },
   local2: {

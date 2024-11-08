@@ -512,7 +512,7 @@ const BridgeIndex = () => {
     }
 
     const currentChain = bridgeConfig[selectSource]
-    if ((chainId !== currentChain.chainId * 1 && chainId > 0) || (!chainId && selectSource === 'sepolia')) {
+    if ((chainId !== currentChain.chainId * 1 && chainId > 0) || !chainId) {
       console.log('Switch Chain:', chainId, currentChain.chainId)
       await switchNetwork(currentChain.chainId)
       // .then(() => {
