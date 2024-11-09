@@ -289,7 +289,7 @@ const BridgeIndex = () => {
   const handleCloseFromList = () => {
     setAnchorFromEl(null);
   };
-  const handleChangeFromChain = (chain) => {
+  const handleChangeFromChain = async (chain) => {
     const chainConfig = bridgeConfig[chain]
     let contractAddress = chainConfig.addresses[selectTarget]
     if (chainId !== chainConfig.chainId) {
