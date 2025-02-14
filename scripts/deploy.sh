@@ -1,46 +1,46 @@
 #!/usr/bin/env bash
 
-## 在项目根目录下执行
-# 定义本地和远程目录
+## Run in the project root directory
+# Define local and remote directories
 LOCAL_DIR="./packages/react-app/build"
 REMOTE_DIR="/data/www/adventure-layer-bridge/front"
 KEY_PATH="./secrets/key.pem"
 
-# 检查本地目录是否存在 index.html 文件
+# Check if the index.html file exists in the local directory
 if [ -f "${LOCAL_DIR}/index.html" ]; then
-    # 检查 scp 命令是否存在
+    # Check if the scp command exists
     if command -v scp &> /dev/null; then
-        # 使用 scp 命令上传文件
-	echo "Deploying SCP"
+        # Use scp to upload the files
+        echo "Deploying SCP"
         scp -r -i "${KEY_PATH}" -o StrictHostKeyChecking=no "${LOCAL_DIR}/"* ubuntu@3.84.203.161:"${REMOTE_DIR}"
 
-        # 检查上传是否成功
+        # Check if the upload was successful
         if [ $? -eq 0 ]; then
-            echo "文件已成功上传到远程服务器。"
+            echo "Files have been successfully uploaded to the remote server."
         else
-            echo "上传失败，请检查网络或私钥文件。"
+            echo "Upload failed, please check the network or private key file."
         fi
     else
-        # 检查 sftp 命令是否存在
+        # Check if the sftp command exists
         if command -v sftp &> /dev/null; then
-            # 使用 sftp 命令上传文件
+            # Use sftp to upload the files
             sftp -r -i "${KEY_PATH}" -o StrictHostKeyChecking=no ubuntu@3.84.203.161 << EOF
             cd "${REMOTE_DIR}"
             put -r "${LOCAL_DIR}/"*
             exit
 EOF
 
-            # 检查上传是否成功
+            # Check if the upload was successful
             if [ $? -eq 0 ]; then
-                echo "文件已成功上传到远程服务器。"
+                echo "Files have been successfully uploaded to the remote server."
             else
-                echo "上传失败，请检查网络或私钥文件。"
+                echo "Upload failed, please check the network or private key file."
             fi
         else
-            echo "scp 和 sftp 命令都不存在，请安装它们。"
+            echo "Both scp and sftp commands are missing, please install them."
             exit 1
         fi
     fi
 else
-    echo "本地目录中没有找到 index.html 文件。"
+    echo "No index.html file found in the local directory."
 fi
