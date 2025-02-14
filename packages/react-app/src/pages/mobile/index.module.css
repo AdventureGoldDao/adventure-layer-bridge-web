@@ -148,7 +148,7 @@
     }
   
     .alb_box {
-      width: 335px;
+      width: 395px;
       height: 34px;
       display: flex;
       justify-content: center;
@@ -159,7 +159,7 @@
   
     .alb_title {
       font-family: 'Parabole';
-      font-size: 30px;
+      font-size: 28px;
       color: #f39b4b;
     }
   
