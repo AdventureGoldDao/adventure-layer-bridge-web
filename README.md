@@ -82,15 +82,49 @@ yarn react-app:build
 
 2. The build artifacts will be in `packages/react-app/build` directory.
 
+
 ### Production Deployment
 
-#### Server Requirements
-- Ubuntu/Debian or similar Linux distribution
-- Nginx web server
-- Node.js (for build process)
-- SSH access to the server
+There are two ways to deploy the application to production:
 
-#### Deployment Steps
+#### 1. Automated Deployment (Recommended)
+
+We provide a deployment script that automates the entire process. To use it:
+
+1. **Set up SSH access to your production server**
+   - Ensure you have SSH access to your production server
+   - Make sure your SSH key is properly configured
+
+2. **Configure deployment variables**
+   Create a `.env.production` file in the root directory with the following variables:
+   ```
+   DEPLOY_USER=ubuntu          # Your server's SSH user
+   DEPLOY_HOST=example.com     # Your production server hostname
+   DEPLOY_PATH=/var/www/bridge # Deployment path on the server
+   SSH_KEY=~/.ssh/id_rsa      # Path to your SSH key
+   ```
+
+3. **Make the deployment script executable**
+   ```bash
+   chmod +x scripts/deploy-pro.sh
+   ```
+
+4. **Run the deployment script**
+   ```bash
+   ./scripts/deploy-pro.sh
+   ```
+
+The script will:
+- Build the application
+- Create necessary directories on the server
+- Deploy the files
+- Set proper permissions
+- Restart Nginx
+
+#### 2. Manual Deployment
+
+If you prefer to deploy manually, follow these steps:
+
 1. ** Edit the config file **
    - edit config.js in `packages/react-app/src/config.js` to change the RPC URL to the production RPC URL
 
@@ -218,7 +252,10 @@ Deploys the subgraph to the official Graph Node.
 ## Security Notes
 
 - Deployment key files should be kept secure and not committed to the repository
-- `.env` file contains sensitive configurations and is excluded in `.gitignore`
+- `.env` and `.env.production` files contain sensitive configurations and are excluded in `.gitignore`
+- Always use SSH keys for deployment instead of passwords
+- Ensure proper file permissions on the production server
+- Regularly update dependencies and check for security vulnerabilities
 
 ## Browser Support
 
