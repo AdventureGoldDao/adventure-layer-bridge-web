@@ -16,11 +16,62 @@ yarn install
 
 ### Environment Configuration
 
-Create a `.env` file in the `packages/react-app` directory:
+For set the config for networks and bridge strategies, we need to change some default configurations.
 
-```
-REACT_APP_RPC_URL=<your RPC URL>
-REACT_APP_CHAIN_ID=<chain ID>
+The setting is placed in the `packages/react-app/src/` directory, which contains the `config.js` file:
+
+```js
+// Wallet connection config
+// If you want to change the l1 network, you can change the config here
+export const defaultL1NetworkKey = keyBerachain
+
+// we use web3modal to connect wallet, please set your project id here
+// and bridge metadata should be change as online bridge metadata
+// get a new project id here: https://cloud.reown.com/
+export const web3ModelConfig = {
+  projectId: 'enter project id',
+  metadata: {
+    name: 'Adventure Layer Bridge',
+    description: 'Bridge',
+    url: 'https://bridge.adventurelayer.xyz', // origin must match your domain & subdomain
+    icons: []
+  },
+}
+
+// the basic config for adventure l2 and shard 
+export const AdventureLayer = {
+  ...
+}
+export const AdventureLocal1 = {
+  ...
+}
+
+// If you want to change pulldown text and icon
+// and the bridge contract address is modified,
+// you can change the config here
+export const chainMainnet = {
+   ...
+   // if a er20 token is bridged to adventure layer l2
+   tokenAddress: '0x4xxxxx',
+}
+
+export const chainSepolia = {
+  ...
+  // if a er20 token is bridged to adventure layer l2
+  tokenAddress: '0x4xxxxx',
+}
+
+export const chainBerachain = {
+  ...
+}
+
+export const chainAdventureLayerL2 = {
+  ...
+}
+
+export const chainAdventureShard1 = {
+  ...
+}
 ```
 
 ### Local Development

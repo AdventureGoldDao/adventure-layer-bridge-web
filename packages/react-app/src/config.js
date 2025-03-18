@@ -72,12 +72,12 @@ export const AdventureLocal1 = {
     decimals: 18,
   },
 }
-export const AdventureLocal2 = {
-  chainId: 12340141,
-  rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node2/shard",
-  wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node2/shard",
-  chainName: 'Adventure Local 2',
-}
+// export const AdventureLocal2 = {
+//   chainId: 12340141,
+//   rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node2/shard",
+//   wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node2/shard",
+//   chainName: 'Adventure Local 2',
+// }
 
 export const adventureContracts = [{
   source: keyBerachain,
