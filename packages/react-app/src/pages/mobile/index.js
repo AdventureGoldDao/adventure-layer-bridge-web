@@ -1,10 +1,20 @@
 import { utils } from 'ethers'
+import * as ethers from 'ethers'
 import web3, { Web3 } from 'web3'
 import { Contract } from "@ethersproject/contracts";
 import { shortenAddress, useContractFunction, useEthers, useLookupAddress, Sepolia } from "@usedapp/core";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Decimal from "decimal.js"
+
+import {
+  useAppKit,
+  useAppKitProvider,
+  useAppKitAccount,
+  useAppKitNetwork,
+  useDisconnect,
+} from '@reown/appkit/react';
+import { supportChains } from '../../lib/wallet'
 
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
@@ -40,6 +50,7 @@ import {
   bridgeConfig,
   fromChainSelect,
   MenuURL,
+  defaultSourceChain,
 } from '../../config'
 
 const minABI = abis.erc20
@@ -120,33 +131,43 @@ function ResponsiveAppBar() {
 
 function WalletButton() {
 
+  const { address, isConnected, status } = useAppKitAccount()
   const [rendered, setRendered] = useState("");
-  const { ens } = useLookupAddress();
-  const { account, activateBrowserWallet, deactivate, error } = useEthers();
+  // const { ens } = useLookupAddress();
+  // const { account, activateBrowserWallet, deactivate, error } = useEthers();
+  const { open: openWalletModal } = useAppKit()
+  const { disconnect } = useDisconnect()
 
   useEffect(() => {
-    if (ens) {
-      setRendered(ens);
-    } else if (account) {
-      setRendered(shortenAddress(account));
+    if (isConnected) {
+      setRendered(shortenAddress(address))
     } else {
-      setRendered("");
+      setRendered('')
     }
-  }, [account, ens, setRendered]);
+  //   if (ens) {
+  //     setRendered(ens);
+  //   } else if (account) {
+  //     setRendered(shortenAddress(account));
+  //   } else {
+  //     setRendered("");
+  //   }
+  }, [address, isConnected, setRendered]);
 
-  useEffect(() => {
-    if (error) {
-      console.error("Error while connecting wallet:", error.message);
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     console.error("Error while connecting wallet:", error.message);
+  //   }
+  // }, [error]);
 
   return (
     <div className={styles.connectBox}
       onClick={() => {
-        if (!account) {
-          activateBrowserWallet();
+        if (!address) {
+          // activateBrowserWallet();
+          openWalletModal();
         } else {
-          deactivate();
+          // deactivate();
+          disconnect();
         }
       }}>
       <div className={styles.connectBtn}>
@@ -166,6 +187,21 @@ const useMyContractFunction = (chain, target, addr) => {
   return { state, send };
 }
 
+async function callTransferContract(signer, source, target, sendBigAmount) {
+  const chainConfig = bridgeConfig[source]
+  const contractAddress = chainConfig['address']
+  const contractAbi = new utils.Interface(chainConfig.abis[target])
+
+  const bridgeContract = new ethers.Contract(contractAddress, contractAbi, signer);
+
+  // const address = await signer.getAddress();
+  console.log(`Transfer Contract..., address: ${contractAddress}`);
+  const depositTx = await bridgeContract.deposit({
+    value: sendBigAmount,
+  })
+  await depositTx.wait();
+}
+
 const BridgeIndex = () => {
   const [openAlert, setOpenAlert] = React.useState(false);
 
@@ -173,8 +209,18 @@ const BridgeIndex = () => {
     setOpenAlert(false);
   };
 
+  const defaultChainKey = defaultSourceChain.key
+  const defaultChain = defaultSourceChain
+
+  const defaultTargetKey = defaultSourceChain.target[0]
+  const defaultTargetChain = bridgeConfig[defaultTargetKey]
+
+  const { chainId, switchNetwork } = useAppKitNetwork();
+  const { walletProvider } = useAppKitProvider('eip155')
+  const { address, isConnected, status } = useAppKitAccount();
+
   const [sendAmount, setSendAmount] = useState('');
-  const { account, activateBrowserWallet, deactivate, switchNetwork, error, library, chainId } = useEthers();
+  // const { account, activateBrowserWallet, deactivate, switchNetwork, error, library, chainId } = useEthers();
   // const wethInterface = new utils.Interface(abis.adventureSepolia)
   // const wethL2Interface = new utils.Interface(abis.adventureL2)
   // const wethContractAddress = addresses.depositL1
@@ -188,16 +234,16 @@ const BridgeIndex = () => {
   const [gasFee, setGasFee] = React.useState("0");
   const [receiveAmount, setReceiveAmount] = React.useState("0");
   const [chainState, setChainState] = React.useState(addresses.depositL1);
-  const [selectSource, setSelectSource] = React.useState("sepolia");
-  const [selectTarget, setSelectTarget] = React.useState("adventure");
-  const [targetChainName, setTargetChainName] = React.useState("Adventure Layer");
-  const [sourceChainName, setSourceChainName] = React.useState("Sepolia Layer 1");
-  const [toChainList, setToChainList] = React.useState(['adventure']);
+  const [selectSource, setSelectSource] = React.useState(defaultChainKey);
+  const [selectTarget, setSelectTarget] = React.useState(defaultTargetKey);
+  const [targetChainName, setTargetChainName] = React.useState(defaultTargetChain.text);
+  const [sourceChainName, setSourceChainName] = React.useState(defaultChain.text);
+  const [toChainList, setToChainList] = React.useState(defaultChain.target);
 
-  const { state: stateDeposit, send: sendDeposit } = useMyContractFunction(selectSource, selectTarget, chainState)
+  // const { state: stateDeposit, send: sendDeposit } = useMyContractFunction(selectSource, selectTarget, chainState)
 
-  const [fromWeb3, setFromWeb3] = useState(new Web3(Sepolia.rpcUrl))
-  const [toWeb3, setToWeb3] = useState(new Web3(AdventureLayer.rpcUrl))
+  const [fromWeb3, setFromWeb3] = useState(new Web3(defaultChain.rpcUrl))
+  const [toWeb3, setToWeb3] = useState(new Web3(defaultTargetChain.rpcUrl))
 
   let l1BalanceAmount = 0
   let l2BalanceAmount = 0
@@ -226,7 +272,9 @@ const BridgeIndex = () => {
       try {
         setSelectSource(prevTarget)
         setSelectTarget(prevSource)
-        await switchNetwork(chain.chainId)
+
+        // await switchNetwork(chain.chainId)
+        switchNetwork(supportChains[source])
         console.log('Switch chain: ', selectSource, selectTarget)
       } catch (e) {
         setSelectSource(prevSource)
@@ -256,17 +304,17 @@ const BridgeIndex = () => {
   const gasPriceGwei = '15'
 
   const reloadAccountBalance = async () => {
-    if (account) {
+    if (address) {
       try {
         // const fromBalance = await fromWeb3.eth.getBalance(account)
-        const fromBalance = await getAccountBalance(fromWeb3, selectSource, account)
+        const fromBalance = await getAccountBalance(fromWeb3, selectSource, address)
         fromBalanceAmount = new Decimal(fromBalance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(fromBalance)
       } catch (err) { console.error('From:', err) }
 
       try {
         // const toBalance = await toWeb3.eth.getBalance(account)
-        const toBalance = await getAccountBalance(toWeb3, selectTarget, account)
+        const toBalance = await getAccountBalance(toWeb3, selectTarget, address)
         toBalanceAmount = new Decimal(toBalance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(toBalance)
       } catch (err) { console.error('To:', err) }
@@ -279,7 +327,7 @@ const BridgeIndex = () => {
   }
   useEffect(() => {
     reloadAccountBalance()
-  }, [account, library, fromWeb3, toWeb3])
+  }, [address, fromWeb3, toWeb3])
 
   const [anchorFromEl, setAnchorFromEl] = React.useState(null);
   const openFromList = Boolean(anchorFromEl);
@@ -301,7 +349,9 @@ const BridgeIndex = () => {
           const target = chainConfig.target[0]
           setSelectTarget(target)
         }
-        await switchNetwork(chainConfig.chainId)
+        // await switchNetwork(chainConfig.chainId)
+        console.log('Switch chain: ', chain, selectSource, selectTarget)
+        switchNetwork(supportChains[chain])
       } catch (e) {
         setSelectSource(prevSource)
         setSelectTarget(prevTarget)
@@ -366,15 +416,16 @@ const BridgeIndex = () => {
 
   const onClickTransfer = async () => {
     console.log({ chainId, transfers: sendAmount });
-    if (!account || isNaN(sendAmount)) {
-      console.log(account, sendAmount)
+    if (!address || isNaN(sendAmount)) {
+      console.log(address, sendAmount)
       return
     }
 
     const currentChain = bridgeConfig[selectSource]
     if ((chainId !== currentChain.chainId * 1 && chainId > 0) || !chainId) {
       console.log('Switch Chain:', chainId, currentChain.chainId)
-      await switchNetwork(currentChain.chainId)
+      switchNetwork(supportChains[selectSource])
+      // await switchNetwork(currentChain.chainId)
       // .then(() => {
       //   setOpenAlert(true)
       // })
@@ -391,17 +442,25 @@ const BridgeIndex = () => {
 
     console.log('start contract', sendBigAmount, sendAmount);
     try {
-      const nonce = await fromWeb3.eth.getTransactionCount(account, 'pending')
-      console.log('nonce', nonce, account, sendBigAmount)
-      sendDeposit({
-        value: sendBigAmount,
-        // sender: account,
-        // gasLimit: 3e7,
-        // nonce: Number(nonce) + 7,
-        // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-      }).then(() => {
+      const nonce = await fromWeb3.eth.getTransactionCount(address, 'pending')
+      console.log('nonce', nonce, address, sendBigAmount)
+      const provider = new ethers.providers.Web3Provider(walletProvider, chainId)
+      const signer = provider.getSigner(address)
+      // const signer = await connectWallet();
+      if (!signer) return;
+
+      callTransferContract(signer, selectSource, selectTarget, sendBigAmount).then(() => {
         reloadAccountBalance()
       })
+      // sendDeposit({
+      //   value: sendBigAmount,
+      //   // sender: account,
+      //   // gasLimit: 3e7,
+      //   // nonce: Number(nonce) + 7,
+      //   // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
+      // }).then(() => {
+      //   reloadAccountBalance()
+      // })
     } catch (e) {
       console.log("error", e)
     }
@@ -423,7 +482,7 @@ const BridgeIndex = () => {
       const curContract = new curWeb3.eth.Contract(bridgeConfig[selectSource].abi, chainState)
       const sendBigAmount = web3.utils.toBigInt(Number(inputAmount) * 1000000000000000000)
       const transactionObject = {
-        from: account,
+        from: address,
         to: chainState,
         data: curContract.methods.deposit({
           value: sendBigAmount,
@@ -445,15 +504,15 @@ const BridgeIndex = () => {
           }
           setGasFee(gasText)
           setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
-          console.log(`预估的gas消耗量为: ${gasPrice}`, gasPrice, receiveAmount);
+          console.log(`Estimate gas consume: ${gasPrice}`, gasPrice, receiveAmount);
         })
         .catch((error) => {
           setGasFee(0)
           setReceiveAmount(0)
-          console.error(`估算失败: ${error}`);
+          console.error(`estimate fail: ${error}`);
         });
     } catch (err) {
-      console.error(`估算失败: ${err}`);
+      console.error(`estimate fail: ${err}`);
       curWeb3.eth.getGasPrice().then(gasPrice => {
         const gasAmount = new Decimal(gasPrice.toString())
         const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)

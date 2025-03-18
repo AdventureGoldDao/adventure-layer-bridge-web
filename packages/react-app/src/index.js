@@ -1,10 +1,19 @@
 import "./index.css";
 
+import { createAppKit } from '@reown/appkit/react'
+import { Ethers5Adapter } from '@reown/appkit-adapter-ethers5'
+import { mainnet, arbitrum, sepolia, berachain } from '@reown/appkit/networks'
+import { defineChain } from '@reown/appkit/networks';
+
+import { projectId, metadata, networks, ethers5Adapter } from './lib/wallet'
+
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { DAppProvider, Mainnet, Sepolia, ChainId, DEFAULT_SUPPORTED_CHAINS } from "@usedapp/core";
+import { DAppProvider, Mainnet, Sepolia, ChainId, DEFAULT_SUPPORTED_CHAINS, MetamaskConnector } from "@usedapp/core";
 // import { getAddressLink, getTransactionLink } from '@usedapp/core/helpers'
 import React from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 
 import App from "./App";
 import { AdventureLayer as l2, AdventureLocal1 as shard1 } from './config'
@@ -75,29 +84,55 @@ const config = {
   readOnlyChainId: Mainnet.chainId,
   readOnlyUrls: {
     [Mainnet.chainId]: "https://mainnet.infura.io/v3/" + INFURA_PROJECT_ID,
-    [Sepolia.chainId]: Sepolia.rpcUrl,
-    [AdventureLayer.chainId]: AdventureLayer.rpcUrl,
-    [AdventureLocal1.chainId]: AdventureLocal1.rpcUrl,
+    // [Sepolia.chainId]: Sepolia.rpcUrl,
+    // [AdventureLayer.chainId]: AdventureLayer.rpcUrl,
+    // [AdventureLocal1.chainId]: AdventureLocal1.rpcUrl,
     // [AdventureLocal2.chainId]: AdventureLocal2.rpcUrl,
   },
   // supportedChains: [ChainId.Mainnet, ChainId.Goerli, ChainId.Kovan, ChainId.Rinkeby, ChainId.Ropsten, ChainId.Arbitrum, ChainId.Sepolia, AdventureLayer.chainId],
-  networks: [...DEFAULT_SUPPORTED_CHAINS, AdventureLayer, AdventureLocal1], // AdventureLocal2
+  // networks: [...DEFAULT_SUPPORTED_CHAINS, AdventureLayer, AdventureLocal1], // AdventureLocal2
+  networks: [...DEFAULT_SUPPORTED_CHAINS], // AdventureLocal2
 }
 
 // You should replace this url with your own and put it into a .env file
-// See all subgraphs: https://thegraph.com/explorer/
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  uri: "https://api.thegraph.com/subgraphs/name/paulrberg/create-eth-app",
-});
+// // See all subgraphs: https://thegraph.com/explorer/
+// const client = new ApolloClient({
+//   cache: new InMemoryCache(),
+//   uri: "https://api.thegraph.com/subgraphs/name/paulrberg/create-eth-app",
+// });
 
-ReactDOM.render(
-  <React.StrictMode>
-    <DAppProvider config={config}>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </DAppProvider>
-  </React.StrictMode>,
-  document.getElementById("root"),
-);
+// Create the AppKit instance
+createAppKit({
+  adapters: [ethers5Adapter],
+  metadata,
+  networks,
+  projectId,
+  features: {
+    analytics: false,
+    email: false,
+    socials: [],
+    onramp: false,
+    swaps: false,
+  }
+})
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    {/* <DAppProvider config={config}> */}
+      {/* <ApolloProvider client={client}> */}
+    <App />
+      {/* </ApolloProvider> */}
+    {/* </DAppProvider> */}
+  </StrictMode>,
+)
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <DAppProvider config={config}>
+//       <ApolloProvider client={client}>
+//         <App />
+//       </ApolloProvider>
+//     </DAppProvider>
+//   </React.StrictMode>,
+//   document.getElementById("root"),
+// );
