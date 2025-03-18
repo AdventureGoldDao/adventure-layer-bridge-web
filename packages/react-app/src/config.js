@@ -1,5 +1,5 @@
 import { Sepolia } from "@usedapp/core";
-import { berachain, mainnet } from '@reown/appkit/networks'
+import { berachain, berachainBepolia, mainnet } from '@reown/appkit/networks'
 import { addresses, abis } from "@my-app/contracts";
 
 import eth_logo from './img/eth_logo.png';
@@ -9,10 +9,11 @@ import adv_logo from './img/adv-logo.png';
 export const keyMainnet = 'mainnet'
 export const keySepolia = 'sepolia'
 export const keyBerachain = 'berachain'
+export const keyBerachainBepolia = 'bepolia'
 export const keyAdventure = 'adventure'
 export const keyAdventureShard = 'local1'
 
-export const defaultL1NetworkKey = keyBerachain
+export const defaultL1NetworkKey = keyBerachainBepolia
 
 export const web3ModelConfig = {
   projectId: '2eff4539a640aba672e06ccdbbae8002',
@@ -166,6 +167,25 @@ export const chainBerachain = {
   },
 }
 
+export const chainBerachainBepolia = {
+  key: 'bepolia',
+  address: addresses['depositL1'],
+  chainId: berachainBepolia.id,
+  text: 'Bepolia Layer 1',
+  target_text: 'Adventure Layer',
+  logo: eth_logo,
+  abi: abis['adventureSepolia'],
+  rpcUrl: berachainBepolia.rpcUrls.default.http[0],
+  target: ['adventure'],
+  abis: {
+    adventure: abis['adventureSepolia'],
+  },
+  addresses: {
+    // Sepolia ==> Adventure Layer L2 = 0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24
+    adventure: addresses['depositL1'],
+  },
+}
+
 export const chainAdventureLayerL2 = {
   key: 'adventure',
   address: addresses['depositL2'],
@@ -216,6 +236,8 @@ export const bridgeConfig = {
   berachain: chainBerachain,
   adventure: chainAdventureLayerL2,
   local1: chainAdventureShard1,
+
+  [keyBerachainBepolia]: chainBerachainBepolia,
   // local2: {
   //   address: addresses['depositL2'],
   //   chainId: AdventureLocal2.chainId,
@@ -241,6 +263,7 @@ const chainByKeys = {
   [keyBerachain]: chainBerachain,
   [keyAdventure]: chainAdventureLayerL2,
   [keyAdventureShard]: chainAdventureShard1,
+  [keyBerachainBepolia]: chainBerachainBepolia,
 }
 
 export const defaultSourceChain = chainByKeys[defaultL1NetworkKey]

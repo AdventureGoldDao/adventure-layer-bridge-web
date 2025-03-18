@@ -23,6 +23,11 @@ The setting is placed in the `packages/react-app/src/` directory, which contains
 ```js
 // Wallet connection config
 // If you want to change the l1 network, you can change the config here
+// available options:
+//   const keyMainnet = 'mainnet'
+//   const keySepolia = 'sepolia'
+//   const keyBerachain = 'berachain'
+//   const keyBerachainBepolia = 'bepolia'
 export const defaultL1NetworkKey = keyBerachain
 
 // we use web3modal to connect wallet, please set your project id here
