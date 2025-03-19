@@ -68,14 +68,24 @@ export const chainSepolia = {
 
 export const chainBerachain = {
   ...
+  addresses: {
+    adventure: '0x start contract address',
+  },
 }
 
 export const chainAdventureLayerL2 = {
   ...
+  addresses: {
+    berachain: '0x start contract address',
+    local1: '0x start contract address',
+  },
 }
 
 export const chainAdventureShard1 = {
   ...
+  addresses: {
+    adventure: '0x start contract address',
+  },
 }
 ```
 
