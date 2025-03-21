@@ -1,10 +1,8 @@
 import { utils } from 'ethers'
 import * as ethers from 'ethers'
 import web3, { Web3 } from 'web3'
-import { Contract } from "@ethersproject/contracts";
-import { shortenAddress, useContractFunction, useEthers, useLookupAddress, Sepolia } from "@usedapp/core";
+import { shortenAddress } from "@usedapp/core";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import Decimal from "decimal.js"
 
 import {
@@ -23,8 +21,6 @@ import styles from './index.module.css';
 import Box from '@mui/material/Box';
 
 import MuiMenu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import MuiButton from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
 import Dialog from '@mui/material/Dialog';
@@ -34,19 +30,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { addresses, abis } from "@my-app/contracts";
-// import eth_logo from '../../img/eth_logo.png';
 import eth_logo from '../../img/loot.ico';
-import adv_logo from '../../img/adv-logo.png';
 import trans_log from '../../img/trans_logo.png';
-// import { styled } from '@mui/material/styles';
 
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 
 import {
-  AdventureLayer,
-  AdventureLocal1,
-  AdventureLocal2,
   bridgeConfig,
   fromChainSelect,
   MenuURL,
@@ -133,8 +123,6 @@ function WalletButton() {
 
   const { address, isConnected, status } = useAppKitAccount()
   const [rendered, setRendered] = useState("");
-  // const { ens } = useLookupAddress();
-  // const { account, activateBrowserWallet, deactivate, error } = useEthers();
   const { open: openWalletModal } = useAppKit()
   const { disconnect } = useDisconnect()
 
@@ -144,13 +132,6 @@ function WalletButton() {
     } else {
       setRendered('')
     }
-  //   if (ens) {
-  //     setRendered(ens);
-  //   } else if (account) {
-  //     setRendered(shortenAddress(account));
-  //   } else {
-  //     setRendered("");
-  //   }
   }, [address, isConnected, setRendered]);
 
   // useEffect(() => {
@@ -176,15 +157,6 @@ function WalletButton() {
       </div>
     </div>
   );
-}
-
-const useMyContractFunction = (chain, target, addr) => {
-  const chainConfig = bridgeConfig[chain]
-  const address = addr
-  const abi = new utils.Interface(chainConfig.abis[target])
-  const contract = new Contract(address, abi);
-  const { state, send } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' });
-  return { state, send };
 }
 
 async function callTransferContract(signer, source, target, sendBigAmount) {
@@ -434,11 +406,6 @@ const BridgeIndex = () => {
     }
 
     const sendBigAmount = web3.utils.toBigInt(Number(sendAmount) * 1000000000000000000)
-    // const gasEstimate = contract.estimateGas['deposit'](account, sendBigAmount, {
-    //   value: sendBigAmount,
-    // })
-    // console.log(gasEstimate, "gasEstimate")
-    // return
 
     console.log('start contract', sendBigAmount, sendAmount);
     try {
@@ -452,15 +419,6 @@ const BridgeIndex = () => {
       callTransferContract(signer, selectSource, selectTarget, sendBigAmount).then(() => {
         reloadAccountBalance()
       })
-      // sendDeposit({
-      //   value: sendBigAmount,
-      //   // sender: account,
-      //   // gasLimit: 3e7,
-      //   // nonce: Number(nonce) + 7,
-      //   // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-      // }).then(() => {
-      //   reloadAccountBalance()
-      // })
     } catch (e) {
       console.log("error", e)
     }
@@ -592,7 +550,6 @@ const BridgeIndex = () => {
                       borderColor: "#211a12",
                       fontSize: '24px',
                       fontWeight: '600',
-                      background: '#211a12',
                       fontFamily: 'NeueHaasDisplayMediu',
                       color: '#ffffff',
                       padding: '0px 0px',

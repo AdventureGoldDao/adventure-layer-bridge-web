@@ -1,11 +1,8 @@
-import { useQuery } from "@apollo/client";
 import { utils } from 'ethers'
 import * as ethers from 'ethers'
 import web3, { Web3 } from 'web3'
-import { Contract } from "@ethersproject/contracts";
-import { shortenAddress, useContractFunction, useEthers, useLookupAddress, Sepolia } from "@usedapp/core";
+import { shortenAddress } from "@usedapp/core";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import Decimal from "decimal.js"
 
 import {
@@ -17,53 +14,26 @@ import {
 } from '@reown/appkit/react';
 import { supportChains } from '../../lib/wallet'
 
-import { AppstoreOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import './index.css';
 
-import Alert from '@mui/material/Alert';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import MuiCard from '@mui/material/Card';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import MuiMenu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import MuiButton from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import AdbIcon from '@mui/icons-material/Adb';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormHelperText from '@mui/material/FormHelperText';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import InputAdornment from '@mui/material/InputAdornment';
-import MuiSelect, { SelectChangeEvent } from '@mui/material/Select';
-import SvgIcon from '@mui/material/SvgIcon';
-import MuiLink from '@mui/material/Link';
-import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
-// import eth_logo from '../../img/eth_logo.png';
 import eth_logo from '../../img/loot.ico';
 import trans_log from '../../img/trans_logo.png';
-import adv_logo from '../../img/adv-logo.png';
-// import { styled } from '@mui/material/styles';
 
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 
 import {
-  AdventureLayer,
-  AdventureLocal1,
-  AdventureLocal2,
   bridgeConfig,
   fromChainSelect,
   MenuURL,
@@ -144,27 +114,10 @@ function ResponsiveAppBar() {
   );
 }
 
-
-const ConnectButton = styled(MuiButton)(({ theme }) => ({
-  color: '#000',
-  backgroundColor: '#f39b4b',
-  fontSize: '16px',
-  fontWeight: '200',
-  fontFamily: 'NeueHaasDisplayMediu',
-  marginRight: '20px',
-  width: 160,
-  height: 32,
-  '&:hover': {
-    backgroundColor: '#F39B4B',
-  },
-}));
-
 function WalletButton() {
 
   const { address, isConnected, status } = useAppKitAccount()
   const [rendered, setRendered] = useState("");
-  // const { ens } = useLookupAddress();
-  // const { account, activateBrowserWallet, deactivate, error } = useEthers();
   const { open: openWalletModal } = useAppKit()
   const { disconnect } = useDisconnect()
 
@@ -174,20 +127,7 @@ function WalletButton() {
     } else {
       setRendered('')
     }
-    // if (ens) {
-    //   setRendered(ens);
-    // } else if (account) {
-    //   setRendered(shortenAddress(account));
-    // } else {
-    //   setRendered("");
-    // }
   }, [address, isConnected, setRendered]);
-
-  // useEffect(() => {
-  //   if (error) {
-  //     console.error("Error while connecting wallet:", error.message);
-  //   }
-  // }, [error]);
 
   return (
     <MuiButton className='connect' variant="contained" size="medium"
@@ -210,7 +150,6 @@ function WalletButton() {
     </MuiButton>
   );
 }
-
 
 async function connectWallet() {
   if (window.ethereum) {
@@ -301,15 +240,6 @@ async function depositTokenToL2(signer, amount) {
   );
   await depositTx.wait();  // 等待交易确认
   console.log(`Deposit transaction hash: ${depositTx.hash}`);
-}
-
-const useMyContractFunction = (chain, target, addr) => {
-  const chainConfig = bridgeConfig[chain]
-  const address = addr
-  const abi = new utils.Interface(chainConfig.abis[target])
-  const contract = new Contract(address, abi);
-  const { state, send } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' });
-  return { state, send };
 }
 
 async function callTransferContract(signer, source, target, sendBigAmount) {
@@ -573,13 +503,6 @@ const BridgeIndex = () => {
     }
 
     const sendBigAmount = web3.utils.toBigInt(Number(sendAmount) * 1000000000000000000)
-    // const gasEstimate = contract.estimateGas['deposit'](account, sendBigAmount, {
-    //   value: sendBigAmount,
-    // })
-    // console.log(gasEstimate, "gasEstimate")
-    // return
-
-    // console.log('start contract', sendBigAmount, sendAmount);
     try {
       const nonce = await fromWeb3.eth.getTransactionCount(address, 'pending')
       console.log('nonce', nonce, address, sendBigAmount)
@@ -591,16 +514,6 @@ const BridgeIndex = () => {
         await depositTokenToL2(signer,sendBigAmount)
       } else {
         await callTransferContract(signer, selectSource, selectTarget, sendBigAmount)
-          // sendDeposit({
-          //   value: sendBigAmount,
-          //   // sender: account,
-          //   // gasLimit: 3e7,
-          //   // nonce: Number(nonce) + 7,
-          //   // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-          // }).finally((e)=>{
-          //   console.log("error", e)
-          //   return
-          // })
       }
       await reloadAccountBalance()
     } catch (e) {
