@@ -1,5 +1,5 @@
 import { Ethers5Adapter } from '@reown/appkit-adapter-ethers5'
-import { mainnet, arbitrum, sepolia, berachain } from '@reown/appkit/networks'
+import { mainnet, arbitrum, sepolia, berachain, berachainBepolia } from '@reown/appkit/networks'
 import { defineChain } from '@reown/appkit/networks';
 
 import {
@@ -67,7 +67,9 @@ export const customAdventureShardNetwork = defineChain({
 
 export const networks = [
   // sepolia,
+  mainnet,
   berachain,
+  berachainBepolia,
   customAdventureLocalNetwork,
   customAdventureShardNetwork,
 ]
@@ -77,7 +79,9 @@ export const ethers5Adapter = new Ethers5Adapter();
 
 export const supportChains = {
   // sepolia,
+  mainnet,
   berachain,
+  bepolia: berachainBepolia,
   adventure: customAdventureLocalNetwork,
   local1: customAdventureShardNetwork,
 }

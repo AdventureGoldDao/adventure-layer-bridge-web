@@ -6,8 +6,9 @@ import adventureAbi from "./abis/adventureabi.json";
 const abis = {
   erc20: erc20Abi,
   ownable: ownableAbi,
-  adventureSepolia: adventuresepoliaAbi,
-  adventureL2: adventureAbi,
+  // adventureSepolia: adventuresepoliaAbi,
+  // adventureL2: adventureAbi,
+  adventureBridge: adventureAbi,
 };
 
 export default abis;

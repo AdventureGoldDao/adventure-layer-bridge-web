@@ -245,7 +245,8 @@ async function depositTokenToL2(signer, amount) {
 async function callTransferContract(signer, source, target, sendBigAmount) {
   console.log(`Call Transfer Contract: `, source, target);
   const chainConfig = bridgeConfig[source]
-  const contractAddress = chainConfig['address']
+  // const contractAddress = chainConfig['address']
+  const contractAddress = chainConfig.addresses[target]
   const contractAbi = new utils.Interface(chainConfig.abis[target])
 
   const bridgeContract = new ethers.Contract(contractAddress, contractAbi, signer);
@@ -286,8 +287,8 @@ const BridgeIndex = () => {
   const { chainId, switchNetwork } = useAppKitNetwork();
   const { walletProvider } = useAppKitProvider('eip155')
   const { address, isConnected, status } = useAppKitAccount();
-  // const wethInterface = new utils.Interface(abis.adventureSepolia)
-  // const wethL2Interface = new utils.Interface(abis.adventureL2)
+  // const wethInterface = new utils.Interface(abis.adventureBridge)
+  // const wethL2Interface = new utils.Interface(abis.adventureBridge)
   // const wethContractAddress = addresses.depositL1
   // const wethContractAddressL2 = addresses.depositL2
   // const contract = new Contract(wethContractAddress, wethInterface)
@@ -498,8 +499,8 @@ const BridgeIndex = () => {
       // .then(() => {
       //   setOpenAlert(true)
       // })
-      // setOpenAlert(true)
-      // return
+      setOpenAlert(true)
+      return
     }
 
     const sendBigAmount = web3.utils.toBigInt(Number(sendAmount) * 1000000000000000000)
