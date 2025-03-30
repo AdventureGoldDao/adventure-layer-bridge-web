@@ -65,10 +65,10 @@ async function getTokenBalance(web3, tokenAddress, userAddress) {
     const contract = new web3.eth.Contract(minABI, tokenAddress);
     // Call the balanceOf method
     const balance = await contract.methods.balanceOf(userAddress).call();
-    // console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')}`);
+     console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')}`);
     return balance;
   } catch (error) {
-    console.error('An error occurred:', error);
+    console.error(`getTokenBalance Error ${tokenAddress}, ${userAddress}: `, error);
   }
   return 0
 }
@@ -253,6 +253,17 @@ async function callTransferContract(signer, source, target, sendBigAmount) {
 
   // const address = await signer.getAddress();
   console.log(`Transfer Contract..., address: ${contractAddress}`);
+
+  if (chainConfig.tokenAddress) {
+    const tokenAddress = chainConfig.tokenAddress;
+    const tokenAbi = minABI;
+    const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+    console.log('Approving token transfer...');
+    const approveTx = await tokenContract.approve(contractAddress, sendBigAmount);
+    await approveTx.wait();
+    console.log(`Approved transaction hash: ${approveTx.hash}`);
+  }
+
   const depositTx = await bridgeContract.deposit({
     value: sendBigAmount,
   })
