@@ -167,6 +167,16 @@ async function callTransferContract(signer, source, target, sendBigAmount) {
 
   const bridgeContract = new ethers.Contract(contractAddress, contractAbi, signer);
 
+  if (chainConfig.tokenAddress) {
+    const tokenAddress = chainConfig.tokenAddress;
+    const tokenAbi = minABI;
+    const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+    console.log('Approving token transfer...');
+    const approveTx = await tokenContract.approve(contractAddress, sendBigAmount);
+    await approveTx.wait();
+    console.log(`Approved transaction hash: ${approveTx.hash}`);
+  }
+
   // const address = await signer.getAddress();
   console.log(`Transfer Contract..., address: ${contractAddress}`);
   const depositTx = await bridgeContract.deposit({
