@@ -27,7 +27,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { addresses, abis } from "@my-app/contracts";
-import eth_logo from '../../img/loot.ico';
+import eth_logo from '../../img/loot.png';
 import trans_log from '../../img/trans_logo.png';
 
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
@@ -616,7 +616,7 @@ const BridgeIndex = () => {
             <img className='logo' src={Logo2} alt='background' />
           </div>
           <div className='alb_box'>
-            <div className='alb_title'>Adventure Layer Devnet Bridge</div>
+            <div className='alb_title'>Adventure Layer Bridge</div>
           </div>
           <div className='content_box'>
             <div className='detail_box'>
@@ -719,10 +719,17 @@ const BridgeIndex = () => {
               {/* <div className='gas'>{targetChainName}gas fee 0 ETH</div> */}
               <div className='gas'>gas fee {gasFee} AGLD</div>
               <div className="btn-box">
+              {accountBalance.from > 0 ?
                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                   Transfer
                   {/* Transfer {targetChainName} */}
                 </Button>
+                : 
+                <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
+                  Insufficient AGLD
+                  {/* Transfer {targetChainName} */}
+                </Button>
+              }
               </div>
             </div>
           </div>
