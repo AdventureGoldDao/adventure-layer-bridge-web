@@ -1,63 +1,43 @@
-import { useQuery } from "@apollo/client";
 import { utils } from 'ethers'
 import * as ethers from 'ethers'
 import web3, { Web3 } from 'web3'
-import { Contract } from "@ethersproject/contracts";
-import { shortenAddress, useContractFunction, useEthers, useLookupAddress, Sepolia } from "@usedapp/core";
+import { shortenAddress } from "@usedapp/core";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import Decimal from "decimal.js"
 
-import { AppstoreOutlined } from '@ant-design/icons';
+import {
+  useAppKit,
+  useAppKitProvider,
+  useAppKitAccount,
+  useAppKitNetwork,
+  useDisconnect,
+} from '@reown/appkit/react';
+import { supportChains } from '../../lib/wallet'
+
 import { Button, Input } from 'antd';
 import './index.css';
 
-import Alert from '@mui/material/Alert';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import MuiCard from '@mui/material/Card';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import MuiMenu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import MuiButton from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import AdbIcon from '@mui/icons-material/Adb';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormHelperText from '@mui/material/FormHelperText';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import InputAdornment from '@mui/material/InputAdornment';
-import MuiSelect, { SelectChangeEvent } from '@mui/material/Select';
-import SvgIcon from '@mui/material/SvgIcon';
-import MuiLink from '@mui/material/Link';
-import { purple } from '@mui/material/colors';
 import { addresses, abis } from "@my-app/contracts";
-// import eth_logo from '../../img/eth_logo.png';
-import eth_logo from '../../img/loot.ico';
+import eth_logo from '../../img/loot.png';
 import trans_log from '../../img/trans_logo.png';
-import adv_logo from '../../img/adv-logo.png';
-// import { styled } from '@mui/material/styles';
 
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
 import Logo2 from '../../img/Logo_big.svg'; // 导入 SVG 作为组件
 
 import {
-  AdventureLayer,
-  AdventureLocal1,
-  AdventureLocal2,
   bridgeConfig,
   fromChainSelect,
   MenuURL,
+  defaultSourceChain,
 } from '../../config'
 
 // Minimal ABI to get ERC-20 Token balance
@@ -85,10 +65,10 @@ async function getTokenBalance(web3, tokenAddress, userAddress) {
     const contract = new web3.eth.Contract(minABI, tokenAddress);
     // Call the balanceOf method
     const balance = await contract.methods.balanceOf(userAddress).call();
-    // console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')}`);
+     console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')}`);
     return balance;
   } catch (error) {
-    console.error('An error occurred:', error);
+    console.error(`getTokenBalance Error ${tokenAddress}, ${userAddress}: `, error);
   }
   return 0
 }
@@ -134,60 +114,42 @@ function ResponsiveAppBar() {
   );
 }
 
-
-const ConnectButton = styled(MuiButton)(({ theme }) => ({
-  color: '#000',
-  backgroundColor: '#f39b4b',
-  fontSize: '16px',
-  fontWeight: '200',
-  fontFamily: 'NeueHaasDisplayMediu',
-  marginRight: '20px',
-  width: 160,
-  height: 32,
-  '&:hover': {
-    backgroundColor: '#F39B4B',
-  },
-}));
-
 function WalletButton() {
 
+  const { address, isConnected, status } = useAppKitAccount()
   const [rendered, setRendered] = useState("");
-  const { ens } = useLookupAddress();
-  const { account, activateBrowserWallet, deactivate, error } = useEthers();
+  const { open: openWalletModal } = useAppKit()
+  const { disconnect } = useDisconnect()
 
   useEffect(() => {
-    if (ens) {
-      setRendered(ens);
-    } else if (account) {
-      setRendered(shortenAddress(account));
+    if (isConnected) {
+      setRendered(shortenAddress(address))
     } else {
-      setRendered("");
+      setRendered('')
     }
-  }, [account, ens, setRendered]);
-
-  useEffect(() => {
-    if (error) {
-      console.error("Error while connecting wallet:", error.message);
-    }
-  }, [error]);
+  }, [address, isConnected, setRendered]);
 
   return (
     <MuiButton className='connect' variant="contained" size="medium"
       onClick={() => {
-        if (!account) {
-          activateBrowserWallet();
+        // console.log('Wallet:', chainId, address, account)
+        if (!address) {
+          // activateBrowserWallet();
+          // openWalletModal({ view: 'Networks' })
+          openWalletModal();
         } else {
-          deactivate();
+          // deactivate();
+          disconnect();
         }
       }}>
       <div className='connect-btn'>
         {rendered === "" && "Connect"}
         {rendered !== "" && rendered}
       </div>
+      {/* <appkit-button /> */}
     </MuiButton>
   );
 }
-
 
 async function connectWallet() {
   if (window.ethereum) {
@@ -280,14 +242,32 @@ async function depositTokenToL2(signer, amount) {
   console.log(`Deposit transaction hash: ${depositTx.hash}`);
 }
 
+async function callTransferContract(signer, source, target, sendBigAmount) {
+  console.log(`Call Transfer Contract: `, source, target);
+  const chainConfig = bridgeConfig[source]
+  // const contractAddress = chainConfig['address']
+  const contractAddress = chainConfig.addresses[target]
+  const contractAbi = new utils.Interface(chainConfig.abis[target])
 
-const useMyContractFunction = (chain, target, addr) => {
-  const chainConfig = bridgeConfig[chain]
-  const address = addr
-  const abi = new utils.Interface(chainConfig.abis[target])
-  const contract = new Contract(address, abi);
-  const { state, send } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' });
-  return { state, send };
+  const bridgeContract = new ethers.Contract(contractAddress, contractAbi, signer);
+
+  // const address = await signer.getAddress();
+  console.log(`Transfer Contract..., address: ${contractAddress}`);
+
+  if (chainConfig.tokenAddress) {
+    const tokenAddress = chainConfig.tokenAddress;
+    const tokenAbi = minABI;
+    const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+    console.log('Approving token transfer...');
+    const approveTx = await tokenContract.approve(contractAddress, sendBigAmount);
+    await approveTx.wait();
+    console.log(`Approved transaction hash: ${approveTx.hash}`);
+  }
+
+  const depositTx = await bridgeContract.deposit({
+    value: sendBigAmount,
+  })
+  await depositTx.wait();
 }
 
 const BridgeIndex = () => {
@@ -297,31 +277,40 @@ const BridgeIndex = () => {
     setOpenAlert(false);
   };
 
+  const defaultChainKey = defaultSourceChain.key
+  const defaultChain = defaultSourceChain
+
+  const defaultTargetKey = defaultSourceChain.target[0]
+  const defaultTargetChain = bridgeConfig[defaultTargetKey]
+
   // const { loading, error: subgraphQueryError, data } = useQuery(GET_TRANSFERS);
   const [gasFee, setGasFee] = React.useState("0");
   const [receiveAmount, setReceiveAmount] = React.useState("0");
   const [chainState, setChainState] = React.useState(addresses.depositL1);
-  const [selectSource, setSelectSource] = React.useState("sepolia");
-  const [selectTarget, setSelectTarget] = React.useState("adventure");
-  const [targetChainName, setTargetChainName] = React.useState("Adventure Layer");
-  const [sourceChainName, setSourceChainName] = React.useState("Sepolia Layer 1");
-  const [toChainList, setToChainList] = React.useState(['adventure']);
+  const [selectSource, setSelectSource] = React.useState(defaultChainKey);
+  const [selectTarget, setSelectTarget] = React.useState(defaultTargetKey);
+  const [targetChainName, setTargetChainName] = React.useState(defaultTargetChain.text);
+  const [sourceChainName, setSourceChainName] = React.useState(defaultChain.text);
+  const [toChainList, setToChainList] = React.useState(defaultTargetChain.target);
 
   const [sendAmount, setSendAmount] = useState('');
-  const { account, activateBrowserWallet, deactivate, switchNetwork, error, library, chainId } = useEthers();
-  // const wethInterface = new utils.Interface(abis.adventureSepolia)
-  // const wethL2Interface = new utils.Interface(abis.adventureL2)
+  // const { account, activateBrowserWallet, deactivate, switchNetwork, error, chainId } = useEthers();
+  const { chainId, switchNetwork } = useAppKitNetwork();
+  const { walletProvider } = useAppKitProvider('eip155')
+  const { address, isConnected, status } = useAppKitAccount();
+  // const wethInterface = new utils.Interface(abis.adventureBridge)
+  // const wethL2Interface = new utils.Interface(abis.adventureBridge)
   // const wethContractAddress = addresses.depositL1
   // const wethContractAddressL2 = addresses.depositL2
   // const contract = new Contract(wethContractAddress, wethInterface)
   // const contractL2 = new Contract(wethContractAddressL2, wethL2Interface)
   // const { state: stateDeposit, send: sendDeposit } = useContractFunction(contract, 'deposit', { transactionName: 'Transfer' })
   // const { state: stateDepositL2, send: sendDepositL2 } = useContractFunction(contractL2, 'deposit', { transactionName: 'Transfer L2' })
-  const { state: stateDeposit, send: sendDeposit } = useMyContractFunction(selectSource, selectTarget, chainState)
+  // const { state: stateDeposit, send: sendDeposit } = useMyContractFunction(selectSource, selectTarget, chainState)
 
   const gasPriceGwei = '15'
-  const [fromWeb3, setFromWeb3] = useState(new Web3(Sepolia.rpcUrl))
-  const [toWeb3, setToWeb3] = useState(new Web3(AdventureLayer.rpcUrl))
+  const [fromWeb3, setFromWeb3] = useState(new Web3(defaultChain.rpcUrl))
+  const [toWeb3, setToWeb3] = useState(new Web3(defaultTargetChain.rpcUrl))
   // let l1Web3 = new Web3(Sepolia.rpcUrl)
   // let l2Web3 = new Web3(AdventureLayer.rpcUrl)
   // let fromWeb3 = new Web3(Sepolia.rpcUrl)
@@ -358,8 +347,9 @@ const BridgeIndex = () => {
       try {
         setSelectSource(prevTarget)
         setSelectTarget(prevSource)
-        await switchNetwork(chain.chainId)
-        console.log('Switch chain: ', selectSource, selectTarget)
+
+        console.log('Switch chain: ', source, selectSource, selectTarget)
+        switchNetwork(supportChains[source])
       } catch (e) {
         setSelectSource(prevSource)
         setSelectTarget(prevTarget)
@@ -396,17 +386,17 @@ const BridgeIndex = () => {
     //     })
     //   })
     // }
-    if (account) {
+    if (address) {
       try {
         // const fromBalance = await fromWeb3.eth.getBalance(account)
-        const fromBalance = await getAccountBalance(fromWeb3, selectSource, account)
+        const fromBalance = await getAccountBalance(fromWeb3, selectSource, address)
         fromBalanceAmount = new Decimal(fromBalance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(fromBalance)
       } catch (err) { console.error('From:', err) } 
 
       try {
         // const toBalance = await toWeb3.eth.getBalance(account)
-        const toBalance = await getAccountBalance(toWeb3, selectTarget, account)
+        const toBalance = await getAccountBalance(toWeb3, selectTarget, address)
         toBalanceAmount = new Decimal(toBalance.toString()).div(1000000000000000000).toFixed(5)
         // ethers.utils.formatEther(toBalance)
       } catch (err) { console.error('To:', err) } 
@@ -419,7 +409,7 @@ const BridgeIndex = () => {
   }
   useEffect(() => {
     reloadAccountBalance()
-  }, [account, library, fromWeb3, toWeb3])
+  }, [address, fromWeb3, toWeb3])
 
   const [anchorFromEl, setAnchorFromEl] = React.useState(null);
   const openFromList = Boolean(anchorFromEl);
@@ -441,7 +431,10 @@ const BridgeIndex = () => {
           const target = chainConfig.target[0]
           setSelectTarget(target)
         }
-        await switchNetwork(chainConfig.chainId)
+
+        console.log('Switch chain: ', chain, selectSource, selectTarget)
+        //console.log(JSON.stringify(supportChains))
+        switchNetwork(supportChains[chain])
       } catch (e) {
         setSelectSource(prevSource)
         setSelectTarget(prevTarget)
@@ -505,50 +498,36 @@ const BridgeIndex = () => {
   };
 
   const onClickTransfer = async () => {
-    console.log({ chainId, transfers: sendAmount });
-    if (!account || isNaN(sendAmount)) {
-      console.log(account, sendAmount)
+    console.log('onClickTransfer', { chainId, transfers: sendAmount });
+    if (!address || isNaN(sendAmount)) {
+      console.log('Not Connected:', address, sendAmount)
       return
     }
 
     const currentChain = bridgeConfig[selectSource]
     if ((chainId !== currentChain.chainId * 1 && chainId > 0) || !chainId) {
-      console.log('Switch Chain:', chainId, currentChain.chainId)
-      await switchNetwork(currentChain.chainId)
+      console.log('Switch Chain:', selectSource, chainId, currentChain.chainId)
+      switchNetwork(supportChains[selectSource])
       // .then(() => {
       //   setOpenAlert(true)
       // })
-      // setOpenAlert(true)
-      // return
+      setOpenAlert(true)
+      return
     }
 
     const sendBigAmount = web3.utils.toBigInt(Number(sendAmount) * 1000000000000000000)
-    // const gasEstimate = contract.estimateGas['deposit'](account, sendBigAmount, {
-    //   value: sendBigAmount,
-    // })
-    // console.log(gasEstimate, "gasEstimate")
-    // return
-
-    // console.log('start contract', sendBigAmount, sendAmount);
     try {
-      const nonce = await fromWeb3.eth.getTransactionCount(account, 'pending')
-      console.log('nonce', nonce, account, sendBigAmount)
-      const signer = await connectWallet();
+      const nonce = await fromWeb3.eth.getTransactionCount(address, 'pending')
+      console.log('nonce', nonce, address, sendBigAmount)
+      const provider = new ethers.providers.Web3Provider(walletProvider, chainId)
+      const signer = provider.getSigner(address)
+      // const signer = await connectWallet();
       if (!signer) return;
       if (selectSource === 'sepolia'){
         await depositTokenToL2(signer,sendBigAmount)
       } else {
-          sendDeposit({
-            value: sendBigAmount,
-            // sender: account,
-            // gasLimit: 3e7,
-            // nonce: Number(nonce) + 7,
-            // gasPrice: web3.utils.toWei(gasPriceGwei, 'gwei'),
-          }).finally((e)=>{
-            console.log("error", e)
-            return
-          })
-        }
+        await callTransferContract(signer, selectSource, selectTarget, sendBigAmount)
+      }
       await reloadAccountBalance()
     } catch (e) {
       console.log("error", e)
@@ -574,11 +553,11 @@ const BridgeIndex = () => {
       const curContract = new curWeb3.eth.Contract(bridgeConfig[selectSource].abi, chainState)
       const sendBigAmount = web3.utils.toBigInt(Number(inputAmount) * 1000000000000000000)
       const transactionObject = {
-        from: account,
+        from: address,
         to: chainState,
         data: curContract.methods.deposit({
           value: sendBigAmount,
-        }).encodeABI() // yourMethod是你要调用的方法名，params是方法的参数
+        }).encodeABI()
       };
 
       // 预估gas
@@ -596,15 +575,15 @@ const BridgeIndex = () => {
           }
           setGasFee(gasText)
           setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
-          console.log(`预估的gas消耗量为: ${gasPrice}`, gasPrice, receiveAmount);
+          console.log(`Estimate gas consume: ${gasPrice}`, gasPrice, receiveAmount);
         })
         .catch((error) => {
           setGasFee(0)
           setReceiveAmount(0)
-          console.error(`估算失败: ${error}`);
+          console.error(`estimate fail: ${error}`);
         });
     } catch (err) {
-      console.error(`估算失败: ${err}`);
+      console.error(`estimate fail: ${err}`);
       curWeb3.eth.getGasPrice().then(gasPrice => {
         const gasAmount = new Decimal(gasPrice.toString())
         const transferAmount = new Decimal(inputAmount).mul(1000000000000000000)
@@ -638,7 +617,7 @@ const BridgeIndex = () => {
             <img className='logo' src={Logo2} alt='background' />
           </div>
           <div className='alb_box'>
-            <div className='alb_title'>Adventure Layer Devnet Bridge</div>
+            <div className='alb_title'>Adventure Layer Bridge</div>
           </div>
           <div className='content_box'>
             <div className='detail_box'>
@@ -741,10 +720,17 @@ const BridgeIndex = () => {
               {/* <div className='gas'>{targetChainName}gas fee 0 ETH</div> */}
               <div className='gas'>gas fee {gasFee} AGLD</div>
               <div className="btn-box">
+              {accountBalance.from > 0 ?
                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                   Transfer
                   {/* Transfer {targetChainName} */}
                 </Button>
+                : 
+                <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
+                  Insufficient AGLD
+                  {/* Transfer {targetChainName} */}
+                </Button>
+              }
               </div>
             </div>
           </div>

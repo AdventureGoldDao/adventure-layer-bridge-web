@@ -88,7 +88,7 @@ function Transfer() {
   //     method: "balanceOf",
   //     args: ["0x3f8CB69d9c0ED01923F11c829BaE4D9a4CB6c82C"],
   //   }) ?? {};
-  const wethInterface = new utils.Interface(abis.adventureSepolia)
+  const wethInterface = new utils.Interface(abis.adventureBridge)
   const wethContractAddress = addresses.depositL1
   const wethContractAddressL2 = addresses.depositL2
   const contract = new Contract(wethContractAddress, wethInterface)

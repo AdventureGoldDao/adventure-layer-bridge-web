@@ -16,6 +16,7 @@ import GET_TRANSFERS from "../../graphql/subgraph";
 import RequestService from "../../services/request.service";
 import ApiConfig from "../../services/api";
 
+// WalletButton component for connecting/disconnecting wallet
 function WalletButton() {
   const [rendered, setRendered] = useState("")
 
@@ -54,6 +55,7 @@ function WalletButton() {
   );
 }
 
+// Styled components for logo display
 const IconImage = styled.img`
   width: 2rem!important;
   height: 2rem!important;
@@ -83,6 +85,7 @@ const LogoItem = styled.div`
   display: flex;
 `
 
+// SiteLogo component for displaying the logo
 function SiteLogo() {
 
   return (
@@ -94,6 +97,7 @@ function SiteLogo() {
   );
 }
 
+// Previewer component for displaying content preview
 interface PreviewerProps {
   content: string
 }
@@ -109,6 +113,7 @@ function Previewer(props: PreviewerProps) {
   )
 }
 
+// Editor style configuration
 const EditorStyle = {
   // height: '320px',
   width: '60%',
@@ -116,12 +121,13 @@ const EditorStyle = {
   height: '314px',
 }
 
+// Demo component for demonstrating wallet and contract interactions
 function Demo() {
   const { library } = useEthers();
 
   const [value, setValue] = useState('');
   const [text, setText] = useState('');
-  // Read more about useDapp on https://usedapp.io/
+  // UseDapp hook for contract call
   const { error: contractCallError, value: tokenBalance } =
     useCall({
       contract: new Contract(addresses.ceaErc20, abis.erc20),
@@ -130,6 +136,7 @@ function Demo() {
     }) ?? {};
   console.log('Demo', contractCallError, tokenBalance)
 
+  // GraphQL query for fetching transfer data
   const { loading, error: subgraphQueryError, data } = useQuery(GET_TRANSFERS);
 
   useEffect(() => {
