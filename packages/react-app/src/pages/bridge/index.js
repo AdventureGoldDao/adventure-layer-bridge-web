@@ -433,6 +433,7 @@ const BridgeIndex = () => {
         }
 
         console.log('Switch chain: ', chain, selectSource, selectTarget)
+        //console.log(JSON.stringify(supportChains))
         switchNetwork(supportChains[chain])
       } catch (e) {
         setSelectSource(prevSource)

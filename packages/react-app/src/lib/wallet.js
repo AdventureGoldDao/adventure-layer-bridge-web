@@ -4,7 +4,8 @@ import { defineChain } from '@reown/appkit/networks';
 
 import {
   AdventureLayer as l2,
-  AdventureLocal1 as shard1,
+  shardNetworks,
+//  L1 as l1,
   web3ModelConfig,
 } from '../config'
 
@@ -41,29 +42,78 @@ export const customAdventureLocalNetwork = defineChain({
   }
 })
 
-export const customAdventureShardNetwork = defineChain({
-  id: shard1.chainId,
-  caipNetworkId: `eip155:${shard1.chainId}`,
-  chainNamespace: 'eip155',
-  name: shard1.chainName,
-  nativeCurrency: shard1.nativeCurrency || {
-    decimals: 18,
-    name: 'Ether',
-    symbol: 'ETH',
-  },
-  rpcUrls: {
-    default: {
-      http: [shard1.rpcUrl],
-      webSocket: [shard1.wssUrl],
+// dynamic shard network config
+export const customShardNetworks = shardNetworks.map(shard => 
+  defineChain({
+    id: shard.chainId,
+    caipNetworkId: `eip155:${shard.chainId}`,
+    chainNamespace: 'eip155',
+    name: shard.chainName,
+    nativeCurrency: shard.nativeCurrency || {
+      decimals: 18,
+      name: 'Ether',
+      symbol: 'ETH',
     },
-  },
-  blockExplorers: {
-    default: { name: 'Adventure Layer Explorer', url: shard1.blockExplorerUrl },
-  },
-  contracts: {
-    // Add the contracts here
-  }
-})
+    rpcUrls: {
+      default: {
+        http: [shard.rpcUrl],
+        webSocket: [shard.wssUrl],
+      },
+    },
+    blockExplorers: {
+      default: { name: 'Adventure Layer Explorer', url: shard.blockExplorerUrl },
+    },
+    contracts: {},
+  })
+);
+
+// export const customAdventureShardNetwork = defineChain({
+//   id: shard1.chainId,
+//   caipNetworkId: `eip155:${shard1.chainId}`,
+//   chainNamespace: 'eip155',
+//   name: shard1.chainName,
+//   nativeCurrency: shard1.nativeCurrency || {
+//     decimals: 18,
+//     name: 'Ether',
+//     symbol: 'ETH',
+//   },
+//   rpcUrls: {
+//     default: {
+//       http: [shard1.rpcUrl],
+//       webSocket: [shard1.wssUrl],
+//     },
+//   },
+//   blockExplorers: {
+//     default: { name: 'Adventure Layer Explorer', url: shard1.blockExplorerUrl },
+//   },
+//   contracts: {
+//     // Add the contracts here
+//   }
+// })
+
+// export const customL1Network = defineChain({
+//   id: l1.chainId,
+//   caipNetworkId: `eip155:${l1.chainId}`,
+//   chainNamespace: 'eip155',
+//   name: l1.chainName,
+//   nativeCurrency: l1.nativeCurrency || {
+//     decimals: 18,
+//     name: 'Ether',
+//     symbol: 'ETH',
+//   },
+//   rpcUrls: {
+//     default: {
+//       http: [l1.rpcUrl],
+//       webSocket: [l1.wssUrl],
+//     },
+//   },
+//   blockExplorers: {
+//     default: { name: 'Adventure Layer Explorer', url: l1.blockExplorerUrl },
+//   },
+//   contracts: {
+//     // Add the contracts here
+//   }
+// })
 
 export const networks = [
   // sepolia,
@@ -71,8 +121,12 @@ export const networks = [
   berachain,
   berachainBepolia,
   customAdventureLocalNetwork,
-  customAdventureShardNetwork,
+  ...customShardNetworks,
+ // customAdventureShardNetwork,
+//  customL1Network,
 ]
+
+//console.log("networks: " +JSON.stringify(networks));
 
 // Set up Solana Adapter
 export const ethers5Adapter = new Ethers5Adapter();
@@ -83,5 +137,14 @@ export const supportChains = {
   berachain,
   bepolia: berachainBepolia,
   adventure: customAdventureLocalNetwork,
-  local1: customAdventureShardNetwork,
+  ...Object.fromEntries(
+    customShardNetworks.map((network, index) => [
+      shardNetworks[index].chainName,
+      network
+    ])
+  ),
+// local1: customAdventureShardNetwork,
+//  l1: customL1Network
 }
+
+//console.log("supportChains: " +JSON.stringify(supportChains));
