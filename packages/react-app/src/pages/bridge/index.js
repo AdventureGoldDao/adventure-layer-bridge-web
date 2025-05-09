@@ -27,7 +27,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { addresses, abis } from "@my-app/contracts";
-import eth_logo from '../../img/loot.ico';
+import eth_logo from '../../img/loot.png';
 import trans_log from '../../img/trans_logo.png';
 
 import Logo1 from '../../img/Logo_small.svg'; // 导入 SVG 作为组件
@@ -65,10 +65,10 @@ async function getTokenBalance(web3, tokenAddress, userAddress) {
     const contract = new web3.eth.Contract(minABI, tokenAddress);
     // Call the balanceOf method
     const balance = await contract.methods.balanceOf(userAddress).call();
-    // console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')}`);
+     console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')}`);
     return balance;
   } catch (error) {
-    console.error('An error occurred:', error);
+    console.error(`getTokenBalance Error ${tokenAddress}, ${userAddress}: `, error);
   }
   return 0
 }
@@ -253,6 +253,17 @@ async function callTransferContract(signer, source, target, sendBigAmount) {
 
   // const address = await signer.getAddress();
   console.log(`Transfer Contract..., address: ${contractAddress}`);
+
+  if (chainConfig.tokenAddress) {
+    const tokenAddress = chainConfig.tokenAddress;
+    const tokenAbi = minABI;
+    const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+    console.log('Approving token transfer...');
+    const approveTx = await tokenContract.approve(contractAddress, sendBigAmount);
+    await approveTx.wait();
+    console.log(`Approved transaction hash: ${approveTx.hash}`);
+  }
+
   const depositTx = await bridgeContract.deposit({
     value: sendBigAmount,
   })
@@ -422,6 +433,7 @@ const BridgeIndex = () => {
         }
 
         console.log('Switch chain: ', chain, selectSource, selectTarget)
+        //console.log(JSON.stringify(supportChains))
         switchNetwork(supportChains[chain])
       } catch (e) {
         setSelectSource(prevSource)
@@ -605,7 +617,7 @@ const BridgeIndex = () => {
             <img className='logo' src={Logo2} alt='background' />
           </div>
           <div className='alb_box'>
-            <div className='alb_title'>Adventure Layer Devnet Bridge</div>
+            <div className='alb_title'>Adventure Layer Bridge</div>
           </div>
           <div className='content_box'>
             <div className='detail_box'>
@@ -708,10 +720,17 @@ const BridgeIndex = () => {
               {/* <div className='gas'>{targetChainName}gas fee 0 ETH</div> */}
               <div className='gas'>gas fee {gasFee} AGLD</div>
               <div className="btn-box">
+              {accountBalance.from > 0 ?
                 <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
                   Transfer
                   {/* Transfer {targetChainName} */}
                 </Button>
+                : 
+                <Button style={{ background: "#f39b4b", fontSize: '16px', color: '#000', fontWeight: '600' }} onClick={onClickTransfer} type="primary" size="large" block>
+                  Insufficient AGLD
+                  {/* Transfer {targetChainName} */}
+                </Button>
+              }
               </div>
             </div>
           </div>

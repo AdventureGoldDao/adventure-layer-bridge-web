@@ -16,78 +16,46 @@ yarn install
 
 ### Environment Configuration
 
-For set the config for networks and bridge strategies, we need to change some default configurations.
+The configuration is located in the `env.js` file under the `packages/react-app/src/` directory, which contains the following sections:
 
-The setting is placed in the `packages/react-app/src/` directory, which contains the `config.js` file:
+1. Web3 Configuration
+   - WEB3_PROJECT_ID: Project ID obtained from https://cloud.reown.com/
+   - WEB3_NAME: Application name
+   - WEB3_DESCRIPTION: Application description
+   - WEB3_APP_URL: Application URL
 
-```js
-// Wallet connection config
-// If you want to change the l1 network, you can change the config here
-// available options:
-//   const keyMainnet = 'mainnet'
-//   const keySepolia = 'sepolia'
-//   const keyBerachain = 'berachain'
-//   const keyBerachainBepolia = 'bepolia'
-export const defaultL1NetworkKey = keyBerachain
+2. Menu URLs Configuration
+   - MENU_FAUCET_URL: Faucet URL
+   - MENU_EXPLORER_URL: Block explorer URL
+   - MENU_BRIDGE_URL: Bridge URL
+   - MENU_DOCS_URL: Documentation URL
+   - MENU_RPC_URL: RPC URL
+   - MENU_WSS_RPC_URL: WebSocket RPC URL
 
-// we use web3modal to connect wallet, please set your project id here
-// and bridge metadata should be change as online bridge metadata
-// get a new project id here: https://cloud.reown.com/
-export const web3ModelConfig = {
-  projectId: 'enter project id',
-  metadata: {
-    name: 'Adventure Layer Bridge',
-    description: 'Bridge',
-    url: 'https://bridge.adventurelayer.xyz', // origin must match your domain & subdomain
-    icons: []
-  },
-}
+3. L1 Network Configuration
+   - L1_NAME: L1 network name (options: mainnet, sepolia, berachain, bepolia)
+   - L1_WSS_URL: L1 WebSocket URL
+   - L1_RPC_URL: L1 RPC URL
+   - L1_CONTRACT_ADDRESS: L1 contract address
+   - ERC20_TOKEN_ADDRESS: ERC20 token address
 
-// the basic config for adventure l2 and shard 
-export const AdventureLayer = {
-  ...
-}
-export const AdventureLocal1 = {
-  ...
-}
+4. L2 Network Configuration
+   - L2_NAME: L2 network name
+   - L2_CHAIN_ID: L2 chain ID
+   - L2_RPC_URL: L2 RPC URL
+   - L2_WSS_URL: L2 WebSocket URL
+   - L2_EXPLORER_URL: L2 block explorer URL
+   - L2_CONTRACT_ADDRESS: L2 contract address
 
-// If you want to change pulldown text and icon
-// and the bridge contract address is modified,
-// you can change the config here
-export const chainMainnet = {
-   ...
-   // if a er20 token is bridged to adventure layer l2
-   tokenAddress: '0x4xxxxx',
-}
-
-export const chainSepolia = {
-  ...
-  // if a er20 token is bridged to adventure layer l2
-  tokenAddress: '0x4xxxxx',
-}
-
-export const chainBerachain = {
-  ...
-  addresses: {
-    adventure: '0x start contract address',
-  },
-}
-
-export const chainAdventureLayerL2 = {
-  ...
-  addresses: {
-    berachain: '0x start contract address',
-    local1: '0x start contract address',
-  },
-}
-
-export const chainAdventureShard1 = {
-  ...
-  addresses: {
-    adventure: '0x start contract address',
-  },
-}
-```
+5. Shard Configuration
+   Each shard requires the following parameters:
+   - SHARD{1,2}_NAME: Shard name
+   - SHARD{1,2}_CHAIN_ID: Shard chain ID
+   - SHARD{1,2}_RPC_URL: Shard RPC URL
+   - SHARD{1,2}_WSS_URL: Shard WebSocket URL
+   - SHARD{1,2}_CONTRACT_ADDRESS: Shard contract address
+   - L2_TO_SHARD{1,2}_CONTRACT_ADDRESS: L2 to shard contract address
+   - SHARD{1,2}_OWNER_ADDRESS: Shard owner address
 
 ### Local Development
 

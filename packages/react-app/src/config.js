@@ -5,90 +5,33 @@ import { abis } from "@my-app/contracts";
 import eth_logo from './img/eth_logo.png';
 // import trans_log from '../img/trans_logo.png';
 import adv_logo from './img/adv-logo.png';
-import { id } from "ethers/lib/utils";
+//import { id } from "ethers/lib/utils";
+
+import { env } from './env';
 
 export const keyMainnet = 'mainnet'
 export const keySepolia = 'sepolia'
 export const keyBerachain = 'berachain'
 export const keyBerachainBepolia = 'bepolia'
 export const keyAdventure = 'adventure'
-export const keyAdventureShard = 'local1'
+export const keyL1 = 'l1'
 
-export const defaultL1NetworkKey = keyBerachainBepolia
+export const defaultL1NetworkKey = env.L1_NAME
+
 
 export const web3ModelConfig = {
-  projectId: '2eff4539a640aba672e06ccdbbae8002',
+  projectId: env.WEB3_PROJECT_ID,
   metadata: {
-    name: 'Adventure Layer Bridge',
-    description: 'Bridge',
-    url: 'https://bridge.adventurelayer.xyz', // origin must match your domain & subdomain
+    name: env.WEB3_NAME,
+    description: env.WEB3_DESCRIPTION,
+    url: env.WEB3_APP_URL, // origin must match your domain & subdomain
     icons: []
   },
 }
 
-export const AdventureLayer = {
-  chainId: 242070,
-  rpcUrl: "https://rpc-devnet.adventurelayer.xyz",
-  wssUrl: "wss://rpc-devnet.adventurelayer.xyz",
-  chainName: 'Adventure Layer L2',
-  blockExplorerUrl: 'https://explorer.adventurelayer.xyz',
-  nativeCurrency: {
-    name: 'AGLD',
-    symbol: 'AGLD',
-    decimals: 18,
-  },
-  // rpcUrl: "https://rpc.adventurelayer.dev",
-}
-export const AdventureLocal1 = {
-  chainId: 12340188,
-  rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node1/shard",
-  wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node1/shard",
-  chainName: 'Adventure Local 1',
-  nativeCurrency: {
-    name: 'AGLD',
-    symbol: 'AGLD',
-    decimals: 18,
-  },
-}
-// export const AdventureLocal2 = {
-//   chainId: 12340141,
-//   rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node2/shard",
-//   wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node2/shard",
-//   chainName: 'Adventure Local 2',
-// }
-
-export const adventureContracts = [{
-  source: keyBerachain,
-  target: keyAdventure,
-  address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24', // addresses['depositL1'],
-  abi: abis['adventureBridge'],
-}, {
-  source: keyAdventure,
-  target: keyBerachain,
-  address: '0xe8b68a74d8527e650e144bfecd999302b676df2f', // addresses['depositL2'],
-  abi: abis['adventureBridge'],
-}, {
-  source: keyAdventure,
-  target: keyAdventureShard,
-  address: '0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa',
-  abi: abis['adventureBridge'],
-}, {
-  source: keyAdventureShard,
-  target: keyAdventure,
-  address: '0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa',
-  abi: abis['adventureBridge'],
-}]
-
-export const contracts = adventureContracts.reduce((prev, cur) => {
-  return {
-    ...prev,
-    [`${cur.source}:${cur.target}`]: cur,
-  }
-}, {})
-
 export const chainMainnet = {
   key: 'mainnet',
-  address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
+  //address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
   chainId: mainnet.id,
   text: 'ETH Mainnet',
   target_text: 'ETH Mainnet',
@@ -101,13 +44,14 @@ export const chainMainnet = {
   },
   addresses: {
     // Sepolia ==> Adventure Layer L2 = 0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24
-    adventure: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
+    adventure: env.L1_CONTRACT_ADDRESS,
   },
+  tokenAddress: env.ERC20_TOKEN_ADDRESS,
 }
 
 export const chainSepolia = {
   key: 'sepolia',
-  address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
+  //address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
   chainId: Sepolia.chainId,
   text: 'Sepolia Layer 1',
   target_text: 'Adventure Layer',
@@ -120,14 +64,14 @@ export const chainSepolia = {
   },
   addresses: {
     // Sepolia ==> Adventure Layer L2 = 0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24
-    adventure: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
+    adventure: env.L1_CONTRACT_ADDRESS,
   },
-  tokenAddress: '0x4bff082a07c50724FEce17d9ecFC6dE1FF809722',
+  tokenAddress: env.ERC20_TOKEN_ADDRESS,
 }
 
 export const chainBerachain = {
   key: 'berachain',
-  address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
+  //address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
   id: berachain.id,
   chainId: berachain.id,
   text: 'Berachain Layer 1',
@@ -141,13 +85,14 @@ export const chainBerachain = {
   },
   addresses: {
     // Sepolia ==> Adventure Layer L2 = 0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24
-    adventure: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
+    adventure: env.L1_CONTRACT_ADDRESS,
   },
+  tokenAddress: env.ERC20_TOKEN_ADDRESS,
 }
 
 export const chainBerachainBepolia = {
   key: 'bepolia',
-  address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
+  //address: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24', //
   id: berachainBepolia.id,
   chainId: berachainBepolia.id,
   text: 'Bepolia Layer 1',
@@ -161,81 +106,189 @@ export const chainBerachainBepolia = {
   },
   addresses: {
     // Sepolia ==> Adventure Layer L2 = 0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24
-    adventure: '0x5121E26E9f08F176b9e9aF0BF95b3FCd8a9a4B24',
+    adventure: env.L1_CONTRACT_ADDRESS,
+  },
+  tokenAddress: env.ERC20_TOKEN_ADDRESS,
+}
+
+export const L1 = {
+  chainId: 1337,
+  rpcUrl: "http://[::1]:8545",
+  wssUrl: "wss://[::1]:8546",
+  chainName: 'l1',
+  nativeCurrency: {
+    name: 'AGLD',
+    symbol: 'AGLD',
+    decimals: 18,
   },
 }
 
-export const chainAdventureLayerL2 = {
-  key: 'adventure',
+export const chainL1 = {
+  key: 'l1',
   address: '0xe8b68a74d8527e650e144bfecd999302b676df2f',
-  id: AdventureLayer.chainId,
-  chainId: AdventureLayer.chainId,
-  text: 'Adventure Layer',
-  target_text: 'Berachain Layer 1',
-  logo: adv_logo,
-  abi: abis['adventureBridge'],
-  rpcUrl: AdventureLayer.rpcUrl,
-  target: ['berachain', 'local1'], // , 'local2'
-  abis: {
-    bepolia: abis['adventureBridge'],
-    local1: abis['adventureBridge'],
-    // local2: abis['adventureL2'],
-  },
-  addresses: {
-    // Adventure Layer L2 ==> Sepolia = 0xe8b68a74d8527e650e144bfecd999302b676df2f
-    // Adventure Layer L2 ==> Shard1 = 0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa
-    // Adventure Layer L2 ==> Shard2 = 0x7eb75992b53d5b603cc566575b5427e6d52ff6cd
-    bepolia: '0xe8b68a74d8527e650e144bfecd999302b676df2f',
-    local1: '0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa',
-    // local2: '0x7eb75992b53d5b603cc566575b5427e6d52ff6cd',
-  },
-}
-
-export const chainAdventureShard1 = {
-  key: 'local1',
-  address: '0xe8b68a74d8527e650e144bfecd999302b676df2f',
-  id: AdventureLocal1.chainId,
-  chainId: AdventureLocal1.chainId,
-  text: 'Adventure Shard 1',
+  id: L1.chainId,
+  chainId: L1.chainId,
+  text: 'L1 dev',
   target_text: 'Adventure Layer',
   logo: adv_logo,
   abi: abis['adventureBridge'],
-  rpcUrl: AdventureLocal1.rpcUrl,
+  rpcUrl: L1.rpcUrl,
   target: ['adventure'],
   abis: {
     adventure: abis['adventureBridge'],
   },
   addresses: {
     // Shard1 ==> Adventure Layer L2 = 0xe8b68a74d8527e650e144bfecd999302b676df2f
-    adventure: '0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa', // addresses['depositL2'],
+    adventure: '0x43F0FFCA27B26dCfA02fce8cA5D97F2F85CbF3fa', // addresses['depositL2'],
+  },
+  tokenAddress: '0xE8b68A74D8527e650E144BfeCD999302b676DF2f', // for query balance
+}
+
+
+export const AdventureLayer = {
+  chainId: env.L2_CHAIN_ID,
+  rpcUrl: env.L2_RPC_URL,
+  wssUrl: env.L2_WSS_URL,
+  chainName: env.L2_NAME,
+  blockExplorerUrl: env.L2_EXPLORER_URL,
+  nativeCurrency: {
+    name: 'AGLD',
+    symbol: 'AGLD',
+    decimals: 18,
   },
 }
+
+// dynamic shard keys
+//export const keyAdventureShard = 'local1'
+export const shardKeys = Object.keys(env)
+  .filter(key => key.startsWith('SHARD') && key.endsWith('_NAME'))
+  .map(key => key.replace('_NAME', '').toLowerCase());
+
+console.log("shardKeys: " +JSON.stringify(shardKeys));
+
+export const shardConfigs = shardKeys.map(shardKey => {
+  const upperKey = shardKey.toUpperCase();
+  return {
+    key: shardKey,
+    chainId: env[`${upperKey}_CHAIN_ID`],
+    rpcUrl: env[`${upperKey}_RPC_URL`],
+    wssUrl: env[`${upperKey}_WSS_URL`],
+    chainName: env[`${upperKey}_NAME`],
+    contractAddress: env[`${upperKey}_CONTRACT_ADDRESS`],
+    ownerAddress: env[`${upperKey}_OWNER_ADDRESS`],
+    nativeCurrency: {
+      name: 'AGLD',
+      symbol: 'AGLD',
+      decimals: 18,
+    },
+  };
+});
+
+
+//  dynamic shard networks
+export const shardNetworks = shardConfigs.map(config => ({
+  chainId: config.chainId,
+  rpcUrl: config.rpcUrl,
+  wssUrl: config.wssUrl,
+  chainName: config.chainName,
+  nativeCurrency: config.nativeCurrency,
+}));
+
+//console.log("shardNetworks: " +JSON.stringify(shardNetworks));
+
+// dynamic shard chain config
+export const shardChains = shardConfigs.map(config => ({
+  key: config.key,
+ // address: config.contractAddress,
+  id: config.chainId,
+  chainId: config.chainId,
+  text: config.chainName,
+  target_text: 'Adventure Layer',
+  logo: adv_logo,
+  abi: abis['adventureBridge'],
+  rpcUrl: config.rpcUrl,
+  target: ['adventure'],
+  abis: {
+    adventure: abis['adventureBridge'],
+  },
+  addresses: {
+    adventure: env[`${config.key.toUpperCase()}_CONTRACT_ADDRESS`],
+  },
+}));
+
+//console.log("shardChains: " +JSON.stringify(shardChains));
+
+// export const AdventureLocal1 = {
+//   chainId: env.SHARD1_CHAIN_ID,
+//   rpcUrl: env.SHARD1_RPC_URL,
+//   wssUrl: env.SHARD1_WSS_URL,
+//   chainName: env.SHARD1_NAME,
+//   nativeCurrency: {
+//     name: 'AGLD',
+//     symbol: 'AGLD',
+//     decimals: 18,
+//   },
+// }
+// export const AdventureLocal2 = {
+//   chainId: 12340141,
+//   rpcUrl: "https://rpc-devnet.adventurelayer.xyz/node2/shard",
+//   wssUrl: "wss://rpc-devnet.adventurelayer.xyz/node2/shard",
+//   chainName: 'Adventure Local 2',
+// }
+
+
+export const chainAdventureLayerL2 = {
+  key: 'adventure',
+  //address: '0xe8b68a74d8527e650e144bfecd999302b676df2f',
+  id: AdventureLayer.chainId,
+  chainId: AdventureLayer.chainId,
+  text: 'Adventure Layer',
+  target_text: env.L1_NAME,
+  logo: adv_logo,
+  abi: abis['adventureBridge'],
+  rpcUrl: AdventureLayer.rpcUrl,
+  target: [env.L1_NAME, ...shardKeys],
+  abis: shardKeys.reduce((acc, shardKey) => {
+    acc[shardKey] = abis['adventureBridge'];
+    return acc;
+  }, { [env.L1_NAME]: abis['adventureBridge'] }),
+  addresses: shardKeys.reduce((acc, shardKey) => {
+    acc[shardKey] = env[`L2_TO_${shardKey.toUpperCase()}_CONTRACT_ADDRESS`];
+    return acc;
+  }, {[env.L1_NAME]: env.L2_CONTRACT_ADDRESS }),
+}
+
+
+// export const chainAdventureShard1 = {
+//   key: 'local1',
+//   address: '0xe8b68a74d8527e650e144bfecd999302b676df2f',
+//   id: AdventureLocal1.chainId,
+//   chainId: AdventureLocal1.chainId,
+//   text: 'Adventure Shard 1',
+//   target_text: 'Adventure Layer',
+//   logo: adv_logo,
+//   abi: abis['adventureBridge'],
+//   rpcUrl: AdventureLocal1.rpcUrl,
+//   target: ['adventure'],
+//   abis: {
+//     adventure: abis['adventureBridge'],
+//   },
+//   addresses: {
+//     // Shard1 ==> Adventure Layer L2 = 0xe8b68a74d8527e650e144bfecd999302b676df2f
+//     adventure: '0x43f0ffca27b26dcfa02fce8ca5d97f2f85cbf3fa', // addresses['depositL2'],
+//   },
+// }
+
 
 export const bridgeConfig = {
   mainnet: chainMainnet,
   sepolia: chainSepolia,
   berachain: chainBerachain,
   adventure: chainAdventureLayerL2,
-  local1: chainAdventureShard1,
-
+  //local1: chainAdventureShard1,
   [keyBerachainBepolia]: chainBerachainBepolia,
-  // local2: {
-  //   address: addresses['depositL2'],
-  //   chainId: AdventureLocal2.chainId,
-  //   text: 'Adventure Shard 2',
-  //   target_text: 'Adventure Layer',
-  //   logo: adv_logo,
-  //   abi: abis['adventureL2'],
-  //   rpcUrl: AdventureLocal2.rpcUrl,
-  //   target: ['adventure'],
-  //   abis: {
-  //     adventure: abis['adventureL2'],
-  //   },
-  //   addresses: {
-  //     // Shard2 ==> Adventure Layer L2 = 0xe8b68a74d8527e650e144bfecd999302b676df2f
-  //     adventure: addresses['depositL2'],
-  //   },
-  // },
+  ...Object.fromEntries(shardChains.map(chain => [chain.key, chain])),
+  // l1: chainL1
 }
 
 const chainByKeys = {
@@ -243,13 +296,14 @@ const chainByKeys = {
   [keySepolia]: chainSepolia,
   [keyBerachain]: chainBerachain,
   [keyAdventure]: chainAdventureLayerL2,
-  [keyAdventureShard]: chainAdventureShard1,
+  //[keyAdventureShard]: chainAdventureShard1,
   [keyBerachainBepolia]: chainBerachainBepolia,
+  ...Object.fromEntries(shardChains.map(chain => [chain.key, chain])),
 }
 
 export const defaultSourceChain = chainByKeys[defaultL1NetworkKey]
 
-export const configNetworks = [defaultSourceChain, chainAdventureLayerL2, chainAdventureShard1]
+export const configNetworks = [defaultSourceChain, chainAdventureLayerL2, ...shardChains]
 export const fromChainSelect = configNetworks.map(item => {
   return {
     name: item.key,
@@ -257,35 +311,13 @@ export const fromChainSelect = configNetworks.map(item => {
     target: item.target,
   }
 })
-// [{
-//   name: 'berachain',
-//   text: 'Berchain Layer 1',
-//   target: ['adventure'],
-// }, {
-//   name: 'adventure',
-//   text: 'Adventure Layer',
-//   target: ['berachain', 'local1'], // , 'local2'
-// }, {
-//   name: 'local1',
-//   text: 'Adventure Shard 1',
-//   target: ['adventure'],
-// }]
-// , {
-//   name: 'local2',
-//   text: 'Adventure Shard 2',
-//   target: ['adventure'],
-// }
-// {
-//   name: 'sepolia',
-//   text: 'Sepolia Layer 1',
-//   target: ['adventure'],
-// }
+
 
 export const MenuURL = {
-  faucetUrl: "https://faucet-devnet.adventurelayer.xyz",
-  explorerUrl: "https://explorer-devnet.adventurelayer.xyz",
-  bridgeUrl: "https://bridge-devnet.adventurelayer.xyz",
-  docsUrl: "https://docs.adventurelayer.xyz",
-  rpcUrl: "https://rpc-devnet.adventurelayer.xyz",
-  wssRpcUrl: "wss://rpc-devnet.adventurelayer.xyz",
+  faucetUrl: env.MENU_FAUCET_URL,
+  explorerUrl: env.MENU_EXPLORER_URL,
+  bridgeUrl: env.MENU_BRIDGE_URL,
+  docsUrl: env.MENU_DOCS_URL,
+  rpcUrl: env.MENU_RPC_URL,
+  wssRpcUrl: env.MENU_WSS_RPC_URL,
 };
