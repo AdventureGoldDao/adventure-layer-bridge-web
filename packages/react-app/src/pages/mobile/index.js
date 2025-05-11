@@ -163,6 +163,9 @@ async function callTransferContract(signer, source, target, sendBigAmount) {
   const chainConfig = bridgeConfig[source]
   // const contractAddress = chainConfig['address']
   const contractAddress = chainConfig.addresses[target]
+  console.log('chainConfig.key', chainConfig.key)
+  console.log('target', target)
+  //console.log(chainConfig.abis[target])
   const contractAbi = new utils.Interface(chainConfig.abis[target])
 
   const bridgeContract = new ethers.Contract(contractAddress, contractAbi, signer);
@@ -175,14 +178,19 @@ async function callTransferContract(signer, source, target, sendBigAmount) {
     const approveTx = await tokenContract.approve(contractAddress, sendBigAmount);
     await approveTx.wait();
     console.log(`Approved transaction hash: ${approveTx.hash}`);
-  }
 
-  // const address = await signer.getAddress();
-  console.log(`Transfer Contract..., address: ${contractAddress}`);
-  const depositTx = await bridgeContract.deposit({
-    value: sendBigAmount,
-  })
-  await depositTx.wait();
+    const depositTx = await bridgeContract.deposit(sendBigAmount);
+    await depositTx.wait();
+    console.log(`Deposit transaction hash: ${depositTx.hash}`);
+  }else{
+
+    // const address = await signer.getAddress();
+    console.log(`Transfer Contract..., address: ${contractAddress}`);
+    const depositTx = await bridgeContract.deposit({
+      value: sendBigAmount,
+    })
+    await depositTx.wait();
+  }
 }
 
 const BridgeIndex = () => {
