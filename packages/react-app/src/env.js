@@ -16,8 +16,8 @@ export const env = {
     MENU_WSS_RPC_URL: "wss://rpc-testnet.adventurelayer.xyz",
 
     L1_NAME: 'bepolia', //must be  mainnet sepolia berachain or bepolia
-    L1_WSS_URL: 'wss://berachain-bepolia.drpc.org',
-    L1_RPC_URL: 'https://berachain-bepolia.drpc.org',
+    L1_WSS_URL: 'wss://bepolia.rpc.berachain.com',
+    L1_RPC_URL: 'https://bepolia.rpc.berachain.com',
     L1_CONTRACT_ADDRESS: '0xCe0881c314930955d8E8beCD4F18F04C2dB92661',
     ERC20_TOKEN_ADDRESS: '0x4356bC279288F4bF3Bd24E3B2E7058FE69bDCBF6',
 
