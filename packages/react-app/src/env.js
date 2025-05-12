@@ -10,7 +10,7 @@ export const env = {
     // Menu URLs
     MENU_FAUCET_URL: "https://faucet-testnet.adventurelayer.xyz",
     MENU_EXPLORER_URL: "https://explorer-testnet.adventurelayer.xyz",
-    MENU_BRIDGE_URL: "https://bridge-testnet.adventurelayer.xyz",
+    MENU_BRIDGE_URL: "https://testnet-bridge.adventurelayer.xyz",
     MENU_DOCS_URL: "https://docs.adventurelayer.xyz",
     MENU_RPC_URL: "https://rpc-testnet.adventurelayer.xyz",
     MENU_WSS_RPC_URL: "wss://rpc-testnet.adventurelayer.xyz",
@@ -18,7 +18,7 @@ export const env = {
     L1_NAME: 'bepolia', //must be  mainnet sepolia berachain or bepolia
     L1_WSS_URL: 'wss://berachain-bepolia.drpc.org',
     L1_RPC_URL: 'https://berachain-bepolia.drpc.org',
-    L1_CONTRACT_ADDRESS: '0xC7b8E56258086acC98a11A55c34A1B57ac82A7a8',
+    L1_CONTRACT_ADDRESS: '0xCe0881c314930955d8E8beCD4F18F04C2dB92661',
     ERC20_TOKEN_ADDRESS: '0x4356bC279288F4bF3Bd24E3B2E7058FE69bDCBF6',
 
     
@@ -27,5 +27,5 @@ export const env = {
     L2_RPC_URL: 'https://rpc-testnet.adventurelayer.xyz',
     L2_WSS_URL: 'wss://rpc-testnet.adventurelayer.xyz',
     L2_EXPLORER_URL : 'https://explorer-testnet.adventurelayer.xyz',
-    L2_CONTRACT_ADDRESS: '0x50321Dd559087baD9C8F606947a49Ebee4dBE923',
+    L2_CONTRACT_ADDRESS: '0xb69a4BE90fca6ed938BA224eFAE7Bd15Cf94b329',
 };
