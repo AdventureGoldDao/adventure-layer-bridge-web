@@ -605,7 +605,8 @@ const BridgeIndex = () => {
             gasText = showGas.toFixed(18)
           }
           setGasFee(gasText)
-          setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
+          //setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
+          setReceiveAmount(inputAmount);
           console.log(`Estimate gas consume: ${gasPrice}`, gasPrice, receiveAmount);
         })
         .catch((error) => {
@@ -628,7 +629,8 @@ const BridgeIndex = () => {
           gasText = showGas.toFixed(18)
         }
         setGasFee(gasText)
-        setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
+        //setReceiveAmount(receiveAmount.div(1000000000000000000).toFixed(18))
+        setReceiveAmount(inputAmount);
         console.log('====>', gasPrice, receiveAmount)
       })
     }
