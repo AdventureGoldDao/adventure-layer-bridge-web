@@ -242,11 +242,14 @@ async function depositTokenToL2(signer, amount) {
   console.log(`Deposit transaction hash: ${depositTx.hash}`);
 }
 
-async function callTransferContract(signer, source, target, sendBigAmount) {
+async function callTransferContract(fromWeb3, signer, source, target, sendBigAmount) {
   console.log(`Call Transfer Contract: `, source, target);
   const chainConfig = bridgeConfig[source]
   // const contractAddress = chainConfig['address']
   const contractAddress = chainConfig.addresses[target]
+  console.log('chainConfig.key', chainConfig.key)
+  console.log('target', target)
+  //console.log(chainConfig.abis[target])
   const contractAbi = new utils.Interface(chainConfig.abis[target])
 
   const bridgeContract = new ethers.Contract(contractAddress, contractAbi, signer);
@@ -259,15 +262,43 @@ async function callTransferContract(signer, source, target, sendBigAmount) {
     const tokenAbi = minABI;
     const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
     console.log('Approving token transfer...');
+
+    //check balance
+    // const balance = await signer.getBalance();
+    // const gasPrice = await signer.getGasPrice();
+    // const gasLimit = ethers.BigNumber.from(21000); // 通常的交易gas限制
+    // const totalGasCost = gasPrice.mul(gasLimit);
+
+    // 检查token的余额是否够用
+    // const fromBalance = await getAccountBalance(fromWeb3, source, contractAddress)
+    // if(sendBigAmount > fromBalance){
+    //   console.error(`Insufficient token balance: ${fromBalance.toString()} ${sendBigAmount.toString()}`);
+    //   alert(`Insufficient token balance: Current balance is ${web3.utils.fromWei(fromBalance.toString(), 'ether')} AGLD, but ${web3.utils.fromWei(sendBigAmount.toString(), 'ether')} AGLD is required.`);
+    //   return;
+    // }
+
+    // if (balance.lt(totalGasCost.add(sendBigAmount))) {
+    //     console.error(`Insufficient funds for gas * price + value: ${balance.toString()} ${totalGasCost.add(sendBigAmount).toString()}`);
+    //     alert(`Insufficient funds: Your current balance is ${web3.utils.fromWei(balance.toString(), 'ether')} ETH, but ${web3.utils.fromWei(totalGasCost.add(sendBigAmount).toString(), 'ether')} ETH is required to cover gas fees and transaction amount.`);
+    //     return;
+    // }
+
     const approveTx = await tokenContract.approve(contractAddress, sendBigAmount);
     await approveTx.wait();
     console.log(`Approved transaction hash: ${approveTx.hash}`);
+
+    const depositTx = await bridgeContract.deposit(sendBigAmount);
+    await depositTx.wait();
+    console.log(`Deposit transaction hash: ${depositTx.hash}`);
+
+  }else{
+    console.log(`Transfer Contract..., address: ${contractAddress}`);
+    const depositTx = await bridgeContract.deposit({
+      value: sendBigAmount,
+    })
+    await depositTx.wait();
   }
 
-  const depositTx = await bridgeContract.deposit({
-    value: sendBigAmount,
-  })
-  await depositTx.wait();
 }
 
 const BridgeIndex = () => {
@@ -526,7 +557,7 @@ const BridgeIndex = () => {
       if (selectSource === 'sepolia'){
         await depositTokenToL2(signer,sendBigAmount)
       } else {
-        await callTransferContract(signer, selectSource, selectTarget, sendBigAmount)
+        await callTransferContract(fromWeb3 , signer, selectSource, selectTarget, sendBigAmount)
       }
       await reloadAccountBalance()
     } catch (e) {

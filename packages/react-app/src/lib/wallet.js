@@ -5,7 +5,7 @@ import { defineChain } from '@reown/appkit/networks';
 import {
   AdventureLayer as l2,
   shardNetworks,
-//  L1 as l1,
+  L1 as l1,
   web3ModelConfig,
 } from '../config'
 
@@ -91,29 +91,29 @@ export const customShardNetworks = shardNetworks.map(shard =>
 //   }
 // })
 
-// export const customL1Network = defineChain({
-//   id: l1.chainId,
-//   caipNetworkId: `eip155:${l1.chainId}`,
-//   chainNamespace: 'eip155',
-//   name: l1.chainName,
-//   nativeCurrency: l1.nativeCurrency || {
-//     decimals: 18,
-//     name: 'Ether',
-//     symbol: 'ETH',
-//   },
-//   rpcUrls: {
-//     default: {
-//       http: [l1.rpcUrl],
-//       webSocket: [l1.wssUrl],
-//     },
-//   },
-//   blockExplorers: {
-//     default: { name: 'Adventure Layer Explorer', url: l1.blockExplorerUrl },
-//   },
-//   contracts: {
-//     // Add the contracts here
-//   }
-// })
+export const customL1Network = defineChain({
+  id: l1.chainId,
+  caipNetworkId: `eip155:${l1.chainId}`,
+  chainNamespace: 'eip155',
+  name: l1.chainName,
+  nativeCurrency: l1.nativeCurrency || {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: [l1.rpcUrl],
+      webSocket: [l1.wssUrl],
+    },
+  },
+  blockExplorers: {
+    default: { name: 'Adventure Layer Explorer', url: l1.blockExplorerUrl },
+  },
+  contracts: {
+    // Add the contracts here
+  }
+})
 
 export const networks = [
   // sepolia,
@@ -123,7 +123,7 @@ export const networks = [
   customAdventureLocalNetwork,
   ...customShardNetworks,
  // customAdventureShardNetwork,
-//  customL1Network,
+  customL1Network,
 ]
 
 //console.log("networks: " +JSON.stringify(networks));
@@ -144,7 +144,7 @@ export const supportChains = {
     ])
   ),
 // local1: customAdventureShardNetwork,
-//  l1: customL1Network
+ l1: customL1Network
 }
 
 //console.log("supportChains: " +JSON.stringify(supportChains));
